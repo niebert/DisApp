@@ -1,4 +1,4 @@
 # DisApp
 Disease App - Demo of Features for Crowd Sourcing and Spatial Risk Assessment. 
 * Compiler Intel XDK
-* jquery Mobile used for GUI Development 
+* [JQuery Mobile](http://themeroller.jquerymobile.com) used for GUI Development 
