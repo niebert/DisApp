@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8" />
+	<title>iOS Inspired jQuery Mobile Theme</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" rel="stylesheet" />
+	<link href="css/ios_inspired.css" rel="stylesheet" />
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="js/fullscreen.js"></script>
+	<script>
+		// all dialog buttons should close their parent dialog
+		$(".ui-dialog button").live("click", function() {
+			$("[data-role='dialog']").dialog("close");
+		});
+		$(document).on("mobileinit", function(){
+		  $.mobile.defaultPageTransition = "slide";
+		});
+
+		function loginCheck() {
+			var vAppStartBoolean = true;
+			var vUser=document.getElementById('username').value;
+			var vPWD=document.getElementById('pwd').value;
+			// v$("#username").value
+			var vMSG="<b>ERROR:</b><br />";
+			//alert("Login Check: User="+vUser+" Passord="+vPWD+" JQ-User="+$("#username").value);
+			if (vUser =="") {
+				vMSG+="Please enter User Name <br />\n";
+				vAppStartBoolean = false;
+			};
+			if (vPWD =="") {
+				vMSG+="Please enter the Password";
+				vAppStartBoolean = false;
+			};
+			if (vAppStartBoolean) {
+				document.getElementById("errormsg").innerHTML = "";
+				var d = new Date();
+				var n = d.getTime();
+				window.open('app.html','AppWindow'+n	, 'toolbar=no, menubar=no, width=400, height=600');
+			} else {
+				document.getElementById("errormsg").innerHTML = vMSG;
+			}
+		};
+	</script>
+	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+	<style>
+		#footerTabs {
+			background: #FFF -webkit-radial-gradient(circle, #FFF, #dee2e4);
+		}
+		.ui-listview sup {
+			font-size: 0.6em;
+			color: #cc0000;
+		}
+	</style>
+
+</head>
+<body>
+
+<div data-role="page">
+
+	<div data-role="header" data-position="fixed">
+		<h1>DissApp LOGIN</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<p>Welcome to the DissApp. Feel free to have a look around and report and bugs to the <a href="https://github.com/niebert/DissApp" target="_blank">GitHub issues page</a>.</p>
+
+
+		<ul data-role="listview" data-inset="true">
+			<li>Username:</li>
+			<li><input type="text" size="12" name="username" id="username" value="demo" /></li>
+			<li>Password:</li>
+			<li><input type="password" size="12" name="pwd" id="pwd" value="demopwd" /></li>
+			<button class="ui-btn-plain" onclick="loginCheck()">Submit</button>
+		</ul>
+
+		<p>Press key [F] to enter Fullscreen Mode</p>
+		<br />
+		<label id="errormsg" style="color:red"></label>
+  	<br />
+
+		</div><!-- /ui-body wrapper -->
+</div><!-- /page -->
+<script>
+	//setTimeout("checkFullScreen()",400);
+	document.addEventListener("keydown", function(e) {
+	 if (e.keyCode == 70) {
+		 //Key was F
+		 enterFullscreen();
+	 }
+ }, false);
+</script>
+</body>
+</html>
