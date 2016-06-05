@@ -1,4 +1,4 @@
-from agro_db.android_app.models import AppUser
+from disapp_db.user_questions.models import AppUser
 import re
 
 from flask import session

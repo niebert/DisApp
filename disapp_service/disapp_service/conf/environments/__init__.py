@@ -4,5 +4,5 @@ CONFIG_MAP = {
 }
 
 def get_config(env):
-    return '.'.join(['agroapp_service', 'conf', 'environments',
+    return '.'.join(['disapp_service', 'conf', 'environments',
                      CONFIG_MAP.get(env, env), 'Config'])

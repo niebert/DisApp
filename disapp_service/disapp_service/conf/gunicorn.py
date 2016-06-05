@@ -11,8 +11,8 @@ backlog = 2048
 worker_class ="gevent"
 debug = True
 daemon = False
-pidfile ="/tmp/agroappservice-gunicorn.pid"
-logfile ="/tmp/agroappservice-gunicorn.log"
+pidfile ="/tmp/disappservice-gunicorn.pid"
+logfile ="/tmp/disappservice-gunicorn.log"
 loglevel = 'info'
 accesslog = '/tmp/gunicorn-access.log'
 

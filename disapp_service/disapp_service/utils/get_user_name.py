@@ -8,7 +8,7 @@ def get_user_name():
                 "X-Authorization-Token" : auth_token }
 
     try:
-        active_user_json = requests.get( 'http://128.199.108.159:7281/userservice/activeuser' ,
+        active_user_json = requests.get( 'http://xyz:7281/userservice/activeuser' ,
                                           headers = headers).json()
         user_guid = active_user_json['responseData']['guid']
     except:

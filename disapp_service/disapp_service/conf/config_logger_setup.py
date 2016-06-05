@@ -1,7 +1,7 @@
 import os
 import logging
 
-from agroapp_service.conf.environments import get_config
+from disapp_service.conf.environments import get_config
 
 log_format = ' '.join([
     '[%(asctime)s]',
@@ -14,9 +14,9 @@ log_format = ' '.join([
 formatter = logging.Formatter(log_format)
 
 def setup_config_logger(app):
-    app.secret_key = "11ca4c58-90ab-46c6-bf1c-d26e626f0d74"
-    agro_env = os.environ.get('AGRO_ENV', 'local')
-    config = get_config(agro_env)
+    app.secret_key = "11ca4c58-90ab-46c6-bf1c-d26e626f0d84"
+    dis_env = os.environ.get('DIS_ENV', 'local')
+    config = get_config(dis_env)
     app.config.from_object(config)
     app.debug_log_format = log_format
 
@@ -28,4 +28,4 @@ def setup_config_logger(app):
         app.logger.addHandler(logHandler)
         app.logger.setLevel(logging.DEBUG)
 
-    app.logger.info("Loaded environment: " + agro_env)
+    app.logger.info("Loaded environment: " + dis_env)
