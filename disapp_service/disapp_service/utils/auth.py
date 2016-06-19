@@ -3,17 +3,6 @@ import re
 
 from flask import session
 
-
-class NotAuthenticatedException(ZError):
-    '''
-    Signifies that no user is authenticated.
-    '''
-    def __init__(self, *args, **kwargs):
-        ZError.__init__(self, 401,
-                        "User is not authenticated.",
-                        *args, **kwargs)
-
-
 class InvalidPasswordError(Exception):
     '''
     Raised when a invalid password is provided.
