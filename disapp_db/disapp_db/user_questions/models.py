@@ -12,6 +12,7 @@ class AppUser(User):
 
 
 class Language(models.Model):
+    language_id = models.IntegerField(default=1,unique=True)
     language = models.CharField(max_length=50)
     
 
