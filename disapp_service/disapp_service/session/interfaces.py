@@ -18,7 +18,7 @@ class DBInterface(SessionInterface):
 
     def open_session(self, app, request):
         pass
-        """key = request.cookies.get(app.session_cookie_name,
+        key = request.cookies.get(app.session_cookie_name,
                                   request.headers.get(app.auth_header_name))
         session = None
         try:
@@ -41,10 +41,10 @@ class DBInterface(SessionInterface):
             session['key'] = key = str(uuid.uuid4())
 
         return session
-        """
+        
     def save_session(self, app, session, response):
         try:
-            """domain = self.get_cookie_domain(app)
+            domain = self.get_cookie_domain(app)
             path = self.get_cookie_path(app)
             httponly = self.get_cookie_secure(app)
             secure = self.get_cookie_secure(app)
@@ -62,7 +62,7 @@ class DBInterface(SessionInterface):
             obj.session_data = pickle.dumps(dict(session))
             obj.expire_date = expires or (datetime.now() + timedelta(days=30))
             obj.save()
-            """
+            
             pass
         finally:
             close_old_connections()

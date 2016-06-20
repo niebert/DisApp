@@ -21,10 +21,16 @@ class UserValidation(Resource):
         """
             This method authenticates the user
         """    
-        app.logger.debug("Email ID:"+str(request.json['email']) + " Password:"+ str(request.json['pswd'])+ 
-                                     " rememeber_me: " + str(request.json['remember_me']))
+        try:
+            remember_me = str(request.json['remember_me'])
+        except KeyError:
+            remember_me = "0"
 
-        return post_user_validation_handler.handle_request(str(request.json['email']), str(request.json['pswd']), str(request.json['remember_me']))        
+        app.logger.debug("Email ID:"+str(request.json['email']) + " Password:"+ str(request.json['pswd'])+ 
+                                     " remember_me: " +remember_me)
+
+        return post_user_validation_handler.handle_request(str(request.json['email']), str(request.json['pswd']),
+                                            remember_me)        
         close_old_connections()
 
     post.authenticated = False
@@ -54,5 +60,3 @@ class UserValidation(Resource):
                 'is_deleted': True
             }
         }
-    delete.authenticated = False
-

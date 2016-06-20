@@ -15,7 +15,6 @@ from disapp_service.conf.config_logger_setup import setup_config_logger
 from disapp_service.session.interfaces import DBInterface
 from disapp_service.service_apis.uservalidation import UserValidation
 from disapp_service.service_apis.usercreation import UserCreation
-#from disapp_service.service_apis.pincodedetails import PincodeDetails,AddressResolution
 
 from flask.ext.cors import CORS
  
@@ -29,13 +28,10 @@ CORS(app)
 app.auth_header_name = 'X-Authorization-Token'
 app.session_interface = DBInterface()
 app.root_dir = dirname(dirname(abspath(__file__)))
-
 api = restful.Api(app)
-
 setup_config_logger(app)
 
 app.logger.info("Setting up Resources")
-#api.add_resource(AddressResolution,'/appuserservice/addressresoluton/')
 
 api.add_resource(UserCreation, '/userservice/create/')
 api.add_resource(UserValidation,'/userservice/uservalidation/')

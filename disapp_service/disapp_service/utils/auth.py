@@ -1,6 +1,5 @@
 from disapp_db.user_questions.models import AppUser
 import re
-
 from flask import session
 
 class InvalidPasswordError(Exception):
@@ -8,13 +7,12 @@ class InvalidPasswordError(Exception):
     Raised when a invalid password is provided.
     '''
 
-
 def get_user():
     user_id = session.get('user_id')
     if not user_id:
         raise NotAuthenticatedException()
 
-    return User.objects.get(id=session.get('user_id'))
+    return AppUser.objects.get(id=session.get('user_id'))
 
 
 

@@ -6,9 +6,11 @@ from flask import Flask, request, session
 from flask import current_app as app
 from flask.ext import restful
 
+from django import db
 from django.db import close_old_connections
 from django.contrib.auth.models import User
 from disapp_service.utils.auth import get_user
+from disapp_db.user_questions.models import AppUser
 
 def handle_request(username, password):
     """
@@ -24,24 +26,22 @@ def handle_request(username, password):
                 'errorCode': 400
             }
 
-        if User.query.filter_by(username = username).first() is not None:
+        if AppUser.objects.filter(username = username).first() is not None:
             return {
                 'success': False,  
                 'errorMessage': 'User already exists',
                 'errorCode': 400
             }
 
-        user = User(username = username)
-        user.hash_password(password)
-        user.save()
-        db.session.add(user)
-        db.session.commit()
+        user = AppUser.objects.create(username = username,password=password)
+        app.logger.info('User Successfully created')
 
         return {
             'success': True,
-            'responseData':{'username':user.username, 'location': url_for('get_user', id = user.id,
-             _external = True)},
+            'responseData':{'username':user.username, 
+             app.auth_header_name: session.get('key'),
             'status': 201
+             }
         }
     except Exception as e:
         app.logger.debug(e)

@@ -8,7 +8,10 @@ from flask.ext import restful
 
 from django.db import close_old_connections
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from disapp_service.utils.auth import get_user
+from disapp_db.user_questions.models import AppUser
+import pdb
 
 def handle_request(username, password, remember_me):
     """
@@ -18,29 +21,29 @@ def handle_request(username, password, remember_me):
     try:
         authorized = False
 
+#        pdb.set_trace()
         try:
-            user = User.objects.get(username=username)
-            if user.check_password(password):
+            user = AppUser.objects.get(username=username)
+            if user.password == str(password):
                 authorized = True
                 session['user_id'] = user.id
                 session['password_hash'] = user.password
 
-                if remember_me!= None and remember_me==1:
+                if remember_me!= None and int(remember_me)==1:
                     session.permanent = True
 
-        except User.DoesNotExist:
+        except ObjectDoesNotExist:
             authorized = False
             app.logger.debug(e)
-            return {}
 
         if authorized:
             app.logger.info("Validated the login credentials for %s",
                             username)
             return {
                 'responseData': {
-                    'name': get_user().get_full_name(),
+                    'name': user.username,
                     app.auth_header_name: session.get('key'),
-                    'is_authorized': is_authorized,
+                    'is_authorized': authorized
                 }
             }
         else:
