@@ -34,17 +34,19 @@ def handle_request(username, password, remember_me):
 
         except ObjectDoesNotExist:
             authorized = False
-            app.logger.debug(e)
+            app.logger.debug('User not found')
 
         if authorized:
             app.logger.info("Validated the login credentials for %s",
                             username)
             return {
-                'responseData': {
+                'content': {
                     'name': user.username,
                     app.auth_header_name: session.get('key'),
                     'is_authorized': authorized
-                }
+                },
+                'success': True,
+                'status' : 200
             }
         else:
             app.logger.exception("Invalid username or password %s",

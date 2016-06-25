@@ -48,7 +48,7 @@ class DBInterface(SessionInterface):
             path = self.get_cookie_path(app)
             httponly = self.get_cookie_secure(app)
             secure = self.get_cookie_secure(app)
-            expires = self.get_expiration_time(app, session)
+            expires = self.get_expiration_time(app, session) or (datetime.now() + timedelta(days=30))
 
             response.set_cookie(app.session_cookie_name, session['key'],
                                 expires=expires, httponly=httponly,
@@ -60,9 +60,8 @@ class DBInterface(SessionInterface):
                 obj = DjangoSession(session_key=session['key'])
 
             obj.session_data = pickle.dumps(dict(session))
-            obj.expire_date = expires or (datetime.now() + timedelta(days=30))
+            obj.expire_date = expires
             obj.save()
             
-            pass
         finally:
             close_old_connections()

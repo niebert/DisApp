@@ -38,10 +38,10 @@ def handle_request(username, password):
 
         return {
             'success': True,
-            'responseData':{'username':user.username, 
-             app.auth_header_name: session.get('key'),
+            'content': {
+            'username':user.username, 
+             app.auth_header_name: session.get('key')},
             'status': 201
-             }
         }
     except Exception as e:
         app.logger.debug(e)

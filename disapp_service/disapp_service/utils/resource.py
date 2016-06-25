@@ -8,11 +8,19 @@ def sanitize_response(response):
     data = None
     status = 200
     headers = {}
-
+    
     if isinstance(response, tuple) and len(response) is 3:
         (data, status, headers) = response
     else:
         data = response
+        try:
+            if 'status' in data:
+                if data['status']!= None:
+                    status = int(data['status'])
+        except:
+            status = 200
+
+
 
     return (data, status, headers)
 

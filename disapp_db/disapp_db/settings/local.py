@@ -5,7 +5,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'disapp',
         'USER': 'root',
-        'PASSWORD': 'as2d2p',
+        'PASSWORD': 'as2e',
         'HOST': 'localhost',
         'PORT': '',
     }
