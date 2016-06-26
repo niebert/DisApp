@@ -15,6 +15,9 @@ from disapp_service.conf.config_logger_setup import setup_config_logger
 from disapp_service.session.interfaces import DBInterface
 from disapp_service.service_apis.uservalidation import UserValidation
 from disapp_service.service_apis.usercreation import UserCreation
+from disapp_service.service_apis.questionnaires import Questionnaires
+from disapp_service.service_apis.questions import Questions
+
 
 from flask.ext.cors import CORS
  
@@ -35,6 +38,8 @@ app.logger.info("Setting up Resources")
 
 api.add_resource(UserCreation, '/userservice/create/')
 api.add_resource(UserValidation,'/userservice/uservalidation/')
+api.add_resource(Questionnaires,'/questionnaire/qlists/')
+api.add_resource(Questions,'/questionnaire/<int:questionnaire_id>/')
 
 app.logger.info("Resource setup done")
 
