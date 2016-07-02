@@ -39,7 +39,7 @@ app.logger.info("Setting up Resources")
 api.add_resource(UserCreation, '/userservice/create/')
 api.add_resource(UserValidation,'/userservice/uservalidation/')
 api.add_resource(Questionnaires,'/questionnaire/qlists/')
-api.add_resource(Questions,'/questionnaire/<int:questionnaire_id>/')
+api.add_resource(Questions,'/questionnaire/<string:questionnaire_id>/')
 
 app.logger.info("Resource setup done")
 

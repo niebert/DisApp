@@ -29,4 +29,4 @@ class Questions(Resource):
 
         app.logger.debug("Call to get questionnaire: "+str(questionnaire_id) +' for language: '+language)
 
-        return get_questions_handler.handle_request(int(questionnaire_id),language)
+        return get_questions_handler.handle_request(str(questionnaire_id),language)
