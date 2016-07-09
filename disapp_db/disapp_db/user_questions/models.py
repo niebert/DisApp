@@ -58,6 +58,6 @@ class QuestionAnswerMapping(models.Model):
 
 
 class UsersAnswers(models.Model):
-    questionnaire = models.ForeignKey('Questionnaire')
+    question = models.ForeignKey('Questions')
     answer = models.ForeignKey('QuestionAnswerMapping')
     
