@@ -84,4 +84,5 @@ def handle_request(data):
             'errorMessage': 'Internal Server Error',
             'errorCode': 500
             }
-
+    finally:
+        close_old_connections()
