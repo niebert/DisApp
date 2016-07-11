@@ -55,7 +55,6 @@ def handle_request(username, password, details):
                         user.language = ll
                     except:
                         app.logger.debug('Language not found')
-                    user.location = details_dict['language']
                 details_dict.pop('language',0)
 
             if 'imei_no' in details_dict:
