@@ -42,6 +42,19 @@ def handle_request(username, password, details):
 #        pdb.set_trace()
         try:
             details_dict = ast.literal_eval(str(details))
+
+            if 'first_name' in details_dict:
+                if details_dict['first_name']!= None:
+                    user.first_name = details_dict['first_name']
+                    user.save()
+                details_dict.pop('first_name',0)
+
+            if 'last_name' in details_dict:
+                if details_dict['last_name']!= None:
+                    user.last_name = details_dict['last_name']
+                    user.save()
+                details_dict.pop('last_name',0)
+
             if 'location' in details_dict:
                 if details_dict['location']!= None:
                     user.location = details_dict['location']
