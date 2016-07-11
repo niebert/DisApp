@@ -21,16 +21,18 @@ class UserValidation(Resource):
         """
             This method authenticates the user
         """    
+        remember_me = 0
         try:
-            remember_me = str(request.json['remember_me'])
-        except KeyError:
-            remember_me = "0"
+            remember_me = request.json['remember_me']
+        except Exception as e:
+            app.logger.debug(e)
+            app.logger.debug('Remember me not sent')
 
         app.logger.debug("Email ID:"+str(request.json['email']) + " Password:"+ str(request.json['pswd'])+ 
-                                     " remember_me: " +remember_me)
+                                     " remember_me: " +str(remember_me))
 
         return post_user_validation_handler.handle_request(str(request.json['email']), str(request.json['pswd']),
-                                            remember_me)        
+                                            str(remember_me))        
         close_old_connections()
 
     post.authenticated = False

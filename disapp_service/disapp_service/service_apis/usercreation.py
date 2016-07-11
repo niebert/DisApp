@@ -21,8 +21,10 @@ class UserCreation(Resource):
         """
             This method creates a new user
         """
-        app.logger.debug("Email ID:"+str(request.json['email']) + ' Password:'+ str(request.json['pswd']))
+        app.logger.debug("Email ID:"+str(request.json['email']) + ' Password:'+ str(request.json['pswd'])+
+                               ' Details'+ str(request.json['details']))
 
-        return post_user_creation_handler.handle_request(str(request.json['email']), str(request.json['pswd']))
+        return post_user_creation_handler.handle_request(str(request.json['email']),
+                                         str(request.json['pswd']), request.json['details'])
 
     post.authenticated = False
