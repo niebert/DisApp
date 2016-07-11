@@ -45,6 +45,7 @@ def handle_request(username, password, details):
             if 'location' in details_dict:
                 if details_dict['location']!= None:
                     user.location = details_dict['location']
+                    user.save()
                 details_dict.pop('location',0)
 
             if 'language' in details_dict:
@@ -53,6 +54,7 @@ def handle_request(username, password, details):
                     try:
                         ll = Language.objects.filter(language=str(lang))[0]
                         user.language = ll
+                        user.save()
                     except:
                         app.logger.debug('Language not found')
                 details_dict.pop('language',0)
@@ -60,11 +62,13 @@ def handle_request(username, password, details):
             if 'imei_no' in details_dict:
                 if details_dict['imei_no']!= None:
                     user.imei_number = details_dict['imei_no']
+                    user.save()
                 details_dict.pop('imei_no',0)
 
             if 'gcm_id' in details_dict:
                 if details_dict['gcm_id']!= None:
                     user.mobile_gcm_code = details_dict['gcm_id']
+                    user.save()
                 details_dict.pop('gcm_id',0)
 
             user.device_details = json.dumps(details_dict)
