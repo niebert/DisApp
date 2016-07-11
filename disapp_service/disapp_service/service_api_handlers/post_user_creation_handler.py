@@ -39,7 +39,7 @@ def handle_request(username, password, details):
         user = AppUser.objects.create(username = username,password=password)
         user.refresh_from_db()
 
-        pdb.set_trace()
+#        pdb.set_trace()
         try:
             details_dict = ast.literal_eval(str(details))
             if 'location' in details_dict:
@@ -55,7 +55,7 @@ def handle_request(username, password, details):
                         user.language = ll
                     except:
                         app.logger.debug('Language not found')
-                    user.location = details_dict['location']
+                    user.location = details_dict['language']
                 details_dict.pop('language',0)
 
             if 'imei_no' in details_dict:
