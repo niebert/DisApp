@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html manifest="index.appcache">
+
+	<head>
+	<meta charset="utf-8" />
+	<title>DisApp - Login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" rel="stylesheet" />
+	<link href="css/ios_inspired.css" rel="stylesheet" />
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="js/fullscreen.js"></script>
+	<script src="js/openwin.js"></script>
+	<script src="js/localstorage.js"></script>
+	<script src="js/htmlrequest.js"></script>
+	<script src="js/login.js"></script>
+	<script src="js/showhide.js"></script>
+	<script>
+		// all dialog buttons should close their parent dialog
+		$(".ui-dialog button").live("click", function() {
+			$("[data-role='dialog']").dialog("close");
+		});
+		$(document).on("mobileinit", function(){
+		  $.mobile.defaultPageTransition = "slide";
+		});
+
+	</script>
+	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+	<style>
+		#footerTabs {
+			background: #FFF -webkit-radial-gradient(circle, #FFF, #dee2e4);
+		}
+		.ui-listview sup {
+			font-size: 0.6em;
+			color: #cc0000;
+		}
+	</style>
+
+</head>
+<body>
+<form method="POST">
+<div data-role="page">
+
+	<div data-role="header" data-position="fixed">
+		<h1>DisApp LOGIN</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<p>Welcome to the DissApp. Feel free to have a look around and report and bugs to the <a href="https://github.com/niebert/DissApp" target="_blank">GitHub issues page</a>.</p>
+
+
+		<ul data-role="listview" data-inset="true">
+			<li>Usergroup: <!-- input type="text" size="12" name="app_username" id="app_username" value="demo" /-->
+				<select name="app_username" id="app_username" size="1">
+					<option value="citizen" selected="selected">Citizen</option>
+					<option value="student">Student</option>
+					<option value="socialworker">social worker</option>
+					<option value="publichealth">Pubic Health Professional</option>
+					<option value="researcher">Researcher</option>
+				</select>
+			</li>
+			<li>e-Mail:   <input type="text" size="12" name="app_email" id="app_email" value="demo@example.com" /></li>
+			<li>Database:
+			 	<select name="app_database" id="app_database" size="1">
+				 	<option selected="selected">disapp1</option>
+				 	<option>disapp2</option>
+				</select>
+			</li>
+		<!-- input type="text" size="12" name="database" id="database" value="disapp1.db" readonly="readonly"/ -->
+			<li>Submit URL: <input type="text" size="12" name="app_submiturl" id="app_submiturl" value="http://wwwmath1.uni-landau.de/cgi-bin/appdb/mailengine.cgi" readonly="readonly"/></li>
+		</ul>
+		<button class="ui-btn-plain" onclick="loginDisApp();return false">Submit</button>
+
+		<p>Please use Firefox for App (<a href="https://www.mozilla.org" target="_blank">Firefox-Homepage</a>)</p>
+		<br />
+		<label id="errormsg" style="color:red"></label>
+  	<br />
+
+		</div><!-- /ui-body wrapper -->
+</div><!-- /page -->
+</form>
+<script>
+	//setTimeout("checkFullScreen()",400);
+	var IDs = ["app_username","app_email","app_submiturl"];
+	var vKey = "";
+	for (var i=0;i<IDs.length;i++) {
+		vKey = IDs[i];
+		if (typeof(Storage) != "undefined") {
+ 		 	if (typeof(localStorage.getItem(vKey)) != undefined) {
+     	 		console.log("Variable ["+vKey+"] loaded from Local Storage");
+     	 		document.getElementById(vKey).value = getValueDOM(vKey);
+     	 	};
+     	 };
+    };
+	document.addEventListener("keydown", function(e) {
+	 if (e.keyCode == 70) {
+		 //Key was F
+		 //enterFullscreen();
+	 }
+ 	}, false);
+</script>
+</body>
+</html>
