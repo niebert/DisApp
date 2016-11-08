@@ -261,6 +261,8 @@ function saveLocalVar(pKey,pValue) {
  if (typeof(Storage) != "undefined") {
     // Store
     localStorage.setItem(pKey,pValue);
+		console.log("Save Local Variable: ["+pKey+"]='"+pValue+"'");
+
   }	 else {
     console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
   }

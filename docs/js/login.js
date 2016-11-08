@@ -8,24 +8,24 @@ function loginDisApp() {
   var vSubmitURL=encodeURLparam(document.getElementById('app_submiturl').value);
   saveLocalVar('app_usergroup',vUserGroup);
   saveLocalVar('app_email',vEMail);
-  saveLocalVar('app_submiturl',vEMail);
+  saveLocalVar('app_submiturl',vSubmitURL);
   // v$("#username").value
   var vMSG="<b>ERROR:</b><br />";
   //alert("Login Check: User="+vUser+" Passord="+vPWD+" JQ-User="+$("#username").value);
   if (vCheckGPS =="") {
-    vMSG+="Please check GPS first and switch on GPS on your device if possible <br />\n";
+    vMSG+="Please check GPS first and switch on GPS on your device if possible <br>\n";
     vAppStartBoolean = false;
   };
   if (vUserGroup =="") {
-    vMSG+="Please enter User Name <br />\n";
+    vMSG+="Please enter User Name <br>\n";
     vAppStartBoolean = false;
   };
   if (vUserGroup =="") {
-    vMSG+="Please select User Group <br />\n";
+    vMSG+="Please select User Group <br>\n";
     vAppStartBoolean = false;
   };
   if (vEMail =="") {
-    vMSG+="Please enter your E-Mail Address <br />\n";
+    vMSG+="Please enter your E-Mail Address <br>\n";
     vAppStartBoolean = false;
   };
   if (vDatabase =="") {
@@ -39,13 +39,21 @@ function loginDisApp() {
     if (checkMobil()) {
           //document.location.href="app.html?username="+vUser+"&database="+vDatabase;
         openWinHTMLsize(vDBselect+".html?app_submiturl="+vSubmitURL+"&app_usergroup="+vUserGroup+"&app_database="+vDatabase+"&app_email="+vEMail,"500","700");
-      } else {
+    } else {
         openWinHTML(vDBselect+".html?app_submiturl="+vSubmitURL+"&app_usergroup="+vUserGroup+"&app_database="+vDatabase+"&app_email="+vEMail);
     };
   } else {
-    document.getElementById("errormsg").innerHTML = vMSG;
-  }
+    showErrorMessage(vMSG);
+  };
 };
+
+function showErrorMessage() {
+  console.log("Show Error Message");
+  document.getElementById("errormsg").innerHTML = vMSG;
+  vMSG = vMSG.replace(/<BR>/g,"");
+  console.log(vMSG);
+  alert(vMSG);
+}
 
 function loginCheck() {
   var vAppStartBoolean = true;
@@ -72,8 +80,8 @@ function loginCheck() {
         openWinHTML('app.html');
     };
   } else {
-    document.getElementById("errormsg").innerHTML = vMSG;
-  }
+    showErrorMessage(vMSG);
+  };
 };
 
 function X_getQueryParams(pURL) {
