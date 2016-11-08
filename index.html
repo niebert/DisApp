@@ -119,9 +119,13 @@
 	//setTimeout("checkFullScreen()",400);
 	var IDs = ["app_usergroup","app_email","app_submiturl"];
 	var vKey = "";
+	var vQueryHash = readQueryParams();
 	for (var i=0;i<IDs.length;i++) {
 		vKey = IDs[i];
 		loadLocalStorageValue(vKey);
+		if (vQueryHash[vKey]) {
+			write2value(vKey,vQueryHash[vKey]);
+		};
    };
 	 document.addEventListener("keydown", function(e) {
 	 if (e.keyCode == 70) {
