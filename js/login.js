@@ -39,7 +39,7 @@ function loginDisApp() {
     if (checkMobil()) {
           //document.location.href="app.html?username="+vUser+"&database="+vDatabase;
         openWinHTMLsize(vDBselect+".html?app_submiturl="+vSubmitURL+"&app_usergroup="+vUserGroup+"&app_database="+vDatabase+"&app_email="+vEMail,"500","700");
-      } else {
+    } else {
         openWinHTML(vDBselect+".html?app_submiturl="+vSubmitURL+"&app_usergroup="+vUserGroup+"&app_database="+vDatabase+"&app_email="+vEMail);
     };
   } else {
@@ -48,6 +48,7 @@ function loginDisApp() {
 };
 
 function showErrorMessage() {
+  console.log("Show Error Message");
   document.getElementById("errormsg").innerHTML = vMSG;
   vMSG = vMSG.replace(/<BR>/g,"");
   console.log(vMSG);
