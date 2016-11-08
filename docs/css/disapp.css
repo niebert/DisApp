@@ -1,0 +1,15 @@
+#mapPage, #map {
+  height: 100%;
+}
+
+#map-content{
+  height: 100%;
+  padding: 0px;
+  margin:0px;
+  z-index: -1;
+}
+#curLoc{
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+}

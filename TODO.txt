@@ -1,0 +1,9 @@
+[23.10.16, 12:12:00] Bert Niehaus: http://wwwmath1.uni-landau.de/javascript/DisApp/
+[23.10.16, 12:38:08] Bert Niehaus: rename disapp1 to disapp
+[23.10.16, 12:38:38] Bert Niehaus: disapp2 > disapp and disapp1. > localsurvey
+[23.10.16, 12:39:03] Bert Niehaus: Remove admin page ONLY Questionnaire
+[23.10.16, 12:39:27] Bert Niehaus: Submit > Start
+[23.10.16, 12:43:18] Bert Niehaus: Start Button > Retrieve GPS  THEN show Questionnaire
+[23.10.16, 12:43:27] Bert Niehaus: Questionnaire Hidden
+[23.10.16, 12:43:44] Bert Niehaus: Submit Button at the End of Questionnaire
+[23.10.16, 12:53:15] Bert Niehaus: Submit instead of Save - ONE Page Questionnaire

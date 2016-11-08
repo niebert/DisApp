@@ -10,13 +10,11 @@
 	<link href="css/ios_inspired.css" rel="stylesheet" />
 	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="js/fullscreen.js"></script>
-	<script src="js/geolocation.js"></script>
 	<script src="js/openwin.js"></script>
 	<script src="js/localstorage.js"></script>
 	<script src="js/htmlrequest.js"></script>
 	<script src="js/login.js"></script>
 	<script src="js/showhide.js"></script>
-	<script src="js/writedom.js"></script>
 	<script>
 		// all dialog buttons should close their parent dialog
 		$(".ui-dialog button").live("click", function() {
@@ -48,64 +46,30 @@
 	</div><!-- /header -->
 
 	<div data-role="content">
-		<p>Welcome to the DissApp. Feel free to have a look around and report and bugs to the <a href="https://github.com/niebert/DisApp/issues" target="_blank">GitHub issues page</a>.</p>
+		<p>Welcome to the DissApp. Feel free to have a look around and report and bugs to the <a href="https://github.com/niebert/DissApp" target="_blank">GitHub issues page</a>.</p>
 
 
 		<ul data-role="listview" data-inset="true">
-			<li>	Switch on GPS:
-				<table border="0" width="100%">
-					<tr>
-						<td>
-							<input type="text" size="12" name="app_geolocation" id="currentGeolocation" value=""/>
-						</td>
-						<td width="20%">
-							<input type="button" id="bGeoCheck" value="Check GPS" onclick="getCurrentGeolocation();return false">
-						</td>
-					</tr>
-				</table>
-			</li>
 			<li>Usergroup: <!-- input type="text" size="12" name="app_username" id="app_username" value="demo" /-->
-				<select name="app_usergroup" id="app_usergroup" size="1" onchange="saveLocalStorageValueOK('app_usergroup','User Group')">
-					<option value="citizen">Citizen</option>
+				<select name="app_username" id="app_username" size="1">
+					<option value="citizen" selected="selected">Citizen</option>
 					<option value="student">Student</option>
 					<option value="socialworker">social worker</option>
 					<option value="publichealth">Pubic Health Professional</option>
 					<option value="researcher">Researcher</option>
 				</select>
 			</li>
-			<li>	e-Mail:
-				<table border="0" width="100%">
-					<tr>
-						<td>
-							<input type="text" size="12" name="app_email" id="app_email" value=""/>
-						</td>
-						<td width="10%">
-							<input type="button" id="bSaveURLDB" value="OK" onclick="saveLocalStorageValueOK('app_email','e-Mail')">
-						</td>
-					</tr>
-				</table>
-			</li>
+			<li>e-Mail:   <input type="text" size="12" name="app_email" id="app_email" value="demo@example.com" /></li>
 			<li>Database:
 			 	<select name="app_database" id="app_database" size="1">
-				 	<option selected="selected">disapp</option>
-				 	<option>localsurvey</option>
+				 	<option selected="selected">disapp1</option>
+				 	<option>disapp2</option>
 				</select>
 			</li>
 		<!-- input type="text" size="12" name="database" id="database" value="disapp1.db" readonly="readonly"/ -->
-			<li >Submit URL:
-				<table border="0" width="100%">
-					<tr>
-						<td>
-							<input type="text" size="12" name="app_submiturl" id="app_submiturl" value=""/>
-						</td>
-						<td width="10%">
-							<input type="button" id="bSaveURLDB" value="OK" onclick="saveLocalStorageValueOK('app_submiturl','Database URL')">
-						</td>
-					</tr>
-				</table>
-			</li>
+			<li >Submit URL: <input type="text" size="12" name="app_submiturl" id="app_submiturl" value="http://wwwmath1.uni-landau.de/cgi-bin/appdb/mailengine.cgi" readonly="readonly"/></li>
 		</ul>
-		<input type="button" class="ui-btn-plain" value="Submit" onclick="loginDisApp();return false">
+		<button class="ui-btn-plain" onclick="loginDisApp();return false">Submit</button>
 
 		<p>Please use Firefox for App (<a href="https://www.mozilla.org" target="_blank">Firefox-Homepage</a>)</p>
 		<br />
@@ -117,13 +81,18 @@
 </form>
 <script>
 	//setTimeout("checkFullScreen()",400);
-	var IDs = ["app_usergroup","app_email","app_submiturl"];
+	var IDs = ["app_username","app_email","app_submiturl"];
 	var vKey = "";
 	for (var i=0;i<IDs.length;i++) {
 		vKey = IDs[i];
-		loadLocalStorageValue(vKey);
-   };
-	 document.addEventListener("keydown", function(e) {
+		if (typeof(Storage) != "undefined") {
+ 		 	if (typeof(localStorage.getItem(vKey)) != undefined) {
+     	 		console.log("Variable ["+vKey+"] loaded from Local Storage");
+     	 		document.getElementById(vKey).value = getValueDOM(vKey);
+     	 	};
+     	 };
+    };
+	document.addEventListener("keydown", function(e) {
 	 if (e.keyCode == 70) {
 		 //Key was F
 		 //enterFullscreen();

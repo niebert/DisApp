@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="iso-8859-1">
+      <title>Submit Data</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <link href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" rel="stylesheet" />
+      <link href="css/ios_inspired.css" rel="stylesheet" />
+      <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+      <script src="js/fullscreen.js"></script>
+      <script src="js/login.js"></script>
+			<script type="text/javascript" src="js/fullscreen.js"></script>
+			<script type="text/javascript" src="js/jsondb.js"></script>
+			<script type="text/javascript" src="js/geolocation.js"></script>
+			<script type="text/javascript" src="js/htmlrequest.js"></script>
+			<script type="text/javascript" src="js/localstorage.js"></script>
+			<script type="text/javascript" src="js/openwin.js"></script>
+			<script type="text/javascript" src="js/showhide.js"></script>
+			<script type="text/javascript" src="js/syncserver.js"></script>
+			<script type="text/javascript" src="js/writedom.js"></script>
+			<script type="text/javascript" src="js/dbdisapp.js"></script>
+			<script>
+         // all dialog buttons should close their parent dialog
+         $(".ui-dialog button").live("click", function() {
+         	$("[data-role='dialog']").dialog("close");
+         });
+         $(document).on("mobileinit", function(){
+           $.mobile.defaultPageTransition = "slide";
+         });
+
+      </script>
+      <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+      <style>
+         #footerTabs {
+         background: #FFF -webkit-radial-gradient(circle, #FFF, #dee2e4);
+         }
+         .ui-listview sup {
+         font-size: 0.6em;
+         color: #cc0000;
+         }
+				 .btn {
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #6cbaeb);
+  background-image: -moz-linear-gradient(top, #3498db, #6cbaeb);
+  background-image: -ms-linear-gradient(top, #3498db, #6cbaeb);
+  background-image: -o-linear-gradient(top, #3498db, #6cbaeb);
+  background-image: linear-gradient(to bottom, #3498db, #6cbaeb);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+      </style>
+   </head>
+   <body>
+      <div data-role="page">
+         <div data-role="header" data-position="fixed">
+            <a href="javascript:window.close()" data-theme="a">Close</a>
+            <h1>Submit Data</h1>
+         </div>
+         <!-- /header -->
+         <div data-role="content">
+            <form action="http://wwwmath1.uni-landau.de/cgi-bin/appdb/mailengine.cgi" >
+							<input type='hidden' id='email' name='email' value=''>
+							<input type='hidden' id='usergroup' name='usergroup' value=''>
+							<input type='hidden' id='recdate'  name='recdate' value=''>
+							<input type='hidden' id='sampledate' name='sampledate' value=''>
+							<input type='hidden' id='moddate' name='moddate' value=''>
+							<input type='hidden' name='autonr' value='1'>
+               <input type='hidden' name='action' value='subscribeapp'>
+               <input type='hidden' name='login' value=''>
+               <input type='hidden' name='mailnotification' value=''>
+               <input type='hidden' name='session' value=''>
+               <input type='hidden' name='language' value=''>
+               <input type='hidden' name='database' value='disapp.db'>
+               <input type='hidden' name='viewpwd' value=''>
+               <input type='hidden' name='ided' value=''>
+               <input type='hidden' name='idrecord' value=''>
+               <input type='hidden' name='OLDrecdate' value=''>
+               <input type='hidden' name='OLDautonr' value=''>
+               <input type='hidden' name='OLDgeolocation' value=''>
+               <input type='hidden' name='OLDcountapprox1' value=''>
+               <input type='hidden' name='OLDcountapprox2' value=''>
+               <input type='hidden' name='OLDpeopleapproxii' value=''>
+               <input type='hidden' name='OLDcountapprox3' value=''>
+               <input type='hidden' name='OLDsampledate' value=''>
+               <input type='hidden' name='OLDmoddate' value=''>
+               <ul data-role='listview' data-inset='true'>
+                  <li><b>Geo Location:</b></li>
+                  <li>
+                     <table border="0">
+                        <tr>
+                           <td><!-- a class="btn" href="javascript:if (navigator.geolocation) {navigator.geolocation.getCurrentPosition(showLOCgeolocation)}"> [GPS] </a -->
+														 <button onclick="getCurrentGeolocation();return false"> GPS </button>
+													 </td>
+                           <td>
+                              <input type="text" name="geolocation" id="currentGeolocation"  size="22" value=""> <script>function showLOCgeolocation(position) {document.getElementById("geolocation").value = position.coords.latitude+" "+position.coords.longitude}</script>
+                           </td>
+                        </tr>
+                     </table>
+                  </li>
+									<li><b>Questionnaire:</b></li>
+                  <li>How many mosquitos have you noticed (seen or heard)  <i>during the last two days</i>:</li>
+                  <li>
+                     <SELECT name="countapprox1" size="1">
+                        <OPTION></OPTION>
+                        <OPTION>None </OPTION>
+                        <OPTION>Very few (1-2)</OPTION>
+                        <OPTION>Some (3-10)</OPTION>
+                        <OPTION>High  (more than 10)</OPTION>
+                        <OPTION>Don`t know</OPTION>
+                        <OPTION></OPTION>
+                     </SELECT>
+                  </li>
+                  <li>Approximately how many mosquito bites have you received <i>in the last two days</i>:</li>
+                  <li>
+                     <SELECT name="countapprox2" size="1">
+                        <OPTION></OPTION>
+                        <OPTION>None </OPTION>
+                        <OPTION>Very few (1-2)</OPTION>
+                        <OPTION>Some (3-10)</OPTION>
+                        <OPTION>High  (more than 10)</OPTION>
+                        <OPTION>Don`t know</OPTION>
+                        <OPTION></OPTION>
+                     </SELECT>
+                  </li>
+                  <li>Including you, how many members of your family <i>who stay with you</i> have gotten dengue in the <i>last one year</i>?:</li>
+                  <li>
+                     <SELECT name="peopleapproxii" size="1">
+                        <OPTION></OPTION>
+                        <OPTION>No one </OPTION>
+                        <OPTION>1</OPTION>
+                        <OPTION>2</OPTION>
+                        <OPTION>more than 2</OPTION>
+                     </SELECT>
+                  </li>
+                  <li>Have you heard of any cases of Dengue in your neighborhood in <i>the last one month</i>, including cases in local hospitals?:</li>
+                  <li>
+                     <SELECT name="countapprox3" size="1">
+                        <OPTION></OPTION>
+                        <OPTION>None </OPTION>
+                        <OPTION>Very few (1-2)</OPTION>
+                        <OPTION>Some (3-10)</OPTION>
+                        <OPTION>High  (more than 10)</OPTION>
+                        <OPTION>Don`t know</OPTION>
+                        <OPTION></OPTION>
+                     </SELECT>
+                  </li>
+               </ul>
+							 <!-- input type="button" name=bOK value='   Save   ' -->
+							 <input type="submit" name=bOK value='   Submit   '>
+            </form>
+            <br/>
+            <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
+         </div>
+         <!-- /ui-body wrapper -->
+      </div>
+      <!-- /page -->
+			<script type="text/javascript">
+			var vDebug = 0;
+			var vQueryHash = readQueryParams();
+			var vOnlineMode = false;
+			var vJSONDB_Offline = {
+				DBlines: [],
+				DBsynced: [],
+				DBformat: []
+			};
+			handleLocalJSONDB(vQueryHash);
+			handleOfflineJSONDB(vQueryHash);
+			getCurrentGeolocation();
+			write4name2value("recdate",getDate());
+			write4name2value("moddate",getDate());
+			write4name2value("username",vQueryHash["app_username"]);
+			write4name2value("email",vQueryHash["app_email"]);
+			write4name2value("database",vQueryHash["app_database"]);
+	</script>
+		/body>
+</html>
