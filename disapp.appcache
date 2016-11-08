@@ -3,34 +3,34 @@ CACHE MANIFEST
 # Time: Mon Aug 29 2016 15:49:39 GMT+0000 (UTC)
 
 CACHE:
-http://math.uni-landau.de/javascript/DisApp/index.html
-http://math.uni-landau.de/javascript/DisApp/disapp1.html
-http://math.uni-landau.de/javascript/DisApp/disapp2.html
-http://math.uni-landau.de/javascript/DisApp/css/jquery.mobile-1.2.0.min.css
-http://math.uni-landau.de/javascript/DisApp/css/ios_inspired.css
-http://math.uni-landau.de/javascript/DisApp/js/jquery-1.7.1.min.js
-http://math.uni-landau.de/javascript/DisApp/js/fullscreen.js
-http://math.uni-landau.de/javascript/DisApp/js/login.js
-http://math.uni-landau.de/javascript/DisApp/js/openwin.js
-http://math.uni-landau.de/javascript/DisApp/js/jsondb.js
-http://math.uni-landau.de/javascript/DisApp/js/htmlrequest.js
-http://math.uni-landau.de/javascript/DisApp/js/showhide.js
-http://math.uni-landau.de/javascript/DisApp/js/syncserver.js
-http://math.uni-landau.de/javascript/DisApp/js/localstorage.js
-http://math.uni-landau.de/javascript/DisApp/js/writedom.js
-http://math.uni-landau.de/javascript/DisApp/js/jquery.mobile-1.2.0.min.js
-http://math.uni-landau.de/javascript/DisApp/ios_inspired/images/tick.png
-http://math.uni-landau.de/javascript/DisApp/css/images/ajax-loader.gif
-http://math.uni-landau.de/javascript/DisApp/css/images/tiling_stripes.gif
-http://math.uni-landau.de/javascript/DisApp/css/images/arrow_right.png
-http://math.uni-landau.de/javascript/DisApp/css/images/arrow_right@2x.png
-http://math.uni-landau.de/javascript/DisApp/css/images/backButtonSprite.png
-http://math.uni-landau.de/javascript/DisApp/css/images/backButtonSprite@2x.png
-http://math.uni-landau.de/javascript/DisApp/css/images/iconSprite.png
-http://math.uni-landau.de/javascript/DisApp/css/images/iconSprite.psd
-http://math.uni-landau.de/javascript/DisApp/css/images/tabSprite.png
-http://math.uni-landau.de/javascript/DisApp/css/images/tick.png
-http://math.uni-landau.de/javascript/DisApp/css/images/tiling_stripes.png
+https://niebert.github.io/DisApp/index.html
+https://niebert.github.io/DisApp/disapp1.html
+https://niebert.github.io/DisApp/disapp2.html
+https://niebert.github.io/DisApp/css/jquery.mobile-1.2.0.min.css
+https://niebert.github.io/DisApp/css/ios_inspired.css
+https://niebert.github.io/DisApp/js/jquery-1.7.1.min.js
+https://niebert.github.io/DisApp/js/fullscreen.js
+https://niebert.github.io/DisApp/js/login.js
+https://niebert.github.io/DisApp/js/openwin.js
+https://niebert.github.io/DisApp/js/jsondb.js
+https://niebert.github.io/DisApp/js/htmlrequest.js
+https://niebert.github.io/DisApp/js/showhide.js
+https://niebert.github.io/DisApp/js/syncserver.js
+https://niebert.github.io/DisApp/js/localstorage.js
+https://niebert.github.io/DisApp/js/writedom.js
+https://niebert.github.io/DisApp/js/jquery.mobile-1.2.0.min.js
+https://niebert.github.io/DisApp/ios_inspired/images/tick.png
+https://niebert.github.io/DisApp/css/images/ajax-loader.gif
+https://niebert.github.io/DisApp/css/images/tiling_stripes.gif
+https://niebert.github.io/DisApp/css/images/arrow_right.png
+https://niebert.github.io/DisApp/css/images/arrow_right@2x.png
+https://niebert.github.io/DisApp/css/images/backButtonSprite.png
+https://niebert.github.io/DisApp/css/images/backButtonSprite@2x.png
+https://niebert.github.io/DisApp/css/images/iconSprite.png
+https://niebert.github.io/DisApp/css/images/iconSprite.psd
+https://niebert.github.io/DisApp/css/images/tabSprite.png
+https://niebert.github.io/DisApp/css/images/tick.png
+https://niebert.github.io/DisApp/css/images/tiling_stripes.png
 
 
 

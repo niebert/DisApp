@@ -1,3 +1,20 @@
+function getDate() {
+  return getDate4DB();
+};
+
+function getDate4DB() {
+  var date = new Date();
+  var year  = date.getFullYear();
+  var month = date.getUTCMonth();
+  var day   = date.getUTCDate();
+  var hours = date.getUTCHours();
+  var min = date.getUTCMinutes();
+  var sec = date.getUTCSeconds();
+  var millsec = date.getUTCMilliseconds();
+  return year+"/"+month+"/"+day+" "+hours+":"+min+":"+sec+"."+millsec;
+}
+
+
 function getCurrentGeolocation() {
   retrieveLocation(insertPosition);
 };

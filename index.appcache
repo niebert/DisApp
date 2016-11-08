@@ -3,19 +3,19 @@ CACHE MANIFEST
 # Time: Mon Aug 29 2016 15:48:28 GMT+0000 (UTC)
 
 CACHE:
-http://math.uni-landau.de/javascript/DisApp/index.html
+https://niebert.github.io/DisApp/index.html
 http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css
-http://math.uni-landau.de/javascript/DisApp/css/ios_inspired.css
+https://niebert.github.io/DisApp/css/ios_inspired.css
 http://code.jquery.com/jquery-1.7.1.min.js
-http://math.uni-landau.de/javascript/DisApp/js/fullscreen.js
-http://math.uni-landau.de/javascript/DisApp/js/openwin.js
-http://math.uni-landau.de/javascript/DisApp/js/htmlrequest.js
-http://math.uni-landau.de/javascript/DisApp/js/login.js
-http://math.uni-landau.de/javascript/DisApp/js/localstorage.js
-http://math.uni-landau.de/javascript/DisApp/js/writedom.js
+https://niebert.github.io/DisApp/js/fullscreen.js
+https://niebert.github.io/DisApp/js/openwin.js
+https://niebert.github.io/DisApp/js/htmlrequest.js
+https://niebert.github.io/DisApp/js/login.js
+https://niebert.github.io/DisApp/js/localstorage.js
+https://niebert.github.io/DisApp/js/writedom.js
 http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js
 http://code.jquery.com/mobile/1.2.0/images/ajax-loader.gif
-http://math.uni-landau.de/javascript/DisApp/css/images/tiling_stripes.gif
+https://niebert.github.io/DisApp/css/images/tiling_stripes.gif
 http://code.jquery.com/mobile/1.2.0/images/icons-18-white.png
 
 NETWORK:
