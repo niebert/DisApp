@@ -86,7 +86,7 @@
 				</table>
 			</li>
 			<li>Database:
-			 	<select name="app_database" id="app_database" size="1">
+			 	<select name="app_database" id="app_database" size="1"  onchange="saveLocalStorageValueOK('app_database','Questionnaire')">
 				 	<option selected="selected">disapp</option>
 				 	<option>localsurvey</option>
 				</select>
@@ -117,7 +117,7 @@
 </form>
 <script>
 	//setTimeout("checkFullScreen()",400);
-	var IDs = ["app_usergroup","app_email","app_submiturl"];
+	var IDs = ["app_usergroup","app_email","app_submiturl","app_database"];
 	var vKey = "";
 	var vQueryHash = readQueryParams();
 	for (var i=0;i<IDs.length;i++) {
