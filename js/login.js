@@ -8,24 +8,24 @@ function loginDisApp() {
   var vSubmitURL=encodeURLparam(document.getElementById('app_submiturl').value);
   saveLocalVar('app_usergroup',vUserGroup);
   saveLocalVar('app_email',vEMail);
-  saveLocalVar('app_submiturl',vEMail);
+  saveLocalVar('app_submiturl',vSubmitURL);
   // v$("#username").value
   var vMSG="<b>ERROR:</b><br />";
   //alert("Login Check: User="+vUser+" Passord="+vPWD+" JQ-User="+$("#username").value);
   if (vCheckGPS =="") {
-    vMSG+="Please check GPS first and switch on GPS on your device if possible <br />\n";
+    vMSG+="Please check GPS first and switch on GPS on your device if possible <br>\n";
     vAppStartBoolean = false;
   };
   if (vUserGroup =="") {
-    vMSG+="Please enter User Name <br />\n";
+    vMSG+="Please enter User Name <br>\n";
     vAppStartBoolean = false;
   };
   if (vUserGroup =="") {
-    vMSG+="Please select User Group <br />\n";
+    vMSG+="Please select User Group <br>\n";
     vAppStartBoolean = false;
   };
   if (vEMail =="") {
-    vMSG+="Please enter your E-Mail Address <br />\n";
+    vMSG+="Please enter your E-Mail Address <br>\n";
     vAppStartBoolean = false;
   };
   if (vDatabase =="") {
@@ -44,6 +44,8 @@ function loginDisApp() {
     };
   } else {
     document.getElementById("errormsg").innerHTML = vMSG;
+    vMSG = vMSG.replace(/<BR>/g,"");
+    alert(vMSG);
   }
 };
 
