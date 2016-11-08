@@ -45,6 +45,7 @@ function loginDisApp() {
   } else {
     document.getElementById("errormsg").innerHTML = vMSG;
     vMSG = vMSG.replace(/<BR>/g,"");
+    console.log(vMSG);
     alert(vMSG);
   }
 };
