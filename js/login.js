@@ -43,12 +43,16 @@ function loginDisApp() {
         openWinHTML(vDBselect+".html?app_submiturl="+vSubmitURL+"&app_usergroup="+vUserGroup+"&app_database="+vDatabase+"&app_email="+vEMail);
     };
   } else {
-    document.getElementById("errormsg").innerHTML = vMSG;
-    vMSG = vMSG.replace(/<BR>/g,"");
-    console.log(vMSG);
-    alert(vMSG);
-  }
+    showErrorMessage(vMSG);
+  };
 };
+
+function showErrorMessage() {
+  document.getElementById("errormsg").innerHTML = vMSG;
+  vMSG = vMSG.replace(/<BR>/g,"");
+  console.log(vMSG);
+  alert(vMSG);
+}
 
 function loginCheck() {
   var vAppStartBoolean = true;
@@ -75,8 +79,8 @@ function loginCheck() {
         openWinHTML('app.html');
     };
   } else {
-    document.getElementById("errormsg").innerHTML = vMSG;
-  }
+    showErrorMessage(vMSG);
+  };
 };
 
 function X_getQueryParams(pURL) {
