@@ -5,11 +5,10 @@
       <title>Submit Data</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
       <meta name="apple-mobile-web-app-capable" content="yes">
-      <link href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" rel="stylesheet" />
+      <link href="css/jquery.mobile-1.2.0.min.css" rel="stylesheet" />
       <link href="css/ios_inspired.css" rel="stylesheet" />
-      <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-      <script src="js/fullscreen.js"></script>
-      <script src="js/login.js"></script>
+      <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+      <script type="text/javascript" src="js/login.js"></script>
 			<script type="text/javascript" src="js/fullscreen.js"></script>
 			<script type="text/javascript" src="js/jsondb.js"></script>
 			<script type="text/javascript" src="js/geolocation.js"></script>
@@ -19,6 +18,7 @@
 			<script type="text/javascript" src="js/showhide.js"></script>
 			<script type="text/javascript" src="js/syncserver.js"></script>
 			<script type="text/javascript" src="js/writedom.js"></script>
+      <!-- Database JSON File -->
 			<script type="text/javascript" src="js/dbdisapp.js"></script>
 			<script>
          // all dialog buttons should close their parent dialog
@@ -28,9 +28,9 @@
          $(document).on("mobileinit", function(){
            $.mobile.defaultPageTransition = "slide";
          });
-
+         var vDebug = 0;
       </script>
-      <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+      <script src="js/jquery.mobile-1.2.0.min.js"></script>
       <style>
          #footerTabs {
          background: #FFF -webkit-radial-gradient(circle, #FFF, #dee2e4);
@@ -75,7 +75,8 @@
          </div>
          <!-- /header -->
          <div data-role="content">
-            <form action="http://wwwmath1.uni-landau.de/cgi-bin/appdb/mailengine.cgi" >
+            <form name="send2appdb" id="send2appdb" action="http://www.example.com/cgi-bin/appdb/submitscript.php" >
+              <input type='hidden' id='currentGeolocation' name='currentGeolocation' value=''>
 							<input type='hidden' id='app_email' name='email' value=''>
 							<input type='hidden' id='app_usergroup' name='usergroup' value=''>
 							<input type='hidden' id='app_recdate'  name='recdate' value=''>
@@ -100,73 +101,21 @@
                <input type='hidden' name='OLDcountapprox3' value=''>
                <input type='hidden' name='OLDsampledate' value=''>
                <input type='hidden' name='OLDmoddate' value=''>
-               <ul data-role='listview' data-inset='true'>
-                  <li><b>Geo Location:</b></li>
-                  <li>
-                     <table border="0">
-                        <tr>
-                           <td><!-- a class="btn" href="javascript:if (navigator.geolocation) {navigator.geolocation.getCurrentPosition(showLOCgeolocation)}"> [GPS] </a -->
-														 <button onclick="getCurrentGeolocation();return false"> GPS </button>
-													 </td>
-                           <td>
-                              <input type="text" name="geolocation" id="currentGeolocation"  size="22" value=""> <script>function showLOCgeolocation(position) {document.getElementById("geolocation").value = position.coords.latitude+" "+position.coords.longitude}</script>
-                           </td>
-                        </tr>
-                     </table>
-                  </li>
-									<li><b>Questionnaire:</b></li>
-                  <li>How many mosquitos have you noticed (seen or heard)  <i>during the last two days</i>:</li>
-                  <li>
-                     <SELECT name="countapprox1" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>None </OPTION>
-                        <OPTION>Very few (1-2)</OPTION>
-                        <OPTION>Some (3-10)</OPTION>
-                        <OPTION>High  (more than 10)</OPTION>
-                        <OPTION>Don`t know</OPTION>
-                        <OPTION></OPTION>
-                     </SELECT>
-                  </li>
-                  <li>Approximately how many mosquito bites have you received <i>in the last two days</i>:</li>
-                  <li>
-                     <SELECT name="countapprox2" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>None </OPTION>
-                        <OPTION>Very few (1-2)</OPTION>
-                        <OPTION>Some (3-10)</OPTION>
-                        <OPTION>High  (more than 10)</OPTION>
-                        <OPTION>Don`t know</OPTION>
-                        <OPTION></OPTION>
-                     </SELECT>
-                  </li>
-                  <li>Including you, how many members of your family <i>who stay with you</i> have gotten dengue in the <i>last one year</i>?:</li>
-                  <li>
-                     <SELECT name="peopleapproxii" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>No one </OPTION>
-                        <OPTION>1</OPTION>
-                        <OPTION>2</OPTION>
-                        <OPTION>more than 2</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>Have you heard of any cases of Dengue in your neighborhood in <i>the last one month</i>, including cases in local hospitals?:</li>
-                  <li>
-                     <SELECT name="countapprox3" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>None </OPTION>
-                        <OPTION>Very few (1-2)</OPTION>
-                        <OPTION>Some (3-10)</OPTION>
-                        <OPTION>High  (more than 10)</OPTION>
-                        <OPTION>Don`t know</OPTION>
-                        <OPTION></OPTION>
-                     </SELECT>
-                  </li>
+               <script  type="text/javascript">
+                  printHeader();
+                </script>
+                <ul data-role='listview' data-inset='true'>
+                 <script  type="text/javascript">
+                     printAllQuestions();
+                 </script>
                </ul>
 							 <!-- input type="button" name=bOK value='   Save   ' -->
-							 <input type="submit" name=bOK value='   Submit   '>
+							 <input type="button" name=bOK value='   Submit   ' onclick="checkForm()">
             </form>
-            <br/>
-            <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
+            <br />
+        		<label id="errormsg" style="color:red"></label>
+          	<br />
+  <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
          </div>
          <!-- /ui-body wrapper -->
       </div>
@@ -183,13 +132,18 @@
 			handleLocalJSONDB(vQueryHash);
 			handleOfflineJSONDB(vQueryHash);
 			getCurrentGeolocation();
-			write2value("app_recdate",getDate());
-			write2value("app_moddate",getDate());
-			write2value("app_sampledate",getDate());
-			write2value("app_autonr","-");
-			write2value("app_usergroup",vQueryHash["app_usergroup"]);
+			write4name2value("recdate",getDate());
+			write4name2value("moddate",getDate());
+			write4name2value("sampledate",getDate());
+			write4name2value("autonr","-");
+			write4name2value("usergroup",vQueryHash["app_usergroup"]);
 			write2value("app_email",vQueryHash["app_email"]);
 			write2value("app_database",vQueryHash["app_database"]);
+			if (vQueryHash["app_submiturl"]) {
+				document.getElementById("fDBForm").action = vQueryHash["app_submiturl"]
+			} else {
+				console.log("Submit URL was undefined!");
+			};
 	</script>
 </body>
 </html>

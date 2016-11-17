@@ -5,9 +5,9 @@
       <title>Submit Data</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
       <meta name="apple-mobile-web-app-capable" content="yes">
-      <link href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" rel="stylesheet" />
+      <link href="css/jquery.mobile-1.2.0.min.css" rel="stylesheet" />
       <link href="css/ios_inspired.css" rel="stylesheet" />
-      <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+      <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
       <script type="text/javascript" src="js/login.js"></script>
 			<script type="text/javascript" src="js/fullscreen.js"></script>
 			<script type="text/javascript" src="js/jsondb.js"></script>
@@ -18,7 +18,7 @@
 			<script type="text/javascript" src="js/showhide.js"></script>
 			<script type="text/javascript" src="js/syncserver.js"></script>
 			<script type="text/javascript" src="js/writedom.js"></script>
-			<!-- Database JSON File -->
+      <!-- Database JSON File -->
 			<script type="text/javascript" src="js/dblocalsurvey.js"></script>
 			<script>
          // all dialog buttons should close their parent dialog
@@ -28,9 +28,9 @@
          $(document).on("mobileinit", function(){
            $.mobile.defaultPageTransition = "slide";
          });
-
+         var vDebug = 0;
       </script>
-      <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+      <script src="js/jquery.mobile-1.2.0.min.js"></script>
       <style>
          #footerTabs {
          background: #FFF -webkit-radial-gradient(circle, #FFF, #dee2e4);
@@ -75,7 +75,8 @@
          </div>
          <!-- /header -->
          <div data-role="content">
-            <form id="fDBForm" action="http://www.example.com/cgi-bin/appdb/submitscript.php" >
+            <form name="send2appdb" id="send2appdb" action="http://www.example.com/cgi-bin/appdb/submitscript.php" >
+              <input type='hidden' id='currentGeolocation' name='currentGeolocation' value=''>
 							<input type='hidden' id='app_email' name='email' value=''>
 							<input type='hidden' id='app_usergroup' name='usergroup' value=''>
 							<input type='hidden' id='app_recdate'  name='recdate' value=''>
@@ -94,393 +95,27 @@
                <input type='hidden' name='OLDrecdate' value=''>
                <input type='hidden' name='OLDautonr' value=''>
                <input type='hidden' name='OLDgeolocation' value=''>
-               <ul data-role='listview' data-inset='true'>
-                  <li><b>Geo Location:</b></li>
-                  <li>
-                     <table border="0">
-                        <tr>
-                           <td><!-- a class="btn" href="javascript:if (navigator.geolocation) {navigator.geolocation.getCurrentPosition(showLOCgeolocation)}"> [GPS] </a -->
-														 <button onclick="getCurrentGeolocation();return false"> GPS </button>
-													 </td>
-                           <td>
-                              <input type="text" name="geolocation" id="currentGeolocation"  size="22" value=""> <script>function showLOCgeolocation(position) {document.getElementById("geolocation").value = position.coords.latitude+" "+position.coords.longitude}</script>
-                           </td>
-                        </tr>
-                     </table>
-                  </li>
-									<li><b>Questionnaire:</b></li>
-									<li>(Q1) Where do you live?:</li>
-                  <li>
-                     <SELECT name="arealive" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>City</OPTION>
-                        <OPTION>Town</OPTION>
-                        <OPTION>Village</OPTION>
-                        <OPTION>Rural Area</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q2) Type of house:</li>
-                  <li>
-                     <SELECT name="house" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>Single House</OPTION>
-                        <OPTION>Double storey House</OPTION>
-                        <OPTION>Ambedkar/Lakshamveedu</OPTION>
-                        <OPTION>Flat/Appartment Floor 1</OPTION>
-                        <OPTION>Flat/Appartment Floor 2</OPTION>
-                        <OPTION>Flat/Appartment Floor 3</OPTION>
-                        <OPTION>Flat/Appartment Floor 4</OPTION>
-                        <OPTION>Flat/Appartment Floor 5</OPTION>
-                        <OPTION>Flat/Appartment Floor 6</OPTION>
-                        <OPTION>Flat/Appartment Floor 7</OPTION>
-                        <OPTION>Flat/Appartment Floor 8</OPTION>
-                        <OPTION>Flat/Appartment Floor 9</OPTION>
-                        <OPTION>Flat/Appartment Floor 10 and higher</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q3) Approximate distance from closest neighbor"s house:</li>
-                  <li>
-                     <SELECT name="distancehouse" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>Below 5 meters</OPTION>
-                        <OPTION>5 meters</OPTION>
-                        <OPTION>10 meters</OPTION>
-                        <OPTION>15 meters</OPTION>
-                        <OPTION>20 meters</OPTION>
-                        <OPTION>50 meters</OPTION>
-                        <OPTION>more than 50 meters</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q4a) Vegetation: Do have Rubber plants present near your house?:</li>
-                  <li>
-                     <table border=0>
-                        <tr>
-                           <td><input type="radio" name="yesnoradio1"  id="YESyesnoradio1" value="1"  ><label for="YESyesnoradio1">Yes</label> </td>
-                           <td><input type="radio" name="yesnoradio1" id="NOyesnoradio1" value="0"  ><label for="NOyesnoradio1">No</label></td>
-                        </tr>
-                     </table>
-                  </li>
-                  <li>(Q4b) Vegetation: Do have Coconut trees present near your house?:</li>
-                  <li>
-                     <table border=0>
-                        <tr>
-                           <td><input type="radio" name="yesnoradio2"  id="YESyesnoradio2" value="1"  ><label for="YESyesnoradio2">Yes</label> </td>
-                           <td><input type="radio" name="yesnoradio2" id="NOyesnoradio2" value="0"  ><label for="NOyesnoradio2">No</label></td>
-                        </tr>
-                     </table>
-                  </li>
-                  <li>(Q4c) Vegetation: Do have Houshold plants present near your house?:</li>
-                  <li>
-                     <table border=0>
-                        <tr>
-                           <td><input type="radio" name="yesnoradio3"  id="YESyesnoradio3" value="1"  ><label for="YESyesnoradio3">Yes</label> </td>
-                           <td><input type="radio" name="yesnoradio3" id="NOyesnoradio3" value="0"  ><label for="NOyesnoradio3">No</label></td>
-                        </tr>
-                     </table>
-                  </li>
-                  <li>(Q4d) Vegetation: Do have weeds present near your house?:</li>
-                  <li>
-                     <SELECT name="vegetationweeds" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>No weeds</OPTION>
-                        <OPTION>thin weeds</OPTION>
-                        <OPTION>thick weeds</OPTION>
-                        <OPTION></OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q4e) Other unmentioned kind of vegetation is present near your house:</li>
-                  <li><input type='text' size='40' name='vegetationother' value=''></li>
-                  <li>(Q5) How many inhabitants occupy your home?:</li>
-                  <li>
-                     <SELECT name="countiv" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>1</OPTION>
-                        <OPTION>2</OPTION>
-                        <OPTION>3</OPTION>
-                        <OPTION>4</OPTION>
-                        <OPTION>more than 4</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q6) How many bedrooms in your home?:</li>
-                  <li>
-                     <SELECT name="countiii" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>1</OPTION>
-                        <OPTION>2</OPTION>
-                        <OPTION>3</OPTION>
-                        <OPTION>more than 3</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q7a)Aircondition: Do bedrooms in your house use air conditioning?:</li>
-                  <li>
-                     <SELECT name="choosebedroom1" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>Not used</OPTION>
-                        <OPTION>One bedroom</OPTION>
-                        <OPTION>Some bedrooms</OPTION>
-                        <OPTION>All bedrooms</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q7b)Aircondition: Does drawing room in your house use air conditioning?:</li>
-                  <li>
-                     <table border=0>
-                        <tr>
-                           <td><input type="radio" name="yesnoradio5"  id="YESyesnoradio5" value="1"  ><label for="YESyesnoradio5">Yes</label> </td>
-                           <td><input type="radio" name="yesnoradio5" id="NOyesnoradio5" value="0"  ><label for="NOyesnoradio5">No</label></td>
-                        </tr>
-                     </table>
-                  </li>
-                  <li>(Q7c)Aircondition: Does dining room in your house use air conditioning?:</li>
-                  <li>
-                     <table border=0>
-                        <tr>
-                           <td><input type="radio" name="yesnoradio6"  id="YESyesnoradio6" value="1"  ><label for="YESyesnoradio6">Yes</label> </td>
-                           <td><input type="radio" name="yesnoradio6" id="NOyesnoradio6" value="0"  ><label for="NOyesnoradio6">No</label></td>
-                        </tr>
-                     </table>
-                  </li>
-                  <li>(Q8a) Do you use mosquito repellents such as good night, sambrani or mosquito coil regularly in bedrooms?:</li>
-                  <li>
-                     <SELECT name="choosebedroom2" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>Not used</OPTION>
-                        <OPTION>One bedroom</OPTION>
-                        <OPTION>Some bedrooms</OPTION>
-                        <OPTION>All bedrooms</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q8a) Do you use mosquito repellents such as good night, sambrani or mosquito coil regularly in Drawing rooms?:</li>
-                  <li>
-                     <table border=0>
-                        <tr>
-                           <td><input type="radio" name="yesnoradio7"  id="YESyesnoradio7" value="1"  ><label for="YESyesnoradio7">Yes</label> </td>
-                           <td><input type="radio" name="yesnoradio7" id="NOyesnoradio7" value="0"  ><label for="NOyesnoradio7">No</label></td>
-                        </tr>
-                     </table>
-                  </li>
-                  <li>(Q8a) Do you use mosquito repellents such as good night, sambrani or mosquito coil regularly in Dining rooms?:</li>
-                  <li>
-                     <table border=0>
-                        <tr>
-                           <td><input type="radio" name="yesnoradio8"  id="YESyesnoradio8" value="1"  ><label for="YESyesnoradio8">Yes</label> </td>
-                           <td><input type="radio" name="yesnoradio8" id="NOyesnoradio8" value="0"  ><label for="NOyesnoradio8">No</label></td>
-                        </tr>
-                     </table>
-                  </li>
-                  <li>(Q9a) Do you use mosquito nets for windows?:</li>
-                  <li>
-                     <SELECT name="netswindow" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>On all windows</OPTION>
-                        <OPTION value="Windows of bedrooms">Windows of bedrooms (some other windows without nets)</OPTION>
-                        <OPTION value="not used">Don`t use mosquito nets</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q9b) Do you use mosquito nets around beds?:</li>
-                  <li>
-                     <SELECT name="netsbedroom" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>around ALL beds</OPTION>
-                        <OPTION>around SELECTED beds</OPTION>
-                        <OPTION>not used</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q10) Is the exhaust pipe of your toilet septic tank covered with mosquito net:</li>
-                  <li>
-                     <SELECT name="toiletnet" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>Yes</OPTION>
-                        <OPTION>No</OPTION>
-                        <OPTION>Don`t no</OPTION>
-                        <OPTION>No toilet septic tank/no exhaust pipe</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q11) How do you manage sewage from your house?:</li>
-                  <li>
-                     <SELECT name="sewage" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>Sewage system of municipality/ corporation</OPTION>
-                        <OPTION>Sewage pit</OPTION>
-                        <OPTION>To water plants</OPTION>
-                        <OPTION>No specific sewage disposal system</OPTION>
-                        <OPTION>Other methods</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q12) Is there stagnant water near by (within 200 meters)?:</li>
-                  <li>
-                     <select name="yesnodontknow12" size="1">
-                        <option></option>
-                        <option>Yes</option>
-                        <option>No</option>
-                        <option>don`t know</option>
-                     </select>
-                  </li>
-                  <li>(Q13) If yes to Question Q12, How long does the stagnant water persist:</li>
-                  <li>
-                     <SELECT name="stagnantpersist" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>Less than a week</OPTION>
-                        <OPTION>More than a week</OPTION>
-                        <OPTION>Through out the rainy season</OPTION>
-                        <OPTION>Six months</OPTION>
-                        <OPTION>All days except summer</OPTION>
-                        <OPTION>Throughout the year</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q14) Is there any drain pit near by (within 200 meters)?:</li>
-                  <li>
-                     <select name="yesnodontknow14" size="1">
-                        <option></option>
-                        <option>Yes</option>
-                        <option>No</option>
-                        <option>don`t know</option>
-                     </select>
-                  </li>
-                  <li>(Q15) Is there any garbage pile/dump near by (within 200 meters)?:</li>
-                  <li>
-                     <select name="yesnodontknow15" size="1">
-                        <option></option>
-                        <option>Yes</option>
-                        <option>No</option>
-                        <option>don`t know</option>
-                     </select>
-                  </li>
-                  <li>(Q16) Is there any sewage/drain channel blockage near by:</li>
-                  <li>
-                     <select name="yesnodontknow16" size="1">
-                        <option></option>
-                        <option>Yes</option>
-                        <option>No</option>
-                        <option>don`t know</option>
-                     </select>
-                  </li>
-                  <li>(Q17) Was there any mosquito controlling activity in your area in past two weeks?:</li>
-                  <li>
-                     <select name="yesnodontknow17" size="1">
-                        <option></option>
-                        <option>Yes</option>
-                        <option>No</option>
-                        <option>don`t know</option>
-                     </select>
-                  </li>
-                  <li>(Q18) Rainfall in the last 2days?:</li>
-                  <li>
-                     <SELECT name="rainfall" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>No rain</OPTION>
-                        <OPTION>Very little</OPTION>
-                        <OPTION>Some</OPTION>
-                        <OPTION>High</OPTION>
-                        <OPTION>Very high</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>19. How many mosquitos have you noticed (seen or heard) during the last two days:</li>
-                  <li>
-                     <SELECT name="countapprox19" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>None </OPTION>
-                        <OPTION>Very few (1-2)</OPTION>
-                        <OPTION>Some (3-10)</OPTION>
-                        <OPTION>High  (more than 10)</OPTION>
-                        <OPTION>Don`t know</OPTION>
-                        <OPTION></OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q20) Approximately how many mosquito bites have you received in the last two days:</li>
-                  <li>
-                     <SELECT name="countapprox20" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>None </OPTION>
-                        <OPTION>Very few (1-2)</OPTION>
-                        <OPTION>Some (3-10)</OPTION>
-                        <OPTION>High  (more than 10)</OPTION>
-                        <OPTION>Don`t know</OPTION>
-                        <OPTION></OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q21a) Do  large mosquitoes bite you?:</li>
-                  <li>
-                     <select name="yesnodontknow211" size="1">
-                        <option></option>
-                        <option>Yes</option>
-                        <option>No</option>
-                        <option>don`t know</option>
-                     </select>
-                  </li>
-                  <li>(Q21b) Do  small mosquitoes bite you?:</li>
-                  <li>
-                     <select name="yesnodontknow212" size="1">
-                        <option></option>
-                        <option>Yes</option>
-                        <option>No</option>
-                        <option>don`t know</option>
-                     </select>
-                  </li>
-                  <li>(Q21c) Do  very small mosquitoes bite you?:</li>
-                  <li>
-                     <select name="yesnodontknow213" size="1">
-                        <option></option>
-                        <option>Yes</option>
-                        <option>No</option>
-                        <option>don`t know</option>
-                     </select>
-                  </li>
-                  <li>(Q21d) Do  mosquitoes with black and white legs bite you?:</li>
-                  <li>
-                     <select name="yesnodontknow214" size="1">
-                        <option></option>
-                        <option>Yes</option>
-                        <option>No</option>
-                        <option>don`t know</option>
-                     </select>
-                  </li>
-                  <li>(Q22) At what time of the day did you get maximum mosquito bites?:</li>
-                  <li>
-                     <SELECT name="mosquitotime22" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>5-7am</OPTION>
-                        <OPTION>8am-5pm</OPTION>
-                        <OPTION>6-9pm</OPTION>
-                        <OPTION>after 9 pm</OPTION>
-                        <OPTION>Donï¿½t know</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q23) Do you use personal mosquito repellant like ODOMOS?:</li>
-                  <li>
-                     <SELECT name="yessometimesnever23" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>Yes, regularly</OPTION>
-                        <OPTION>Only sometimes</OPTION>
-                        <OPTION>Never</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q24) Including you, how many members of your family have gotten dengue in the last one year?:</li>
-                  <li>
-                     <SELECT name="countpeopleii24" size="1">
-                        <OPTION></OPTION>
-                        <OPTION>No one</OPTION>
-                        <OPTION>1</OPTION>
-                        <OPTION>2</OPTION>
-                        <OPTION>more than 2</OPTION>
-                     </SELECT>
-                  </li>
-                  <li>(Q25) Have you heard of any cases of dengue in your neighborhood in the last one month, including cases in local hospitals?:</li>
-                  <li>
-                     <select name="howmuchdontknow25" size="1">
-                        <option></option>
-                        <option>none</option>
-                        <option>very little</option>
-                        <option>some</option>
-                        <option>a lot</option>
-                        <option>don`t know</option>
-                     </select>
-                  </li>
+               <input type='hidden' name='OLDcountapprox1' value=''>
+               <input type='hidden' name='OLDcountapprox2' value=''>
+               <input type='hidden' name='OLDpeopleapproxii' value=''>
+               <input type='hidden' name='OLDcountapprox3' value=''>
+               <input type='hidden' name='OLDsampledate' value=''>
+               <input type='hidden' name='OLDmoddate' value=''>
+               <script  type="text/javascript">
+                  printHeader();
+                </script>
+                <ul data-role='listview' data-inset='true'>
+                 <script  type="text/javascript">
+                     printAllQuestions();
+                 </script>
                </ul>
 							 <!-- input type="button" name=bOK value='   Save   ' -->
-							 <input type="submit" name=bOK value='   Submit   '>
+							 <input type="button" name=bOK value='   Submit   ' onclick="checkForm()">
             </form>
-            <br/>
-            <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
+            <br />
+        		<label id="errormsg" style="color:red"></label>
+          	<br />
+  <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
          </div>
          <!-- /ui-body wrapper -->
       </div>
@@ -497,11 +132,11 @@
 			handleLocalJSONDB(vQueryHash);
 			handleOfflineJSONDB(vQueryHash);
 			getCurrentGeolocation();
-			write2value("app_recdate",getDate());
-			write2value("app_moddate",getDate());
-			write2value("app_sampledate",getDate());
-			write2value("app_autonr","-");
-			write2value("app_usergroup",vQueryHash["app_usergroup"]);
+			write4name2value("recdate",getDate());
+			write4name2value("moddate",getDate());
+			write4name2value("sampledate",getDate());
+			write4name2value("autonr","-");
+			write4name2value("usergroup",vQueryHash["app_usergroup"]);
 			write2value("app_email",vQueryHash["app_email"]);
 			write2value("app_database",vQueryHash["app_database"]);
 			if (vQueryHash["app_submiturl"]) {

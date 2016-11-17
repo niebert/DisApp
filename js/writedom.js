@@ -1,3 +1,13 @@
+function showErrorMessage(pMSG) {
+  console.log("Show Error Message");
+  document.getElementById("errormsg").innerHTML = pMSG;
+  pMSG = pMSG.replace(/<BR>/gi,"\n");
+  pMSG = pMSG.replace(/<BR[^>]+]>/gi,"\n");
+  pMSG = pMSG.replace(/<[^>]+>/gi,"");
+  console.log(pMSG);
+  alert(pMSG);
+};
+
 function getValueDOM(pID) {
   var vNode = document.getElementById(pID);
   var vReturn = "";

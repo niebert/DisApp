@@ -1,3 +1,76 @@
+function checkForm() {
+  document.getElementById("errormsg").innerHTML = "";
+  var vForm = document.fDBForm.elements;
+  var vDBformat     = vJSONDB["DBformat"];
+  var vDBtitles     = vJSONDB["DBtitles"];
+  var vDBvisible    = vJSONDB["DBvisible"];
+  var vDBmandatory  = vJSONDB["DBmandatory"];
+  var vElement = null;
+  var vSubmit = true;
+  var vMSG = "";
+  var vErr = "";
+  var vComma = "";
+  var vCount = 0;
+  for (var i=0;i<vDBformat.length;i++) {
+    if (vDBvisible[i]) {
+      vCount++;
+      vErr = "<br>Missing Input: ("+vCount+") "+vDBtitles[i];
+      var vNodeArr =document.getElementsByName(vDBformat[i]);
+      if (vNodeArr) {
+        if (vNodeArr[0]) {
+          console.log("["+vDBformat[i]+"] exists");
+          if (vNodeArr[0].value == "") {
+            vSubmit = false;
+            vMSG += vErr
+          } else {
+            console.log("Input ["+vDBformat[i]+"] OK");
+          };
+        } else {
+          vSubmit = false;
+          vMSG += vErr
+          console.log("Input ["+vDBformat[i]+"] undefined");
+        };
+      } else {
+        //vItem.style.backgroundColor = "green";
+        console.log("Check Form Element ["+vDBformat[i]+"] does not exist!");
+      };
+    };
+  };
+  if (vSubmit) {
+    document.fDBForm.submit();
+  } else {
+    showErrorMessage("INPUT ERROR:"+vMSG);
+    return false;
+  };
+};
+
+function printAllQuestions() {
+  var vDBformat   = vJSONDB["DBformat"];
+  var vDBtitles   = vJSONDB["DBtitles"];
+  var vDBcolinput = vJSONDB["DBcolinput"];
+  var vDBvisible  = vJSONDB["DBvisible"];
+  var vCount = 0;
+  var vType ="hidden";
+  if (vDebug > 0) {
+    vType="text";
+  };
+  for (var i=0;i<vDBformat.length;i++) {
+    vID = vDBformat[i];
+    if (vDBvisible[i]) {
+      vCount++;
+      //document.write("<li>"+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+"</li>");
+      document.write("<li>("+vCount+") "+vDBtitles[i]+"<br> "+vDBcolinput[vID]+" </li>");
+      //alert(vDBformat[i]+" visible");
+    } else {
+      //alert(vDBformat[i]+" not visible");
+      if (vDebug > 0) {
+        document.write(vID+": ");
+      };
+      document.write("<input type='"+vType+"' name='"+vID+"' id='\"app_"+vID+"' style='\"display:none\"'>");
+    };
+  };
+};
+
 
 function divmod(pDividend,pDivisor) {
   var vQuotient = 0;
@@ -59,7 +132,8 @@ function getSelectPageCount(pMaxSelector) {
   // vPages "-1" because first SelectorPage has one Page Selector Button less
   // vMaxSelector "-1" because each Selector has a [<] Button extra to previous
   return divmod(vPages-1,vMaxSelector-1)+1;
-}
+};
+
 function createDatabaseHTML4JSON(pPageType,pMax4Page) {
     //alert("JSONDB was defined!");
     var vID = "";
@@ -92,7 +166,7 @@ function setSelectTable (pSelTableNumber,pSelPages,pPageType) {
       hide("seltable"+pPageType+i);
     }
   }
-}
+};
 
 function printPageSelector (pPages,pPageType) {
   var vPageType = pPageType || "Form";
@@ -142,7 +216,13 @@ function printPageSelector (pPages,pPageType) {
   vOut += "</div>";
   //document.getElementById("PageButtons").innerHTML = vOut;
   document.write(vOut);
-}
+};
+
+function printHeader() {
+  document.write("<h2>"+vJSONDB["DBtitle"]+"</h2>");
+  document.write("<i>"+vJSONDB["DBsubtitle"]+" ["+vJSONDB["database"]+"]</i>");
+};
+
 
 function printFormPages(pMax4Page) {
   var vMax4Page = pMax4Page || 4;

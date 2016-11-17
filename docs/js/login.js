@@ -47,13 +47,6 @@ function loginDisApp() {
   };
 };
 
-function showErrorMessage() {
-  console.log("Show Error Message");
-  document.getElementById("errormsg").innerHTML = vMSG;
-  vMSG = vMSG.replace(/<BR>/g,"");
-  console.log(vMSG);
-  alert(vMSG);
-}
 
 function loginCheck() {
   var vAppStartBoolean = true;
