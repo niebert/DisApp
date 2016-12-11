@@ -17,6 +17,7 @@
       <script type="text/javascript" src="js/geolocation.js"></script>
       <script type="text/javascript" src="js/htmlrequest.js"></script>
       <script type="text/javascript" src="js/localstorage.js"></script>
+      <script type="text/javascript" src="js/navigate.js"></script>
       <script type="text/javascript" src="js/openwin.js"></script>
       <script type="text/javascript" src="js/showhide.js"></script>
       <script type="text/javascript" src="js/syncserver.js"></script>
@@ -76,21 +77,37 @@
            <h1>Welcome</h1>
         </div>
         <!-- /header -->
-        <div data-role="content">
-           <div data-role="fieldcontain" style="background:white">
-             &nbsp;
-             <div >
-               <b>Disapp</b> will give you an idea of the risk of catching dengue while at home,
-               based on your answers to the 5 questions you will be asked at the beginning.
-               <b>Disapp</b> will also give you some practical suggestions of
-               how to bring down your risk for catching dengue while you are at home.
-               Finally, please fill out the feedback form at the end so we can make
-               <b>Disapp</b> even better for everyone! Thank you for using <b>Disapp</b>!
-             </div>
-             &nbsp;
-          </div>
-           <input type="button" name=bDisclaimer value=' Disclaimer ' onclick="document.location.href='#pDisclaimer'">
-        </div>
+         <div data-role="content"><h3>Welcome to DisApp</h3>
+         <table bgcolor="white" cellspacing="10px">
+           <tr>
+             <td>
+               &nbsp;
+             </td>
+             <td>
+             <b>Disapp</b> will give you an idea of the risk of catching dengue while at home,
+              based on your answers to the 5 questions you will be asked at the beginning.
+              <b>Disapp</b> will also give you some practical suggestions of
+              how to bring down your risk for catching dengue while you are at home.
+              Finally, please fill out the feedback form at the end so we can make
+              <b>Disapp</b> even better for everyone! Thank you for using <b>Disapp</b>!
+            </td>
+            <td>
+              &nbsp;
+            </td>
+          </tr>
+        </table>
+        <table cellspacing="10px">
+          <tr>
+            <td>
+              <button onclick="$.mobile.changePage( '#pDisclaimer', { transition: 'slideup', changeHash: false })"> Disclaimer </button>
+            </td>
+            <td>
+              <button onclick="checkDisclaimer4Submit()"> Submit Data </button>
+            </td>
+          </tr>
+        </table>
+
+         </div>
        </div>
        <div data-role="page" id="pDisclaimer">
          <div data-role="header" data-position="fixed">
@@ -116,7 +133,6 @@
               </td>
               <td>
                 &nbsp;
-               &nbsp;
               </td>
             </tr>
           </table>
@@ -128,7 +144,7 @@
                   <option value="yes">YES</option>
                </select>
                <a href="#pSubmitData" data-theme="a">Submit Data</a>
-               <button onclick="$.mobile.changePage( '#pSubmitData', { transition: 'slideup', changeHash: false })"> Change Page</button> 
+               <button onclick="$.mobile.changePage( '#pSubmitData', { transition: 'slideup', changeHash: false })"> Change Page</button>
             </div>
          </div>
        </div>

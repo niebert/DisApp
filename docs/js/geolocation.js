@@ -14,10 +14,15 @@ function getDate4DB() {
   return year+"/"+month+"/"+day+" "+hours+":"+min+":"+sec+"."+millsec;
 }
 
-
-function getCurrentGeolocation() {
+function getLoginGeolocation() {
   retrieveLocation(insertPosition);
 };
+
+//This is called from Submit Form
+function getCurrentGeolocation() {
+  retrieveLocation(insertFormPosition);
+};
+
 function setFormLocation() {
   retrieveLocation(insertFormPosition);
 };

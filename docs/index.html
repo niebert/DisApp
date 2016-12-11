@@ -4,15 +4,15 @@
 <head>
 	<meta charset="utf-8" />
 	<title>DisApp - Login</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"> 	 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<link href="css/jquery.mobile-1.2.0.min.css" rel="stylesheet" />
 	<link href="ios_inspired/styles.css" rel="stylesheet" />
 	<script src="js/jquery-1.7.1.min.js"></script>
 	<script>
 		// all dialog buttons should close their parent dialog
-		$(".ui-dialog button").live("click", function() {		
-			$("[data-role='dialog']").dialog("close");		
+		$(".ui-dialog button").live("click", function() {
+			$("[data-role='dialog']").dialog("close");
 		});
 		$(document).on("mobileinit", function(){
 		  $.mobile.defaultPageTransition = "slide";
@@ -37,7 +37,7 @@
 	<script src="js/login.js"></script>
 	<script src="js/showhide.js"></script>
 	<script src="js/writedom.js"></script>
-	
+
 
 </head>
 <body>
@@ -60,7 +60,7 @@
 							<input type="text" size="12" name="app_geolocation" id="currentGeolocation" value=""/>
 						</td>
 						<td width="20%">
-							<input type="button" id="bGeoCheck" value="Check GPS" onclick="getCurrentGeolocation();return false">
+							<input type="button" id="bGeoCheck" value="Check GPS" onclick="getLoginGeolocation();return false">
 						</td>
 					</tr>
 				</table>
