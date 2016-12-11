@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Time:20161211 12:01:50
+# Time:20161211 12:25:49
 
 CACHE:
 http://niebert.github.io/DisApp/.DS_Store
@@ -128,6 +128,16 @@ http://niebert.github.io/DisApp/images/video-black.png
 http://niebert.github.io/DisApp/images/video-white.png
 http://niebert.github.io/DisApp/index.appcache
 http://niebert.github.io/DisApp/index.html
+http://niebert.github.io/DisApp/ios_inspired/images/arrow_right.png
+http://niebert.github.io/DisApp/ios_inspired/images/arrow_right@2x.png
+http://niebert.github.io/DisApp/ios_inspired/images/backButtonSprite.png
+http://niebert.github.io/DisApp/ios_inspired/images/backButtonSprite@2x.png
+http://niebert.github.io/DisApp/ios_inspired/images/iconSprite.png
+http://niebert.github.io/DisApp/ios_inspired/images/iconSprite.psd
+http://niebert.github.io/DisApp/ios_inspired/images/tabSprite.png
+http://niebert.github.io/DisApp/ios_inspired/images/tick.png
+http://niebert.github.io/DisApp/ios_inspired/images/tiling_stripes.gif
+http://niebert.github.io/DisApp/ios_inspired/styles.css
 http://niebert.github.io/DisApp/js/.DS_Store
 http://niebert.github.io/DisApp/js/dbdisapp.js
 http://niebert.github.io/DisApp/js/dblocalsurvey.js
