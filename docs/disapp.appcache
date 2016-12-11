@@ -1,10 +1,8 @@
 CACHE MANIFEST
 
-# Time:20161211 12:25:49
+# Time:20161211 16:56:03
 
 CACHE:
-http://niebert.github.io/DisApp/.DS_Store
-http://niebert.github.io/DisApp/css/.DS_Store
 http://niebert.github.io/DisApp/css/disapp.css
 http://niebert.github.io/DisApp/css/images/ajax-loader.gif
 http://niebert.github.io/DisApp/css/images/arrow_right.png
@@ -21,7 +19,6 @@ http://niebert.github.io/DisApp/css/jquery.mobile-1.2.0.min.css
 http://niebert.github.io/DisApp/css/leaflet.css
 http://niebert.github.io/DisApp/disapp.appcache
 http://niebert.github.io/DisApp/disapp.html
-http://niebert.github.io/DisApp/images/.DS_Store
 http://niebert.github.io/DisApp/images/1200px-Aedes_Albopictus.jpg
 http://niebert.github.io/DisApp/images/action-black.png
 http://niebert.github.io/DisApp/images/action-white.png
@@ -91,7 +88,7 @@ http://niebert.github.io/DisApp/images/heart-black.png
 http://niebert.github.io/DisApp/images/heart-white.png
 http://niebert.github.io/DisApp/images/home-black.png
 http://niebert.github.io/DisApp/images/home-white.png
-http://niebert.github.io/DisApp/images/icons-png/.DS_Store
+http://niebert.github.io/DisApp/images/icon-18-white.png
 http://niebert.github.io/DisApp/images/info-black.png
 http://niebert.github.io/DisApp/images/info-white.png
 http://niebert.github.io/DisApp/images/location-black.png
@@ -138,7 +135,6 @@ http://niebert.github.io/DisApp/ios_inspired/images/tabSprite.png
 http://niebert.github.io/DisApp/ios_inspired/images/tick.png
 http://niebert.github.io/DisApp/ios_inspired/images/tiling_stripes.gif
 http://niebert.github.io/DisApp/ios_inspired/styles.css
-http://niebert.github.io/DisApp/js/.DS_Store
 http://niebert.github.io/DisApp/js/dbdisapp.js
 http://niebert.github.io/DisApp/js/dblocalsurvey.js
 http://niebert.github.io/DisApp/js/fullscreen.js

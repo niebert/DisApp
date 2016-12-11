@@ -280,5 +280,6 @@ function loadLocalVar(pKey) {
     };
   }	 else {
     console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
-  }
-}
+  };
+	return vReturn
+};

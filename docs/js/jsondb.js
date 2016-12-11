@@ -1,6 +1,6 @@
 function checkForm() {
   document.getElementById("errormsg").innerHTML = "";
-  var vForm = document.fDBForm.elements;
+  var vForm = document.send2appdb.elements;
   var vDBformat     = vJSONDB["DBformat"];
   var vDBtitles     = vJSONDB["DBtitles"];
   var vDBvisible    = vJSONDB["DBvisible"];

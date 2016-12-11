@@ -1,6 +1,8 @@
+
+
 <!DOCTYPE html>
 <html manifest="disapp.appcache">
-<!-- html -->
+   <!-- html -->
    <head>
       <meta charset="iso-8859-1">
       <title>Submit Data</title>
@@ -10,18 +12,18 @@
       <link href="css/ios_inspired.css" rel="stylesheet" />
       <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
       <script type="text/javascript" src="js/login.js"></script>
-			<script type="text/javascript" src="js/fullscreen.js"></script>
-			<script type="text/javascript" src="js/jsondb.js"></script>
-			<script type="text/javascript" src="js/geolocation.js"></script>
-			<script type="text/javascript" src="js/htmlrequest.js"></script>
-			<script type="text/javascript" src="js/localstorage.js"></script>
-			<script type="text/javascript" src="js/openwin.js"></script>
-			<script type="text/javascript" src="js/showhide.js"></script>
-			<script type="text/javascript" src="js/syncserver.js"></script>
-			<script type="text/javascript" src="js/writedom.js"></script>
+      <script type="text/javascript" src="js/fullscreen.js"></script>
+      <script type="text/javascript" src="js/jsondb.js"></script>
+      <script type="text/javascript" src="js/geolocation.js"></script>
+      <script type="text/javascript" src="js/htmlrequest.js"></script>
+      <script type="text/javascript" src="js/localstorage.js"></script>
+      <script type="text/javascript" src="js/openwin.js"></script>
+      <script type="text/javascript" src="js/showhide.js"></script>
+      <script type="text/javascript" src="js/syncserver.js"></script>
+      <script type="text/javascript" src="js/writedom.js"></script>
       <!-- Database JSON File -->
-			<script type="text/javascript" src="js/dbdisapp.js"></script>
-			<script>
+      <script type="text/javascript" src="js/dbdisapp.js"></script>
+      <script>
          // all dialog buttons should close their parent dialog
          $(".ui-dialog button").live("click", function() {
          	$("[data-role='dialog']").dialog("close");
@@ -40,36 +42,97 @@
          font-size: 0.6em;
          color: #cc0000;
          }
-				 .btn {
-  background: #3498db;
-  background-image: -webkit-linear-gradient(top, #3498db, #6cbaeb);
-  background-image: -moz-linear-gradient(top, #3498db, #6cbaeb);
-  background-image: -ms-linear-gradient(top, #3498db, #6cbaeb);
-  background-image: -o-linear-gradient(top, #3498db, #6cbaeb);
-  background-image: linear-gradient(to bottom, #3498db, #6cbaeb);
-  -webkit-border-radius: 28;
-  -moz-border-radius: 28;
-  border-radius: 28px;
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 20px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
-}
-
-.btn:hover {
-  background: #3cb0fd;
-  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
-  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
-  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
-  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
-  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
-  text-decoration: none;
-}
+         .btn {
+         background: #3498db;
+         background-image: -webkit-linear-gradient(top, #3498db, #6cbaeb);
+         background-image: -moz-linear-gradient(top, #3498db, #6cbaeb);
+         background-image: -ms-linear-gradient(top, #3498db, #6cbaeb);
+         background-image: -o-linear-gradient(top, #3498db, #6cbaeb);
+         background-image: linear-gradient(to bottom, #3498db, #6cbaeb);
+         -webkit-border-radius: 28;
+         -moz-border-radius: 28;
+         border-radius: 28px;
+         font-family: Arial;
+         color: #ffffff;
+         font-size: 20px;
+         padding: 10px 20px 10px 20px;
+         text-decoration: none;
+         }
+         .btn:hover {
+         background: #3cb0fd;
+         background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+         background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+         background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+         background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+         background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+         text-decoration: none;
+         }
       </style>
    </head>
    <body>
-      <div data-role="page">
+      <div data-role="page" id="pWelcome">
+        <div data-role="header" data-position="fixed">
+           <a href="javascript:window.close()" data-theme="a">Close</a>
+           <h1>Welcome</h1>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+           <div data-role="fieldcontain" style="background:white">
+             &nbsp;
+             <div >
+               <b>Disapp</b> will give you an idea of the risk of catching dengue while at home,
+               based on your answers to the 5 questions you will be asked at the beginning.
+               <b>Disapp</b> will also give you some practical suggestions of
+               how to bring down your risk for catching dengue while you are at home.
+               Finally, please fill out the feedback form at the end so we can make
+               <b>Disapp</b> even better for everyone! Thank you for using <b>Disapp</b>!
+             </div>
+             &nbsp;
+          </div>
+           <input type="button" name=bDisclaimer value=' Disclaimer ' onclick="document.location.href='#pDisclaimer'">
+        </div>
+       </div>
+       <div data-role="page" id="pDisclaimer">
+         <div data-role="header" data-position="fixed">
+            <a href="javascript:window.close()" data-theme="a">Close</a>
+            <h1>Disclaimer</h1>
+         </div>
+         <!-- /header -->
+         <div data-role="content">
+           <h3>Disclaimer and Terms of Use</h3>
+           <table bgcolor="white" cellspacing="10px">
+             <tr>
+               <td>
+                 &nbsp;
+               </td>
+               <td>
+                 <b>Disapp</b> is purely meant as a free educational tool
+                 to teach users about dengue risk and how to reduce it.
+                 It is not meant to diagnose dengue infection or
+                 to be a substitute for qualified medical advice.
+                 No guarantee is made as to the accuracy of the provided risk estimate
+                 and the developers are not liable in any way for any issues that may arise
+                 from your use of <b>Disapp</b>.
+              </td>
+              <td>
+                &nbsp;
+               &nbsp;
+              </td>
+            </tr>
+          </table>
+
+            <div data-role="fieldcontain">
+               <label for="slider">I accept the above disclaimer and terms of use:</label>
+               <select name="sDisclaimer" id="sDisclaimer" data-role="slider" onchange="saveLocalVar(this.id,this.value)">
+                  <option value="no">NO</option>
+                  <option value="yes">YES</option>
+               </select>
+               <a href="#pSubmitData" data-theme="a">Submit Data</a>
+               <button onclick="$.mobile.changePage( '#pSubmitData', { transition: 'slideup', changeHash: false })"> Change Page</button> 
+            </div>
+         </div>
+       </div>
+      <div data-role="page" id="pSubmitData">
          <div data-role="header" data-position="fixed">
             <a href="javascript:window.close()" data-theme="a">Close</a>
             <h1>Submit Data</h1>
@@ -77,13 +140,13 @@
          <!-- /header -->
          <div data-role="content">
             <form name="send2appdb" id="send2appdb" action="http://www.example.com/cgi-bin/appdb/submitscript.php" >
-              <input type='hidden' id='currentGeolocation' name='currentGeolocation' value=''>
-							<input type='hidden' id='app_email' name='email' value=''>
-							<input type='hidden' id='app_usergroup' name='usergroup' value=''>
-							<input type='hidden' id='app_recdate'  name='recdate' value=''>
-							<input type='hidden' id='app_sampledate' name='sampledate' value=''>
-							<input type='hidden' id='app_moddate' name='moddate' value='---'>
-							<input type='hidden' name='autonr' value='1'>
+               <input type='hidden' id='currentGeolocation' name='currentGeolocation' value=''>
+               <input type='hidden' id='app_email' name='email' value=''>
+               <input type='hidden' id='app_usergroup' name='usergroup' value=''>
+               <input type='hidden' id='app_recdate'  name='recdate' value=''>
+               <input type='hidden' id='app_sampledate' name='sampledate' value=''>
+               <input type='hidden' id='app_moddate' name='moddate' value='---'>
+               <input type='hidden' name='autonr' value='1'>
                <input type='hidden' name='action' value='subscribeapp'>
                <input type='hidden' name='login' value=''>
                <input type='hidden' name='mailnotification' value=''>
@@ -104,47 +167,49 @@
                <input type='hidden' name='OLDmoddate' value=''>
                <script  type="text/javascript">
                   printHeader();
-                </script>
-                <ul data-role='listview' data-inset='true'>
-                 <script  type="text/javascript">
+               </script>
+               <ul data-role='listview' data-inset='true'>
+                  <script  type="text/javascript">
                      printAllQuestions();
-                 </script>
+                  </script>
                </ul>
-							 <!-- input type="button" name=bOK value='   Save   ' -->
-							 <input type="button" name=bOK value='   Submit   ' onclick="checkForm()">
+               <!-- input type="button" name=bOK value='   Save   ' -->
+               <input type="button" name=bOK value='   Submit   ' onclick="checkForm()">
             </form>
             <br />
-        		<label id="errormsg" style="color:red"></label>
-          	<br />
-  <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
+            <label id="errormsg" style="color:red"></label>
+            <br />
+            <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
          </div>
          <!-- /ui-body wrapper -->
       </div>
       <!-- /page -->
-			<script type="text/javascript">
-			var vDebug = 0;
-			var vQueryHash = readQueryParams();
-			var vOnlineMode = false;
-			var vJSONDB_Offline = {
-				DBlines: [],
-				DBsynced: [],
-				DBformat: []
-			};
-			handleLocalJSONDB(vQueryHash);
-			handleOfflineJSONDB(vQueryHash);
-			setFormLocation();
-			write4name2value("recdate",getDate());
-			write4name2value("moddate",getDate());
-			write4name2value("sampledate",getDate());
-			write4name2value("autonr","-");
-			write4name2value("usergroup",vQueryHash["app_usergroup"]);
-			write2value("app_email",vQueryHash["app_email"]);
-			write2value("app_database",vQueryHash["app_database"]);
-			if (vQueryHash["app_submiturl"]) {
-				document.getElementById("send2appdb").action = vQueryHash["app_submiturl"]
-			} else {
-				console.log("Submit URL was undefined!");
-			};
-	</script>
-</body>
+      <script type="text/javascript">
+         var vDebug = 0;
+         var vQueryHash = readQueryParams();
+         var vOnlineMode = false;
+         var vJSONDB_Offline = {
+         	DBlines: [],
+         	DBsynced: [],
+         	DBformat: []
+         };
+         handleLocalJSONDB(vQueryHash);
+         handleOfflineJSONDB(vQueryHash);
+         setFormLocation();
+         write4name2value("recdate",getDate());
+         write4name2value("moddate",getDate());
+         write4name2value("sampledate",getDate());
+         write4name2value("autonr","-");
+         write4name2value("usergroup",vQueryHash["app_usergroup"]);
+         write2value("app_email",vQueryHash["app_email"]);
+         write2value("app_database",vQueryHash["app_database"]);
+         if (vQueryHash["app_submiturl"]) {
+         	document.getElementById("send2appdb").action = vQueryHash["app_submiturl"]
+         } else {
+         	console.log("Submit URL was undefined!");
+         };
+         var vKey = "sDisclaimer";
+         write2value(vKey,loadLocalVar(vKey));
+      </script>
+   </body>
 </html>

@@ -6,7 +6,7 @@ $APPURL = "http://niebert.github.io/DisApp";
 #@FILE_MATCH = ('\.pcx','\.PCX');
 #@FILE_MATCH = ('\.html','\.htm');
 #@FILE_MATCH = ();
-@FILE_EXCLUDE = ('\.doc','\.docx','\.odt');
+@FILE_EXCLUDE = ('\.doc','\.docx','\.odt'.'\.appcache','\.DS_Store');
 @DIR_EXCLUDE = ("search_data","niehaus");
 ###################################################################
 
