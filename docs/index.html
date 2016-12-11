@@ -1,33 +1,22 @@
 <!DOCTYPE html>
 <html manifest="disapp.appcache">
 <!-- html -->
-
-	<head>
+<head>
 	<meta charset="utf-8" />
 	<title>DisApp - Login</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"> 	 
+	<meta name="apple-mobile-web-app-capable" content="yes">
 	<link href="css/jquery.mobile-1.2.0.min.css" rel="stylesheet" />
-	<link href="css/ios_inspired.css" rel="stylesheet" />
-	<!--script src="http://code.jquery.com/jquery-1.7.1.min.js"></script-->
+	<link href="ios_inspired/styles.css" rel="stylesheet" />
 	<script src="js/jquery-1.7.1.min.js"></script>
-	<script src="js/fullscreen.js"></script>
-	<script src="js/geolocation.js"></script>
-	<script src="js/openwin.js"></script>
-	<script src="js/localstorage.js"></script>
-	<script src="js/htmlrequest.js"></script>
-	<script src="js/login.js"></script>
-	<script src="js/showhide.js"></script>
-	<script src="js/writedom.js"></script>
 	<script>
 		// all dialog buttons should close their parent dialog
-		$(".ui-dialog button").live("click", function() {
-			$("[data-role='dialog']").dialog("close");
+		$(".ui-dialog button").live("click", function() {		
+			$("[data-role='dialog']").dialog("close");		
 		});
 		$(document).on("mobileinit", function(){
 		  $.mobile.defaultPageTransition = "slide";
 		});
-
 	</script>
 	<script src="js/jquery.mobile-1.2.0.min.js"></script>
 	<style>
@@ -39,6 +28,16 @@
 			color: #cc0000;
 		}
 	</style>
+	<!--script src="http://code.jquery.com/jquery-1.7.1.min.js"></script-->
+	<script src="js/fullscreen.js"></script>
+	<script src="js/geolocation.js"></script>
+	<script src="js/openwin.js"></script>
+	<script src="js/localstorage.js"></script>
+	<script src="js/htmlrequest.js"></script>
+	<script src="js/login.js"></script>
+	<script src="js/showhide.js"></script>
+	<script src="js/writedom.js"></script>
+	
 
 </head>
 <body>
