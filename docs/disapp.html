@@ -138,13 +138,20 @@
           </table>
 
             <div data-role="fieldcontain">
-               <label for="slider">I accept the above disclaimer and terms of use:</label>
-               <select name="sDisclaimer" id="sDisclaimer" data-role="slider" onchange="saveLocalVar(this.id,this.value)">
-                  <option value="no">NO</option>
-                  <option value="yes">YES</option>
-               </select>
-               <a href="#pSubmitData" data-theme="a">Submit Data</a>
-               <button onclick="$.mobile.changePage( '#pSubmitData', { transition: 'slideup', changeHash: false })"> Change Page</button>
+              <table cellspacing="10px">
+                <tr>
+                  <td>
+                    <label for="slider">I accept the above disclaimer and terms of use:</label>
+                  </td>
+                  <td>
+                    <select name="sDisclaimer" id="sDisclaimer" data-role="slider" onchange="saveLocalVar(this.id,this.value)">
+                       <option value="no">NO</option>
+                       <option value="yes">YES</option>
+                    </select>
+                  </td>
+                </tr>
+              </table>
+              <button onclick="checkDisclaimer4Submit()"> Submit Data </button>
             </div>
          </div>
        </div>

@@ -37,7 +37,7 @@ function checkForm() {
     };
   };
   if (vSubmit) {
-    document.fDBForm.submit();
+    document.send2appdb.submit();
   } else {
     showErrorMessage("INPUT ERROR:"+vMSG);
     return false;

@@ -36,7 +36,7 @@ function retrieveLocation(pCallback) {
 };
 
 function insertFormPosition(pPosition) {
-  var vGeoLocation = document.getElementById("currentGeolocation").value;
+  var vGeoLocation = document.getElementById("geolocation").value;
   write4name2value("geolocation",vGeoLocation);
 };
 
