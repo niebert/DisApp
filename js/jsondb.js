@@ -45,6 +45,13 @@ function checkForm() {
 };
 
 function printAllQuestions() {
+  // the IDprefix is inserted before all DOM element IDs
+  document.write(createAllQuestions("app_"));
+};
+
+function createAllQuestions(pIDprefix) {
+  var vIDprefix = pIDprefix || "app_";
+  var vOut = "";
   var vDBformat   = vJSONDB["DBformat"];
   var vDBtitles   = vJSONDB["DBtitles"];
   var vDBcolinput = vJSONDB["DBcolinput"];
@@ -59,16 +66,17 @@ function printAllQuestions() {
     if (vDBvisible[i]) {
       vCount++;
       //document.write("<li>"+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+"</li>");
-      document.write("<li>("+vCount+") "+vDBtitles[i]+"<br> "+vDBcolinput[vID]+" </li>");
+      vOut += "<li>("+vCount+") "+vDBtitles[i]+"<br> "+vDBcolinput[vID]+" </li>";
       //alert(vDBformat[i]+" visible");
     } else {
       //alert(vDBformat[i]+" not visible");
       if (vDebug > 0) {
-        document.write(vID+": ");
+        vOut += vID+": ";
       };
-      document.write("<input type='"+vType+"' name='"+vID+"' id='\"app_"+vID+"' style='\"display:none\"'>");
+      vOut += "<input type='"+vType+"' name='"+vID+"' id='\""+vIDprefix+vID+"' style='\"display:none\"'>";
     };
   };
+  return vOut;
 };
 
 
@@ -349,7 +357,7 @@ function fillDefaultGeolocationDB(pPosition) {
       }
     }
   }
-}
+};
 
 function fillDefaultRecordDB() {
   var vQueryHash = readQueryParams();
@@ -416,6 +424,24 @@ function fillSubmitRecordDB(pIndex) {
 
 }
 
+function fillOfflineRecordDB(pIndex,pIDprefix) {
+  var vIDprefix = pIDprefix || "app_";
+  var vDBformat   = vJSONDB["DBformat"];
+  var vDBtitles   = vJSONDB["DBtitles"];
+  var vDBvisible  = vJSONDB["DBvisible"];
+  var vDBlines    = vJSONDB_Offline["DBlines"];
+  var vID = "";
+  if ((pIndex >=0) && (pIndex < vDBlines.length)) {
+    for (var i=0;i<vDBformat.length;i++) {
+      vID = vDBformat[i];
+      write2value(vIDprefix + vID , vDBlines[pIndex][i]);
+      //$("#dbcontent_"+vID).html(vDBlines[pIndex][i]);
+    }
+  } else {
+    console.log("JSONDB_Offline pIndex="+pIndex+" is out of range. vDBlines.length="+vDBlines.length);
+  }
+
+};
 
 function fillContentRecordDB(pIndex) {
   var vDBformat   = vJSONDB["DBformat"];
