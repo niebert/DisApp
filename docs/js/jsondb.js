@@ -38,7 +38,12 @@ function checkForm() {
   };
   if (vSubmit) {
     //document.send2appdb.submit();
-    
+    if (vOnlineMode) {
+      alert("Submit Online - please wait ...");
+      submitForm2JSON();
+    } else {
+      alert("Submit Offline");
+    }
   } else {
     showErrorMessage("INPUT ERROR:"+vMSG);
     return false;

@@ -1,3 +1,43 @@
+function submitForm2JSON() {
+  var vURL = getSubmitURLbasic("subscribejson")+readRecord2URLparam();
+  alert(vURL);
+  submitJSON(vURL);
+};
+
+function submitJSON(pURL)
+{
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = pURL;
+    s.innerHTML = null;
+    s.id = "js"+Date.now();
+    s.name = "name"+Date.now();
+    document.getElementById("divJSCALL").innerHTML = "";
+    document.getElementById("divJSCALL").appendChild(s);
+    //document.location.href =pURL;
+    setTimeout('checkSubmitSuccess()',5000);
+};
+
+function checkSubmitSuccess() {
+  // vReturnDB is a Hash that is defined in the server call of the remote script
+  // if vReturnDB is defined then DB submit was successful other not
+  var vMSG = "App is OFFLINE\nNo Internet Connectivity or Server Down";
+  if (typeof(vReturnDB) !== 'undefined') {
+    if (vReturnDB["app_database"]) {
+      console.log("App Online - Type of vReturnDB FOUND: ");
+      //alert("App is Online");
+      top.setSelectOnline(true);
+    } else {
+      alert(vMSG);
+      console.log(vMSG+"\n App Datase in Localstorag is missing");
+    };
+  } else {
+    alert(vMSG);
+    console.log(vMSG);
+    top.setSelectOnline(false);
+  };
+}
+
 function checkOnlineMode() {
     var vCallJS = "https://niebert.github.io/DisApp/loader/onlinecheck.js";
     alert("CallJS URL: "+vCallJS);
@@ -69,10 +109,46 @@ function syncDataExists () {
     vDataExists = true;
   };
   return vDataExists;
-}
+};
 
+function setSelectOnline(pMode) {
+  console.log("setSelectOnline()-Call");
+  var vSelNode = document.getElementById("sOnlineMode");
+  if (pMode) {
+    console.log("set OnlineMode: ONLINE");
+    //write2value("sOnlineMode","yes");
+    top.write2innerHTML("tdOnlineMode","YES");
+    //write2innerHTML("sOnlineMode",vOptNO+vOptYESsel);
+    //vSelNode.options.selectedIndex = 1;
+  } else {
+    console.log("set OnlineMode: OFFLINE");
+    //write2innerHTML("sOnlineMode",vOptNOsel+vOptYES);
+    top.write2value("sOnlineMode","no")
+    top.write2innerHTML("tdOnlineMode","NO");
+    //vSelNode.options.selectedIndex = 0;
+  };
+  setOnlineModeHTML(pMode);
+};
+
+function selectOnlineMode(pSelect) {
+  //var vNode = document.getElementById("OffOnlineTag");
+  if (pSelect == "yes") {
+    top.write2innerHTML("OffOnlineTag","Online");
+    top.write2innerHTML("taOnlineMode","Online");
+    setOnlineMode(true);
+  } else {
+    top.write2innerHTML("OffOnlineTag","Offline");
+    top.write2innerHTML("taOnlineMode","Offline");
+    setOnlineMode(false);
+  };
+};
 
 function setOnlineMode(pMode) {
+  vOnlineMode = pMode;
+  setOnlineModeHTML(pMode);
+};
+
+function setOnlineModeHTML(pMode) {
   //var vNode = document.getElementById("OffOnlineTag");
   if (pMode) {
     write2innerHTML("OffOnlineTag","Online");
@@ -116,7 +192,7 @@ function convertHash2Array(pDBhash) {
 
 function readRecord2URLparam() {
   var vDBHash = readRecord2Hash();
-  var vParam = record2URLparam(pDBHash);
+  var vParam = record2URLparam(vDBHash);
   return vParam;
 }
 
@@ -157,7 +233,7 @@ function submitData2DB () {
     var vDate = getDate4DB();
     alert('Submit Data to Server\nDate='+vDate);
     var vWinName = getWinName();
-    openWinHTML(vURL,vWinName);
+    //openWinHTML(vURL,vWinName);
     submitData2LocalStorage(vDate);
     //document.send2appdb.submit();
   } else {

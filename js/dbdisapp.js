@@ -6,7 +6,12 @@ var vJSONDB =  {
   "DBsubtitle": "Database Prototype",
   "submiturl": "http://www.mydisappserver.org/appdb/submit.php",
   "DBformat": ["recdate","autonr","geolocation","countapprox1","countapprox2","peopleapproxii","countapprox3","sampledate","moddate","usergroup","email" ],
-  "DBtitles": ["Record Date","No.","Geo Location","How many mosquitos have you noticed (seen or heard)  <font color='red'>during the last two days</font>","Approximately how many mosquito bites have you received <font color='red'>in the last two days</font>","Including you, how many members of your family <font color='red'>who stay with you</font> have gotten dengue in the <font color='red'>last one year</font>?","Have you heard of any cases of Dengue in your neighborhood in <font color='red'>the last one month</font>, including cases in local hospitals?","Sample Date","Modify Date","User Group","e-Mail" ],
+  "DBtitles": ["Record Date","No.","Geo Location",
+      "How many mosquitos have you noticed (seen or heard)  <font color='red'>during the last two days</font>?",
+      "Approximately how many mosquito bites have you received <font color='red'>in the last two days</font>?",
+      "Including you, how many members of your family <font color='red'>who stay with you</font> have gotten dengue in the <font color='red'>last one year</font>?",
+      "Have you heard of any cases of Dengue in your neighborhood in <font color='red'>the last one month</font>, including cases in local hospitals?",
+      "Sample Date","Modify Date","User Group","e-Mail" ],
   "DBmandatory": [false,false,true,true,true,true,true,false,false],
   "DBvisible": [false,false,true,true,true,true,true,false,false],
   "DBcolinput": {

@@ -33,7 +33,8 @@ function submitJSON(pURL)
     s.type = "text/javascript";
     s.src = pURL;
     s.innerHTML = null;
-    s.id = "map";
+    s.id = "js"+Date.now();
+    s.name = "name"+Date.now();
     document.getElementById("output").innerHTML = "";
     document.getElementById("output").appendChild(s);
 };
@@ -41,11 +42,22 @@ function submitJSON(pURL)
 function checkIfSuccess() {
   // vReturnDB is a Hash that is defined in the server call of the remote script
   // if vReturnDB is defined then DB submit was successful other not
-  if (typeof(vReturnDB) !== 'undefined') {
-    alert("App Online - Type of vReturnDB: "+typeof(vReturnDB));
+  var vMSG = "App is OFFLINE\nNo Internet Connectivity or Server Down";
+  if (typeof(vConnectStatus[) !== 'undefined') {
+    if (vConnectStatus["OnlineMode"]) {
+      console.log("App Online - Type of vReturnDB FOUND: ");
+      //alert("App is Online");
+      top.setSelectOnline(true);
+    } else {
+      alert(vMSG);
+      console.log(vMSG);
+    };
   } else {
-    alert("App not Online");
+    alert(vMSG);
+    console.log(vMSG);
+    top.setSelectOnline(false);
   };
+  //document.location.href="empty.html";
 };
 
 if (vCallJS) {

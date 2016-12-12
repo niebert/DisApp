@@ -9,5 +9,5 @@
 //   alert("You are offline")
 //  };
 // </script>
-var vReturnDB = {};
-vReturnDB["OnlineMode"] = true;
+var vConnectStatus = {};
+vConnectStatus["OnlineMode"] = true;

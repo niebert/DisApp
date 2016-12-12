@@ -79,7 +79,7 @@
            <h1>Welcome</h1>
         </div>
         <!-- /header -->
-         <div data-role="content"><h3>Welcome to DisApp</h3>
+         <div data-role="content"><h1>Welcome to DisApp</h1>
          <table bgcolor="white" cellspacing="10px">
            <tr>
              <td>
@@ -98,18 +98,50 @@
             </td>
           </tr>
         </table>
-        <table cellspacing="10px">
+        <table width="95%" cellspacing="10px">
           <tr>
             <td>
+                <b>Online:</b>
+            </td>
+            <td>
+                <div id="tdOnlineMode">
+                ???
+                </div>
+            </td>
+            <td>
+              <!-- button onclick="checkOnlineMode()" >Check</button -->
+            </td>
+          </tr>
+          <tr>
+            <td  colspan="2">
               <button onclick="$.mobile.changePage( '#pDisclaimer', { transition: 'slideup', changeHash: false })"> Disclaimer </button>
             </td>
             <td>
-              <button onclick="checkDisclaimer4Submit()"> Submit Data </button>
+              <button onclick="checkDisclaimer4Submit()">Questionnaire</button>
             </td>
           </tr>
-        </table>
 
-         </div>
+            <!--
+            <td id="tdOnlineMode">
+              <select name="sOnlineMode" id="sOnlineMode" data-role="X_slider" onchange="selectOnlineMode(this.value)">
+                <option value="no">NO</option>
+                <option value="yes">YES</option>
+              </select>
+            </td>
+             -->
+        </table>
+      </div>
+    </div>
+    <div data-role="page" id="pDisclaimer">
+      <div data-role="header" data-position="fixed">
+         <a href="javascript:window.close()" data-theme="a">Close</a>
+         <h1>Disclaimer</h1>
+      </div>
+      <!-- /header -->
+      <div data-role="content">
+        <h3>Aedes Albopictus:</h3>
+
+     </div>
        </div>
        <div data-role="page" id="pDisclaimer">
          <div data-role="header" data-position="fixed">
@@ -118,7 +150,7 @@
          </div>
          <!-- /header -->
          <div data-role="content">
-           <h3>Disclaimer and Terms of Use</h3>
+           <h3>Disclaimer and Terms of Use:</h3>
            <table bgcolor="white" cellspacing="10px">
              <tr>
                <td>
@@ -131,11 +163,12 @@
                  to be a substitute for qualified medical advice.
                  No guarantee is made as to the accuracy of the provided risk estimate
                  and the developers are not liable in any way for any issues that may arise
-                 from your use of <b>Disapp</b>.
+                 from your use of <b>Disapp</b>. The collected data will be submitted
+                 to the following server.
                  <table width="100%">
                    <tr>
                      <td>
-                       Server:
+                       <b>Server:</b>
                     </td>
                     <td>
                       <div id="disclaimer_submiturl" style="display:none"></div>
@@ -144,13 +177,21 @@
                  </tr>
                  <tr>
                    <td>
-                     Database:
+                     <b>Database:</b>
                   </td>
                   <td>
                     <div id="disclaimer_database" style="display:none"></div>
                     <input type='text' id='save_database' name="save_database"  value='---' readonly="readonly">
                  </td>
                </tr>
+               <tr>
+                 <td>
+                   <b>Connect Status:</b>
+                </td>
+                <td>
+                  <div id="OffOnlineTag"> ??? </div>
+               </td>
+             </tr>
               </table>
 
               </td>
@@ -186,6 +227,7 @@
          <!-- /header -->
          <div data-role="content">
             <form name="send2appdb" id="send2appdb" action="http://www.example.com/cgi-bin/appdb/submitscript.php" >
+               <input type='hidden' id='app_database' name='database' value=''>
                <input type='hidden' id='currentGeolocation' name='currentGeolocation' value=''>
                <input type='hidden' id='app_email' name='email' value=''>
                <input type='hidden' id='app_usergroup' name='usergroup' value=''>
@@ -224,8 +266,10 @@
             </form>
             <br />
             <label id="errormsg" style="color:red"></label>
-            <br />
-            <iframe id="iLoader" src="loader/setonline.html" width="90%" height="100" name="iLoader"></iframe>
+            <div id="divJSCALL"></div>
+            <div id="iFrameContainer" style="display:none">
+              <iframe id="iLoader" src="loader/setonline.html" width="90%" height="100" name="iLoader"></iframe>
+            </div>
             <!--
             <iframe id="iLoader" src="./loader/empty.html" width="90%" height="100" name="iLoader"></iframe>
             -->

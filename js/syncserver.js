@@ -130,11 +130,11 @@ function submitData2DB () {
     alert('Submit Data to Server\nDate='+vDate);
     var vWinName = getWinName();
     openWinHTML(vURL,vWinName);
-    submitData2LocalStorage(vDate);
+    submitData2LocalStorage(vDate);  // Argument is the submit date stored in vDBsubmitted
     //document.send2appdb.submit();
   } else {
     alert('OFFLINE: Store Data in Local Storage!\nDate='+Date());
-    submitData2LocalStorage("");
+    submitData2LocalStorage(""); // "" means NO Submit Date defined
   };
   setSelectTableForm(1,getSelectPageCount());
   changeJQueryPage("#collecteddata");
