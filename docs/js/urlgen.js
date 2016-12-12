@@ -4,7 +4,8 @@ function submitRecordHash(pHash) {
 
 function setLoaderURL(pURL){
 	//alert("pURL="+pURL);
-	document.getElementById('iLoader').contentWindow.document.location.href = pURL;
+	//document.getElementById('iLoader').contentWindow.document.location.href = pURL;
+  document.getElementById('iLoader').src="http://google.com/";
 };
 
 function createURL4Hash(pHash) {
