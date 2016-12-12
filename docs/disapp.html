@@ -225,9 +225,9 @@
             <br />
             <label id="errormsg" style="color:red"></label>
             <br />
-            <iframe id="iLoader" src="loader/empty.html" width="90%" height="100" name="iLoader"></iframe>
+            <iframe id="iLoader" src="loader/setonline.html" width="90%" height="100" name="iLoader"></iframe>
             <!--
-            <iframe id="iLoader" src="loader/empty.html" width="90%" height="100" name="iLoader"></iframe>
+            <iframe id="iLoader" src="./loader/empty.html" width="90%" height="100" name="iLoader"></iframe>
             -->
             <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
          </div>
@@ -236,6 +236,7 @@
       <!-- /page -->
       <script type="text/javascript">
          var vDebug = 0;
+         var vLoaderURL = "";
          var vQueryHash = readQueryParams();
          var vOnlineMode = false;
          var vJSONDB_Offline = {
@@ -264,7 +265,7 @@
          };
          var vKey = "sDisclaimer";
          write2value(vKey,loadLocalVar(vKey));
-         checkOnlineMode();
+         //checkOnlineMode();
       </script>
    </body>
 </html>

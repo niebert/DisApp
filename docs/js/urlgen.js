@@ -2,10 +2,12 @@ function submitRecordHash(pHash) {
 
 }
 
-function setLoaderURL(pURL){
+function setLoaderURL(pURL,pLoader){
 	//alert("pURL="+pURL);
-	//document.getElementById('iLoader').contentWindow.document.location.href = pURL;
-  document.getElementById('iLoader').src="http://google.com/";
+  top.vLoaderURL = pURL;
+  //document.getElementById('iLoader').contentWindow.document.location.href = "http://www.google.com";
+  document.getElementById('iLoader').src = "http://www.google.com";
+  //document.getElementById('iLoader').src="loader/callback.html?callbackurl="+encodeURLparam(pURL);
 };
 
 function createURL4Hash(pHash) {

@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Time: 2016/12/12 06:39:03
+# Time: 2016/12/12 09:19:52
 
 CACHE:
 css/disapp.css
@@ -154,9 +154,10 @@ js/string.js
 js/syncserver.js
 js/urlgen.js
 js/writedom.js
+loader/callback.html
 loader/empty.html
-loader/setonline.html
-loader/success.html
+loader/onlinecheck.js
+loader/submitjson.html
 localsurvey.html
 
 NETWORK:

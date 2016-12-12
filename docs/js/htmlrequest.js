@@ -1,6 +1,6 @@
 function onLoadApp() {
   readWriteQueryParams();
-  setOnlineMode(vOnlineMode);
+  //setOnlineMode(vOnlineMode);
 };
 
 function getQueryParams(qs) {

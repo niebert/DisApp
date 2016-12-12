@@ -1,12 +1,11 @@
 <HTML>
 <HEAD>
-   <TITLE>Set Online Mode  - Frame</TITLE>
+   <TITLE>Submit JSON Frame - App</TITLE>
      <meta http-equiv="Content-Type" content="text/html; charset=utf8">
-     <script type="text/javascript" src="../js/htmlrequest.js"></script>
 
 <!--
 #################################################
-# Set Online Mode - Frame
+# App - Submit JSON Frame
 # Javascript Software Package
 # email: niehaus@uni-landau.de
 # created               8.8.2014
@@ -18,14 +17,10 @@
 </HEAD>
 <BODY bgcolor="#EEEEEE">
 <!--- Empty Frame --->
-
 <div id="output">
 </div>
 
 <script type="text/javascript">
-
-var vCallJS = "https://niebert.github.io/DisApp/loader/onlinecheck.js";
-console.log("CALL: setonline.html with "+vCallJS);
 
 function submitJSON(pURL)
 {
@@ -41,20 +36,24 @@ function submitJSON(pURL)
 function checkIfSuccess() {
   // vReturnDB is a Hash that is defined in the server call of the remote script
   // if vReturnDB is defined then DB submit was successful other not
-  if (typeof(vReturnDB) !== 'undefined') {
-    alert("App Online - Type of vReturnDB: "+typeof(vReturnDB));
+  if (vReturnDB) {
+    alert("successful");
   } else {
-    alert("App not Online");
+    alert("not successful");
   };
 };
 
-if (vCallJS) {
-    console.log("submitJSON()-Call JSON URL: "+vCallJS);
-    submitJSON(vCallJS);
-} else {
+var vQueryHash = readQueryParams();
+if (vQueryHash) {
+  if (vQueryHash["calljson"]) {
+    console.log("Navigate to Call JSON URL: "+vQueryHash["calljson"]);
+    submitJSON(vQueryHash["callbackurl"]);
+  } else {
     console.log("Call JSON URL undefined");
+  };
+} else {
+  console.log("QueryHash in submitjson.html not defined");
 };
-
 setTimeout("checkIfSuccess()",5000);
 </script>
 </BODY>

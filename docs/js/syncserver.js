@@ -1,12 +1,22 @@
 function checkOnlineMode() {
-    var vURL = "https://niebert.github.io/DisApp/loader/checkonline.html";
+    var vCallJS = "https://niebert.github.io/DisApp/loader/onlinecheck.js";
+    alert("CallJS URL: "+vCallJS);
+    top.vLoaderURL = vCallJS;
+    //vURL +="loader/setonline.html?calljson="+encodeURLparam(vCallJS);
+    var vURL = "loader/setonline.html";
+    setLoaderURL(vURL);
+};
+
+
+function X_checkOnlineMode() { //Cross Origine Policy violate with this call
+    var vURL = "https://niebert.github.io/DisApp/loader/callback.html";
     // var vCallBack = removeParameters(document.location.href);
     var vCallBack = extractPath(document.location.href);
     vCallBack += "/loader/setonline.html";
     alert("CallBack URL: "+vCallBack);
     vURL +="?callbackurl="+encodeURLparam(vCallBack);
     setLoaderURL(vURL);
-}
+};
 
 
 function syncData2Server() {
