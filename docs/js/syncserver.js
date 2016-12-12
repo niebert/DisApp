@@ -1,3 +1,13 @@
+function checkOnlineMode() {
+    var vURL = "https://niebert.github.io/DisApp/loader/checkonline.html";
+    // var vCallBack = removeParameters(document.location.href);
+    var vCallBack = extractPath(document.location.href);
+    vCallBack += "/loader/setonline.html";
+    alert("CallBack URL: "+vCallBack);
+    vURL +="?callbackurl="+encodeURLparam(vCallBack);
+    setLoaderURL(vURL);
+}
+
 
 function syncData2Server() {
   pJSONDB_Offline["LastSyncLine"] = -1;
@@ -20,6 +30,18 @@ function syncNextRecord() {
     setTimeout("syncNextRecord()",800);
   }
 }
+
+function updateDOM(pQuery) {
+  // pQuery is the Query String of the document location
+  //$("#app_database").value = pQuery["app_database"]; //$("#database").value;
+  //document.getElementById("app_submiturl").value = pQuery["app_submiturl"];
+  //var vNode = document.getElementById("send2appdb");
+  //if (vNode) {
+  	//vNode.setAttribute("action",pQuery["app_database"]);
+  //};
+  $('#send2appdb').attr('action', pQuery["app_database"]);
+  //$("#send2appdb").action  = $("#app_database").value;
+};
 
 function syncDataExists () {
   // check  if Data exists ind JSONDB_Offline  that is not synced.

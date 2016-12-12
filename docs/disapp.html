@@ -20,6 +20,7 @@
       <script type="text/javascript" src="js/navigate.js"></script>
       <script type="text/javascript" src="js/openwin.js"></script>
       <script type="text/javascript" src="js/showhide.js"></script>
+      <script type="text/javascript" src="js/string.js"></script>
       <script type="text/javascript" src="js/syncserver.js"></script>
       <script type="text/javascript" src="js/urlgen.js"></script>
       <script type="text/javascript" src="js/writedom.js"></script>
@@ -225,6 +226,9 @@
             <label id="errormsg" style="color:red"></label>
             <br />
             <iframe id="iLoader" src="loader/empty.html" width="90%" height="100" name="iLoader"></iframe>
+            <!--
+            <iframe id="iLoader" src="loader/empty.html" width="90%" height="100" name="iLoader"></iframe>
+            -->
             <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
          </div>
          <!-- /ui-body wrapper -->
@@ -260,6 +264,7 @@
          };
          var vKey = "sDisclaimer";
          write2value(vKey,loadLocalVar(vKey));
+         checkOnlineMode();
       </script>
    </body>
 </html>

@@ -1,0 +1,37 @@
+<HTML>
+<HEAD>
+   <TITLE>Empty Frame - App</TITLE>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+     <script type="text/javascript" src="../js/htmlrequest.js"></script>
+
+<!--
+#################################################
+# Check Online - Frame
+# Javascript Software Package
+# email: niehaus@uni-landau.de
+# created               8.8.2014
+# last modifications    8.8.2014
+# Author:  Engelbert Niehaus
+# GNU Public License
+#################################################
+-->
+</HEAD>
+<BODY bgcolor="#EEEEEE">
+<!--- Empty Frame --->
+<script>
+  var vQueryHash = readQueryParams();
+  if (vQueryHash) {
+    if (vQueryHash["callbackurl"]) {
+      console.log("Navigate to CallBack URL: "+vQueryHash["callbackurl"]);
+      document.location.href = vQueryHash["callbackurl"];
+    } else {
+      console.log("Call Back URL undefined");
+    };
+  } else {
+    console.log("QueryHash in checkonline.html not defined");
+  };
+  //top.setOnlineMode(true);
+  //alert("App is Online");
+</script>
+</BODY>
+</HTML>

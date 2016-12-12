@@ -20,7 +20,7 @@ function getQueryParams(qs) {
 function readQueryParams() {
    //alert(document.location.search);
    return getQueryParams(document.location.search);
- }
+ };
 
 function readWriteQueryParams() {
     //reads the Query Parameters of URL and write the Variables to the form elements of HTML page
@@ -37,17 +37,6 @@ function readWriteQueryParams() {
     };
     updateDOM(vQuery);
 }
-
-function updateDOM(pQuery) {
-  //$("#app_database").value = pQuery["app_database"]; //$("#database").value;
-  //document.getElementById("app_submiturl").value = pQuery["app_submiturl"];
-  //var vNode = document.getElementById("send2appdb");
-  //if (vNode) {
-  	//vNode.setAttribute("action",pQuery["app_database"]);
-  //};
-  $('#send2appdb').attr('action', pQuery["app_database"]);
-  //$("#send2appdb").action  = $("#app_database").value;
-};
 
 function X_encodeURLparam(pParam) {
   return pParam.replace(/&/g," ");
