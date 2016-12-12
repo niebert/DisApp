@@ -29,16 +29,6 @@ function openSubmitWinHTML() {
   //detects the Geolocation and uses openSubmitLocationHTML() as callback
     retrieveLocation(openSubmitLocationHTML);
 }
-function getSubmitURLbasic(pAction) {
-  var vAction = pAction || "subscribeappform";
-  var vQueryHash = readQueryParams();
-  var vURL = getValueDOM("app_submiturl");
-  var vDB  = getValueDOM("app_database");
-  //alert("getSubmitURLbasic():openwin.js\nvURL:"+vURL+"\nvDB:"+vDB+"\nactio="+vAction);
-  vURL+="?database="+vDB;
-  vURL+=appendURIvalue("action",vAction);
-  return vURL;
-}
 
 function openSubmitLocationHTML(pPosition) {
   //Open a Submit Browser Window and presets the values for username, email and current geolocation

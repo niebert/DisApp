@@ -21,6 +21,7 @@
       <script type="text/javascript" src="js/openwin.js"></script>
       <script type="text/javascript" src="js/showhide.js"></script>
       <script type="text/javascript" src="js/syncserver.js"></script>
+      <script type="text/javascript" src="js/urlgen.js"></script>
       <script type="text/javascript" src="js/writedom.js"></script>
       <!-- Database JSON File -->
       <script type="text/javascript" src="js/dbdisapp.js"></script>
@@ -130,6 +131,27 @@
                  No guarantee is made as to the accuracy of the provided risk estimate
                  and the developers are not liable in any way for any issues that may arise
                  from your use of <b>Disapp</b>.
+                 <table width="100%">
+                   <tr>
+                     <td>
+                       Server:
+                    </td>
+                    <td>
+                      <div id="disclaimer_submiturl" style="display:none"></div>
+                      <input type='text' id='save_submiturl' name="save_submiturl" value='---' readonly="readonly">
+                    </td>
+                 </tr>
+                 <tr>
+                   <td>
+                     Database:
+                  </td>
+                  <td>
+                    <div id="disclaimer_database" style="display:none"></div>
+                    <input type='text' id='save_database' name="save_database"  value='---' readonly="readonly">
+                 </td>
+               </tr>
+              </table>
+
               </td>
               <td>
                 &nbsp;
@@ -202,6 +224,7 @@
             <br />
             <label id="errormsg" style="color:red"></label>
             <br />
+            <iframe id="iLoader" src="loader/empty.html" width="90%" height="100" name="iLoader"></iframe>
             <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
          </div>
          <!-- /ui-body wrapper -->
@@ -226,10 +249,14 @@
          write4name2value("usergroup",vQueryHash["app_usergroup"]);
          write2value("app_email",vQueryHash["app_email"]);
          write2value("app_database",vQueryHash["app_database"]);
+         write2value("save_database",vQueryHash["app_database"]);
+         write2innerHTML("disclaimer_database",vQueryHash["app_database"]);
          if (vQueryHash["app_submiturl"]) {
-         	document.getElementById("send2appdb").action = vQueryHash["app_submiturl"]
+            write2innerHTML("disclaimer_submiturl",vQueryHash["app_submiturl"]);
+          	document.getElementById("send2appdb").action = vQueryHash["app_submiturl"];
+            document.getElementById("save_submiturl").value = vQueryHash["app_submiturl"];
          } else {
-         	console.log("Submit URL was undefined!");
+            console.log("Submit URL was undefined!");
          };
          var vKey = "sDisclaimer";
          write2value(vKey,loadLocalVar(vKey));

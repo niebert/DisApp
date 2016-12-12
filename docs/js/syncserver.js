@@ -1,3 +1,4 @@
+
 function syncData2Server() {
   pJSONDB_Offline["LastSyncLine"] = -1;
   var vPerformSync = vOnlineMode;
@@ -81,14 +82,9 @@ function convertHash2Array(pDBhash) {
   return vDBarray;
 };
 
-
-
 function readRecord2URLparam() {
   var vDBHash = readRecord2Hash();
-  var vParam = "";
-  for (var iID in vDBHash) {
-    vParam += "&"+iID+"="+encodeURLparam(vDBHash[iID]);
-  };
+  var vParam = record2URLparam(pDBHash);
   return vParam;
 }
 

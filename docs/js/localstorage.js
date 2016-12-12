@@ -266,7 +266,7 @@ function saveLocalVar(pKey,pValue) {
   }	 else {
     console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
   }
-}
+};
 
 function loadLocalVar(pKey) {
  var vReturn = "";

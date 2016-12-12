@@ -6,8 +6,9 @@ $APPURL = "http://niebert.github.io/DisApp";
 #@FILE_MATCH = ('\.pcx','\.PCX');
 #@FILE_MATCH = ('\.html','\.htm');
 #@FILE_MATCH = ();
-@FILE_EXCLUDE = ('\.doc','\.docx','\.odt'.'\.appcache','\.DS_Store');
-@DIR_EXCLUDE = ("search_data","niehaus");
+@FILE_EXCLUDE = ('\.doc','\.docx','\.odt','\.appcache','\.DS_Store');
+@DIR_EXCLUDE = ("search_data","x_niehaus");
+$RELATIVEURL = "1";
 ###################################################################
 
 #################################################
@@ -23,7 +24,11 @@ sub handle_file {
 	my $find = $STARTDIR;
 	my $replace = $APPURL;
 	$find = quotemeta $find; # escape regex metachars if present
-	$vOUTPUTfile =~ s/$find/$replace/g;
+	if ($RELATIVEURL == "1") {
+		$vOUTPUTfile =~ s/$find\///g;
+	} else {
+		$vOUTPUTfile =~ s/$find/$replace/g;
+	};
 	# $vOUTPUTfile =~ s/\.pcx$/\.pdf/g;
 	# $vHELPfile = $vINPUTfile;
 	# $vHELPfile =~ s/\.pcx$/temp\.jpg/g;
@@ -47,7 +52,7 @@ open (OUTFILE,">docs/disapp.appcache");
 #print OUTFILE "$fileline \n";
 print OUTFILE "CACHE MANIFEST\n";
 print OUTFILE "\n";
-print OUTFILE "# Time:".&getGenerateTime()."\n";
+print OUTFILE "# Time: ".&getGenerateTime()."\n";
 print OUTFILE "\n";
 print OUTFILE "CACHE:\n";
 
@@ -55,12 +60,13 @@ print OUTFILE "CACHE:\n";
 
 print OUTFILE "\n";
 print OUTFILE "NETWORK:\n";
+print OUTFILE " * \n";
 close (OUTFILE);
 print "Searching finished.\n";
 
 sub search {
   my $dir = $_[0];
-  &search_match($dir);
+  # &search_match($dir);
   &search_exclude($dir);
 };
 
@@ -89,9 +95,11 @@ sub search_exclude {
     	  	if ($file =~ m/$regexp$/) {
     	  		$fileIsMatching++;
     	  	};
-   		}
+   		};
 		if ($fileIsMatching == 0) {
     		&handle_file($file);
+    	} else {
+    	   	print "MATCH-X $file excluded form search\n";
     	};
     } else {
     ########### DIRECTORY ##################
@@ -145,6 +153,8 @@ sub search_match {
    		}
 		if ($fileIsMatching > 0) {
     		&handle_file($file);
+    	} else {
+    	   	print "MATCH-X $file excluded form search\n";
     	};
     } else {
     ########### DIRECTORY ##################
@@ -154,7 +164,7 @@ sub search_match {
     		$dirIsMatching = 0;
  			foreach my $regexp (@DIR_EXCLUDE) {
 				### "$" in Regular Expression determines End of String "myfile.txts" would not match "\.txt$"
-    	  		if ($directory =~ m/$regexp/) {
+    	  		if ($directory =~ m/$regexp$/) {
     	  			$dirIsMatching++;
     	  		};
     	  	};
@@ -171,7 +181,17 @@ sub search_match {
 sub getGenerateTime {
 
     my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
-    my $nice_timestamp = sprintf ( "%04d%02d%02d %02d:%02d:%02d",
+    my $nice_timestamp = sprintf ( "%04d/%02d/%02d %02d:%02d:%02d",
                                    $year+1900,$mon+1,$mday,$hour,$min,$sec);
     return $nice_timestamp;
+}
+
+sub X_getGenerateTime {
+	@months = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
+	@days = qw(Sun Mon Tue Wed Thu Fri Sat Sun);
+	$year += 1900;
+	$mon += 1;
+	($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
+	return "$year/$mon/$mday  $hour:$min:$sec";
+	#return "$days[$wday] $mday. $months[$mon] $year - $hour:$min:$se";
 }

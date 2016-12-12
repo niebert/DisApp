@@ -37,7 +37,8 @@ function checkForm() {
     };
   };
   if (vSubmit) {
-    document.send2appdb.submit();
+    //document.send2appdb.submit();
+    
   } else {
     showErrorMessage("INPUT ERROR:"+vMSG);
     return false;

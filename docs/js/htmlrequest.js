@@ -49,11 +49,11 @@ function updateDOM(pQuery) {
   //$("#send2appdb").action  = $("#app_database").value;
 };
 
-function encodeURLparam(pParam) {
+function X_encodeURLparam(pParam) {
   return pParam.replace(/&/g," ");
 }
 
-function X_encodeURLparam(pParam) {
+function encodeURLparam(pParam) {
 	return encodeURIComponent(pParam).replace(/'/g,"%27").replace(/"/g,"%22");
 };
 
