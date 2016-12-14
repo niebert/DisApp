@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Time: 2016/12/14 13:07:11
+# Time: 2016/12/14 17:03:25
 
 CACHE:
 css/disapp.css
@@ -152,6 +152,7 @@ js/login.js
 js/mathcode.js
 js/navigate.js
 js/openwin.js
+js/settings.js
 js/showhide.js
 js/string.js
 js/syncserver.js

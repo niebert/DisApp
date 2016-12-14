@@ -99,6 +99,12 @@ function submitForm2JSON(pDatabase,pType) {
 
 function submitJSON(pURL)
 {
+  gotoPageJQ("Wait");
+  submitJSON_exec(pURL);
+}
+
+function submitJSON_exec(pURL)
+{
     // submitJSON() loads a javascript lib from Server
     // that return a JS Lib with a hash variable vReturnDB
     // vReturnDB looks like this:

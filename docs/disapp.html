@@ -296,9 +296,11 @@
        </div>
        <!-- /header -->
       <div data-role="content">
-            <script  type="text/javascript">
+        <ul data-role='listview' data-inset='true'>
+           <script  type="text/javascript">
               printAllFeedback();
            </script>
+        </ul>
       </div>
   </div>
    <!--
@@ -409,6 +411,24 @@
      </div>
      <!--
      =============================================
+              WAIT FOR SERVER
+     =============================================
+      -->
+     <div data-role="page" id="pWait">
+
+      <div data-role="header" data-position="fixed">
+        <h1>Connect</h1>
+        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+      </div><!-- /header -->
+
+      <div data-role="content">
+          <h1>Connect to Server:</h1>
+          <h2>Try to submit data to server<br>Please wait ...</h2>
+      </div>
+
+     </div>
+     <!--
+     =============================================
               Settings
      =============================================
       -->
@@ -438,6 +458,56 @@
 
      <!--
      =============================================
+              ACKNOWLEDGMENT
+     =============================================
+      -->
+
+
+
+     <div data-role="page" id="pAcknowledgements" data-theme="b">
+
+     	<div data-role="header" data-position="fixed">
+     		<h1>Acknowledgements</h1>
+     		<a href="#" data-rel="back">Back</a>
+     	</div><!-- /header -->
+
+     	<div data-role="content">
+     		<ul>
+          <li>
+     				<b>iOS-Inspired jQuery Mobile theme</b> by <a href="http://twitter.com/taitems" target="_blank">@taitems</a>. Resources at <a href="https://github.com/taitems/iOS-Inspired-jQuery-Mobile-Theme" target="_blank">GitHub page</a>.
+     			</li>
+          <li>
+     				<b>Ajit N. Babu</b> for Work flow development
+     			</li>
+          <li>
+     				<b>Jitendra Shah</b> for Backend Development
+     			</li>
+          <li>
+     				<b>Suray Shah</b> for Backend Development
+     			</li>
+          <li>
+     				<b>Arnav Puri</b> for Backend/App Development, ODKJS API
+     			</li>
+          <li>
+            <b>Chandana Unitthan</b> for Project Management Support
+          </li>
+          <li>
+     				<b>Joerg Rapp</b> Spatial Analysis
+     			</li>
+     			<li>
+     				<b>Biju Soman</b> for Public Health Support in Pilot Region
+     			</li>
+     			<li>
+     				Joseph Wain for iOS style Icons  <a href="http://www.glyphish.com" target="_blank">glyphish.com</a>. Licensed under the <a href="http://creativecommons.org/licenses/by/3.0/us/" target="_blank">Creative Commons Attribution 3.0 United States License</a>.
+     			</li>
+     		</ul>
+
+     	</div>
+
+     </div>
+
+     <!--
+     =============================================
               HOME
      =============================================
       -->
@@ -459,7 +529,7 @@
           <li><a href="#pResponseOptions">Ways to Stop Dengue</a></li>
     			<li><a href="#pSendFeedback">Send DisApp Feedback</a></li>
     			<li><a href="#pSettings">Settings</a></li>
-    			<li><a href="#acknowledgements">Acknowledgements</a></li>
+    			<li><a href="#pAcknowledgements">Acknowledgements</a></li>
     		</ul>
     		<p>Please use Firefox for App (<a href="https://www.mozilla.org" target="_blank">Firefox-Homepage</a>)</p>
 
