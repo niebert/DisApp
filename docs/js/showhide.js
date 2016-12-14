@@ -30,7 +30,7 @@ function setPage(pButtonID) {
 	};
 	show(pButtonID+"Page");
 	setColorSelected(pButtonID);
-}
+};
 
 function setColorSelected(pButtonID) {
 	setButtonColor(pButtonID,"#3D8CD1");

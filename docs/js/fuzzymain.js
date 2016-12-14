@@ -1,0 +1,1 @@
+// Fuzzy Calculation JS-Class 

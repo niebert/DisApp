@@ -1,5 +1,5 @@
 function submitRecordHash(pHash) {
-
+  console.log("submitRecordHash() has no implementation yet");
 }
 
 
@@ -44,13 +44,13 @@ function record2URLparam(pDBHash) {
   return vParam;
 }
 
-function getSubmitURLbasic(pAction) {
+function getSubmitURLbasic(pAction,pDatabase) {
+  var vDB = pDatabase || vQueryHash["app_database"];
   var vAction = pAction || "subscribeappform";
   //var vQueryHash = readQueryParams();
   //var vURL = getValueDOM("save_submiturl");
   //var vDB  = getValueDOM("app_database");
   var vURL = vQueryHash["app_submiturl"];
-  var vDB  = vQueryHash["app_database"];
   //alert("getSubmitURLbasic():openwin.js\nvURL:"+vURL+"\nvDB:"+vDB+"\nactio="+vAction);
   vURL+="?database="+vDB;
   vURL+=appendURIvalue("action",vAction);

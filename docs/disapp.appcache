@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Time: 2016/12/12 23:28:12
+# Time: 2016/12/14 13:07:11
 
 CACHE:
 css/disapp.css
@@ -17,6 +17,10 @@ css/images/tiling_stripes.gif
 css/ios_inspired.css
 css/jquery.mobile-1.2.0.min.css
 css/leaflet.css
+db/dbdisapp.js
+db/dbfeedback.js
+db/dblocalsurvey.js
+db/dbresponse.js
 disapp.html
 images/action-black.png
 images/action-white.png
@@ -132,9 +136,9 @@ ios_inspired/images/tabSprite.png
 ios_inspired/images/tick.png
 ios_inspired/images/tiling_stripes.gif
 ios_inspired/styles.css
-js/dbdisapp.js
-js/dblocalsurvey.js
 js/fullscreen.js
+js/fuzzylayer.js
+js/fuzzymain.js
 js/geolocation.js
 js/htmlrequest.js
 js/jquery-1.7.1.min.js
@@ -158,6 +162,7 @@ loader/empty.html
 loader/onlinecheck.js
 loader/submitjson.html
 localsurvey.html
+map4location.html
 
 NETWORK:
  * 

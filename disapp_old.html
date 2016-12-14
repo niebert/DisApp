@@ -126,9 +126,10 @@
 			var vQueryHash = readQueryParams();
 			var vOnlineMode = false;
 			var vJSONDB_Offline = {
+        DBformat: [],
 				DBlines: [],
-				DBsynced: [],
-				DBformat: []
+        DBsubmitted: [],
+        DBsampledate: []
 			};
 			handleLocalJSONDB(vQueryHash);
 			handleOfflineJSONDB(vQueryHash);

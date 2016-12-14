@@ -128,8 +128,8 @@ function submitData2DB () {
   if (vOnlineMode == true) {
     var vDate = getDate4DB();
     alert('Submit Data to Server\nDate='+vDate);
-    var vWinName = getWinName();
-    openWinHTML(vURL,vWinName);
+    //var vWinName = getWinName();
+    //openWinHTML(vURL,vWinName);
     submitData2LocalStorage(vDate);  // Argument is the submit date stored in vDBsubmitted
     //document.send2appdb.submit();
   } else {

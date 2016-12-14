@@ -1,3 +1,6 @@
+//---------------------------------------------
+//---1 checkForm
+//---------------------------------------------
 function checkForm() {
   document.getElementById("errormsg").innerHTML = "";
   var vForm = document.send2appdb.elements;
@@ -39,21 +42,25 @@ function checkForm() {
   if (vSubmit) {
     //document.send2appdb.submit();
     if (vOnlineMode) {
-      alert("Submit Online - please wait ...");
+      //alert("Submit Online - please wait ...");
       submitForm2JSON();
     } else {
       alert("Submit Offline");
-    }
+    };
   } else {
     showErrorMessage("INPUT ERROR:"+vMSG);
     return false;
   };
 };
+//---------------------------------------------
+//---2 printAllQuestions
+//---------------------------------------------
 
 function printAllQuestions() {
   // the IDprefix is inserted before all DOM element IDs
   document.write(createAllQuestions("app_"));
 };
+
 
 function createAllQuestions(pIDprefix) {
   var vIDprefix = pIDprefix || "app_";
@@ -72,7 +79,87 @@ function createAllQuestions(pIDprefix) {
     if (vDBvisible[i]) {
       vCount++;
       //document.write("<li>"+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+"</li>");
-      vOut += "<li>("+vCount+") "+vDBtitles[i]+"<br> "+vDBcolinput[vID]+" </li>";
+      vOut += "<li id='FORMVAR"+vCount+"'>("+vCount+") "+vDBtitles[i]+"<br> "+vDBcolinput[vID]+" </li>";
+      //alert(vDBformat[i]+" visible");
+    } else {
+      //alert(vDBformat[i]+" not visible");
+      if (vDebug > 0) {
+        vOut += vID+": ";
+      };
+      vOut += "<input type='"+vType+"' name='"+vID+"' id='\""+vIDprefix+vID+"' style='\"display:none\"'>";
+    };
+  };
+  return vOut;
+};
+//---------------------------------------------
+//---3 printAllResponses
+//---------------------------------------------
+
+function printAllResponses() {
+  // the IDprefix is inserted before all DOM element IDs
+  document.write(createAllResponses("response_"));
+};
+
+function createAllResponses(pIDprefix) {
+  var vIDprefix = pIDprefix || "response_";
+  var vOut = "";
+  vOut += createResponses(pIDprefix,"home");
+  vOut += createResponses(pIDprefix,"yourself");
+  vOut += createHiddenFormJSON(pIDprefix,["email","usergroup","geolocation","moddate","recdate"]);
+  vOut += "<button id='bSubmitResponses' onclick='submitResponseJSON()'>Submit Response</button>";
+  return vOut;
+};
+
+function createResponses(pIDprefix,pDBID) {
+  //  ("response_","home")
+  console.log("createResponses('"+pIDprefix+"','"+pDBID+"')");
+  var vResonseArr = vResponseDB[pDBID];
+  var vTitle      = vResponseDB["id2title"][pDBID];
+  var vTPLID      = vResponseDB["id2select"][pDBID];
+  var vSelectTPL  = vResponseDB["select"][vTPLID];
+  var vCount = 0;
+  var vOut = "";
+  vOut+="<h2 id='h2TITLE"+pDBID+"'>"+vTitle+"</h2>";
+  vOut+="<ul id='listview"+pDBID+"' data-role='listview' data-inset='true'>";
+  var vSelect = "";
+  for (var i=0;i<vResonseArr.length;i++) {
+      vCount++;
+      vSelect = replaceString(vSelectTPL,"___COUNT___",pIDprefix+pDBID+vCount);
+      //document.write("<li>"+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+"</li>");
+      vOut += "<li id='FORMVAR"+pIDprefix+vCount+"'>("+vCount+") "+vResonseArr[i]+"<br> "+vSelect+" </li>";
+      //alert(vDBformat[i]+" visible");
+  };
+  vOut+="</ul>";
+  return vOut;
+};
+//---------------------------------------------
+//---4 printAllFeedback
+//---------------------------------------------
+
+function printAllFeedback() {
+  // the IDprefix is inserted before all DOM element IDs
+  document.write(createAllFeedback("feedback_"));
+};
+
+
+function createAllFeedback(pIDprefix) {
+  var vIDprefix = pIDprefix || "feedback_";
+  var vOut = "";
+  var vDBformat   = vFeedbackDB["DBformat"];
+  var vDBtitles   = vFeedbackDB["DBtitles"];
+  var vDBcolinput = vFeedbackDB["DBcolinput"];
+  var vDBvisible  = vFeedbackDB["DBvisible"];
+  var vCount = 0;
+  var vType ="hidden";
+  if (vDebug > 0) {
+    vType="text";
+  };
+  for (var i=0;i<vDBformat.length;i++) {
+    vID = vDBformat[i];
+    if (vDBvisible[i]) {
+      vCount++;
+      //document.write("<li>"+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+"</li>");
+      vOut += "<li id='FORMVAR"+vCount+"'>("+vCount+") "+vDBtitles[i]+"<br> "+vDBcolinput[vID]+" </li>";
       //alert(vDBformat[i]+" visible");
     } else {
       //alert(vDBformat[i]+" not visible");
@@ -85,22 +172,8 @@ function createAllQuestions(pIDprefix) {
   return vOut;
 };
 
-
-function divmod(pDividend,pDivisor) {
-  var vQuotient = 0;
-  if (pDivisor > 0) {
-      while (pDividend > pDivisor) {
-        pDividend = pDividend - pDivisor;
-        vQuotient++;
-      }
-  } else {
-    console.log("ERROR (divmod): Divisor is not greater 0");
-  };
-  return vQuotient;
-}
-
 function createSubmitFormJSON() {
-  if (typeof(vJSONDB) != undefined) {
+  if (typeof(vJSONDB) !== undefined) {
     var vMax4Page = 4;
     createDatabaseHTML4JSON("Form",vMax4Page);
     printFormPages(vMax4Page);
@@ -110,7 +183,7 @@ function createSubmitFormJSON() {
 };
 
 function createDisplayFormJSON() {
-  if (typeof(vJSONDB) != undefined) {
+  if (typeof(vJSONDB) !== undefined) {
     var vMax4Page = 4;
     createDatabaseHTML4JSON("Display",vMax4Page);
     printDisplayPages(vMax4Page);
@@ -471,19 +544,20 @@ function fillContentRecordDB(pIndex) {
 function getItem4DisplayDB(pIndex,pDBhash) {
   var vCount = pIndex + 1;
   var vLabel = pDBhash["sampledate"];
-  return "<li><a href='#displaydbrecord' onclick=\"fillContentRecordDB("+pIndex+");alert('Display Record "+vCount+"')\">"+vCount+" "+vLabel+"</a></li>";
+  return "<li><a href='#pDisplayRecord' onclick=\"fillContentRecordDB("+pIndex+");alert('Display Record "+vCount+"')\">"+vCount+" "+vLabel+"</a></li>";
 };
 
-function createHiddenFormJSON() {
+function createHiddenFormJSON(pDBType,pArrID) {
+  var vDBType = pDBType || "app_";
+  var vArrID = pArrID || ["email","usergroup","geolocation","recdate","moddate"];
   var vType ="hidden";
+  var vOut = "";
+  var vDebugLabel = "";
   if (vDebug > 0) {
     vType="text";
   };
-
-  document.write('<input type="'+vType+'" name="recdate"  value="'+Date()+'" />');
-  document.write('<input type="'+vType+'" name="moddate"  value="'+Date()+'" />');
-
-  document.write('<input type="'+vType+'" name="email"  id="form_email" value="email-unknown" />');
-  document.write('<input type="'+vType+'" name="username" id="form_username" value="username-unknown" />');
-
+  for (var i = 0; i < pArrID.length; i++) {
+    vOut += '<input type="'+vType+'" name="'+vArrID[i]+'" id="'+vDBType+vArrID[i]+'" value="" />';
+  };
+  return vOut;
 }

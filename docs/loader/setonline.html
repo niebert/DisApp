@@ -43,13 +43,13 @@ function checkIfSuccess() {
   // vReturnDB is a Hash that is defined in the server call of the remote script
   // if vReturnDB is defined then DB submit was successful other not
   var vMSG = "App is OFFLINE\nNo Internet Connectivity or Server Down";
-  if (typeof(vConnectStatus[) !== 'undefined') {
+  if (typeof(vConnectStatus) !== 'undefined') {
     if (vConnectStatus["OnlineMode"]) {
-      console.log("App Online - Type of vReturnDB FOUND: ");
+      console.log("App Online: vConnectStatus returned from Server");
       //alert("App is Online");
       top.setSelectOnline(true);
     } else {
-      alert(vMSG);
+      alert(vMSG+" - Hash 'vConnectStatus'exists");
       console.log(vMSG);
     };
   } else {
@@ -58,6 +58,13 @@ function checkIfSuccess() {
     top.setSelectOnline(false);
   };
   //document.location.href="empty.html";
+};
+
+if (typeof(vConnectStatus) !== 'undefined') {
+  console.log("vConnectStatus exists prior to call");
+  vConnectStatus = null;
+} else {
+  console.log("vConnectStatus is undefined prior to submitJSON()-Call");
 };
 
 if (vCallJS) {

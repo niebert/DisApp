@@ -1,3 +1,11 @@
+function lengthObject(pObject) {
+    var count = 0;
+    for (var i=0;i<pObject.length;i++) {
+      ++count;
+    };
+    return count;
+};
+
 function showErrorMessage(pMSG) {
   console.log("Show Error Message");
   document.getElementById("errormsg").innerHTML = pMSG;

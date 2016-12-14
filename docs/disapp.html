@@ -13,19 +13,24 @@
       <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
       <script type="text/javascript" src="js/login.js"></script>
       <script type="text/javascript" src="js/fullscreen.js"></script>
+      <script type="text/javascript" src="js/fuzzymain.js"></script>
+      <script type="text/javascript" src="js/fuzzylayer.js"></script>
       <script type="text/javascript" src="js/jsondb.js"></script>
       <script type="text/javascript" src="js/geolocation.js"></script>
       <script type="text/javascript" src="js/htmlrequest.js"></script>
       <script type="text/javascript" src="js/localstorage.js"></script>
       <script type="text/javascript" src="js/navigate.js"></script>
       <script type="text/javascript" src="js/openwin.js"></script>
+      <script type="text/javascript" src="js/settings.js"></script>
       <script type="text/javascript" src="js/showhide.js"></script>
       <script type="text/javascript" src="js/string.js"></script>
       <script type="text/javascript" src="js/syncserver.js"></script>
       <script type="text/javascript" src="js/urlgen.js"></script>
       <script type="text/javascript" src="js/writedom.js"></script>
       <!-- Database JSON File -->
-      <script type="text/javascript" src="js/dbdisapp.js"></script>
+      <script type="text/javascript" src="db/dbdisapp.js"></script>
+      <script type="text/javascript" src="db/dbresponse.js"></script>
+      <script type="text/javascript" src="db/dbfeedback.js"></script>
       <script>
          // all dialog buttons should close their parent dialog
          $(".ui-dialog button").live("click", function() {
@@ -37,47 +42,22 @@
          var vDebug = 0;
       </script>
       <script src="js/jquery.mobile-1.2.0.min.js"></script>
-      <style>
-         #footerTabs {
-         background: #FFF -webkit-radial-gradient(circle, #FFF, #dee2e4);
-         }
-         .ui-listview sup {
-         font-size: 0.6em;
-         color: #cc0000;
-         }
-         .btn {
-         background: #3498db;
-         background-image: -webkit-linear-gradient(top, #3498db, #6cbaeb);
-         background-image: -moz-linear-gradient(top, #3498db, #6cbaeb);
-         background-image: -ms-linear-gradient(top, #3498db, #6cbaeb);
-         background-image: -o-linear-gradient(top, #3498db, #6cbaeb);
-         background-image: linear-gradient(to bottom, #3498db, #6cbaeb);
-         -webkit-border-radius: 28;
-         -moz-border-radius: 28;
-         border-radius: 28px;
-         font-family: Arial;
-         color: #ffffff;
-         font-size: 20px;
-         padding: 10px 20px 10px 20px;
-         text-decoration: none;
-         }
-         .btn:hover {
-         background: #3cb0fd;
-         background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
-         background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
-         background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
-         background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
-         background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
-         text-decoration: none;
-         }
-      </style>
+      <link href="css/ios_post.css" rel="stylesheet" />
    </head>
    <body>
-      <div data-role="page" id="pWelcome">
+
+    <!--
+    =============================================
+             WELCOME SCREEN
+    =============================================
+     -->
+
+    <div data-role="page" id="pWelcome">
         <div data-role="header" data-position="fixed">
            <a href="javascript:window.close()" data-theme="a">Close</a>
            <h1>Welcome</h1>
-        </div>
+           <a href="#pHome" data-theme="a">Home</a>
+      </div>
         <!-- /header -->
          <div data-role="content"><h1>Welcome to DisApp</h1>
          <table bgcolor="white" cellspacing="10px">
@@ -109,6 +89,11 @@
                 </div>
             </td>
             <td>
+              <select name="sOnlineMode" id="sOnlineMode" data-role="X_slider" onchange="selectOnlineMode(this.value)">
+                <option value="-"></option>
+                <option value="no">set Offline</option>
+                <option value="yes">set Online</option>
+              </select>
               <!-- button onclick="checkOnlineMode()" >Check</button -->
             </td>
           </tr>
@@ -120,33 +105,49 @@
               <button onclick="checkDisclaimer4Submit()">Questionnaire</button>
             </td>
           </tr>
-
             <!--
-            <td id="tdOnlineMode">
-              <select name="sOnlineMode" id="sOnlineMode" data-role="X_slider" onchange="selectOnlineMode(this.value)">
-                <option value="no">NO</option>
-                <option value="yes">YES</option>
-              </select>
-            </td>
-             -->
+            <tr>
+              <td  colspan="2">
+                Switch Online Mode:
+              </td>
+              <td id="tdOnlineMode">
+                <select name="sOnlineMode" id="sOnlineMode" data-role="X_slider" onchange="selectOnlineMode(this.value)">
+                  <option value="no">set NO</option>
+                  <option value="yes">set YES</option>
+                </select>
+              </td>
+            </tr>
+       -->
         </table>
       </div>
     </div>
-    <div data-role="page" id="pDisclaimer">
+    <!--
+    =============================================
+           OFFLINE DATA
+    =============================================
+     -->
+   <div data-role="page" id="pLocalStorageDB">
       <div data-role="header" data-position="fixed">
-         <a href="javascript:window.close()" data-theme="a">Close</a>
-         <h1>Disclaimer</h1>
+         <h1>Local Storage </h1>
+         <a href="#pHome" data-theme="a">Home</a>
       </div>
       <!-- /header -->
       <div data-role="content">
-        <h3>Aedes Albopictus:</h3>
+        <h1>Offline Data:</h1>
 
      </div>
-       </div>
+
+     <!--
+     =============================================
+            DISCLAIMER
+     =============================================
+      -->
+    </div>
        <div data-role="page" id="pDisclaimer">
          <div data-role="header" data-position="fixed">
-            <a href="javascript:window.close()" data-theme="a">Close</a>
+            <a href="#pWelcome" data-theme="a">Back</a>
             <h1>Disclaimer</h1>
+            <a href="#pHome" data-theme="a">Home</a>
          </div>
          <!-- /header -->
          <div data-role="content">
@@ -200,7 +201,7 @@
               </td>
             </tr>
           </table>
-
+          <!-- ============= SLIDER ACCEPT TERMS OF USER ================ -->
             <div data-role="fieldcontain">
               <table cellspacing="10px">
                 <tr>
@@ -217,42 +218,285 @@
               </table>
               <button onclick="checkDisclaimer4Submit()"> Submit Data </button>
             </div>
+          </div>
+      </div>
+
+      <!--
+      =============================================
+               RESPONSE
+      =============================================
+       -->
+
+       <div data-role="page" id="pResponse">
+          <div data-role="header" data-position="fixed">
+            <a href="#pWelcome" data-theme="a">Back</a>
+            <h1>Risk Response</h1>
+          </div>
+          <!-- /header -->
+          <div data-role="content">
+            <h1>Risk Response:</h1>
+            <h3>Your calculated risk is:</h3>
+            <center>
+              <h2 id="divRiskResponse">
+                <font color="red">
+                  high
+                </font>
+              </h2>
+           </center>
+          </hr>
+           <table bgcolor="white" cellspacing="10px">
+             <tr>
+               <td>
+                 &nbsp;
+               </td>
+               <td>
+                 <b>Disapp</b> has calculated your risk about dengue risk and how to reduce it.
+                 It is not meant to diagnose dengue infection or
+                 to be a substitute for qualified medical advice.
+                 No guarantee is made as to the accuracy of the provided risk estimate
+                 and the developers are not liable in any way for any issues that may arise
+                 from your use of <b>Disapp</b>.
+            	  </td>
+                <td>
+                 &nbsp;
+               </td>
+              </tr>
+            </table>
+            <button id="bResponseOptions" onclick="gotoPageJQ('ResponseOptions')">Response Options</button>
+          </div>
+        </div>
+        <!--
+        =============================================
+                 RESPONSE OPTIONS
+        =============================================
+         -->
+
+       <div data-role="page" id="pResponseOptions">
+          <div data-role="header" data-position="fixed">
+             <a href="#pResponse" data-theme="a">Back</a>
+             <h1>Response Options</h1>
+          </div>
+          <!-- /header -->
+         <div data-role="content">
+               <script  type="text/javascript">
+                 printAllResponses();
+              </script>
          </div>
+     </div>
+     <!--
+     =============================================
+              FEEDBACK for APP
+     =============================================
+      -->
+
+    <div data-role="page" id="pFeedback">
+       <div data-role="header" data-position="fixed">
+          <a href="#pHome" data-theme="a">Home</a>
+          <h1>Send Feedback</h1>
        </div>
-      <div data-role="page" id="pSubmitData">
+       <!-- /header -->
+      <div data-role="content">
+            <script  type="text/javascript">
+              printAllFeedback();
+           </script>
+      </div>
+  </div>
+   <!--
+     =============================================
+              RISK MITIGATION
+     =============================================
+      -->
+
+    <div data-role="page" id="pRiskMitigation">
+       <div data-role="header" data-position="fixed">
+          <a href="#pResponseOptions" data-theme="a">Back</a>
+          <h1>Risk Mitigation</h1>
+          <a href="#pHome" data-theme="a">Home</a>
+
+       </div>
+       <!-- /header -->
+      <div data-role="content">
+        <h1>Risk Mitigation Response:</h1>
+        <h3>Your calculated risk <u>including</u> Risk Mitigation is:</h3>
+        <center>
+          <h2 id="divRiskResponse">
+            <font color="red">
+              Medium
+            </font>
+          </h2>
+       </center>
+       <h3>Your calculated risk <u>without Risk Mitigation</u> is:</h3>
+       <center>
+         <h2 id="divRiskResponse">
+           <font color="red">
+             High
+           </font>
+         </h2>
+      </center>
+       <table bgcolor="white" cellspacing="10px" width="95%">
+          <tr>
+            <td>
+             <button id="bFeedback" onclick="gotoPageJQ('Feedback')"> Provide Feedback </button>
+           </td>
+           <td>
+            <button id="bHome" onclick="gotoPageJQ('Home')"> Home </button>
+          </td>
+         </tr>
+        </table>
+
+      </div>
+   </div>
+
+     <!--
+     =============================================
+              COLLECTED DATA
+     =============================================
+      -->
+     <div data-role="page" id="pCollectedData">
+
+     	<div data-role="header" data-position="fixed">
+     		<h1>Database</h1>
+     		<a href="#"  onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+     	</div><!-- /header -->
+
+     	<div data-role="content">
+
+     		<ul id="ul-dbviewer" data-role="listview">
+     			<li data-role="list-divider">Database Records</li>
+     			<script>
+     				if (typeof(vJSONDB) != undefined) {
+     					//alert("JSONDB was defined!");
+     					var vDB = vJSONDB["DBlines"];
+     					var vCount = 0;
+     					var vDBhash = {};
+     					for (var i=0;i<vDB.length;i++) {
+     						vCount = i+1;
+     						vDBhash = convertArray2Hash(vDB[i]);
+     						document.write(getItem4DisplayDB(i,vDBhash));
+     						//document.write("<li><a href='#displaydbrecord' onclick=\"fillContentRecordDB("+i+");alert('Display Record "+vCount+"')\">"+vCount+" "+vDB[i][0]+"</a></li>");
+     					};
+     				} else {
+     					alert("JSONDB was undefined!")
+     				}
+     			</script>
+     			</ul>
+
+     	</div>
+
+     </div>
+
+     <!--
+     =============================================
+              DISPLAY RECORD
+     =============================================
+      -->
+     <div data-role="page" id="pDisplayRecord">
+
+      <div data-role="header" data-position="fixed">
+        <h1>Display Record</h1>
+        <a href="#" onclick="gotoPageJQ('CollectedData');return false" data-theme="a">Collected Data</a>
+      </div><!-- /header -->
+
+      <div data-role="content">
+        <script  type="text/javascript">
+      	  createDisplayFormJSON();
+      		fillContentRecordDB(0);
+      	</script>
+
+
+      </div>
+
+     </div>
+     <!--
+     =============================================
+              Settings
+     =============================================
+      -->
+     <div data-role="page" id="pDisplayRecord">
+
+      <div data-role="header" data-position="fixed">
+        <h1>Settings:</h1>
+        <a href="#pHome"  data-theme="a">Home</a>
+      </div><!-- /header -->
+
+      <div data-role="content">
+
+        Database: <input type="text" name="database" id="settings_database" onchange="updateSetting('name',this.value)" value="undefined.db"/>
+    		<br />
+        Usergroup: <input type="text" name="usergroup" id="settings_usergroup" onchange="updateSetting('usergroup',this.value)" value="undefined usergroup"/>
+    		<br />
+        My e-Mail: <input type="text" name="usergroup" id="settings_email" onchange="updateSetting('email',this.value)" value="undefined e-mail"/>
+    		<br />
+    		<!-- DB Access View Password: <input type="settings_password" id="app_viewpwd" value="unknown"/> -->
+
+    		<br />
+    		Submit URL: <input type="text" id="settings_submiturl"  onchange="updateSetting('submiturl',this.value)" value="http://www.example.com/appdb.cgi"/>
+
+      </div>
+
+     </div>
+
+     <!--
+     =============================================
+              HOME
+     =============================================
+      -->
+
+    <div data-role="page" id="pHome">
+       <div data-role="header" data-position="fixed">
+          <a href="javascript:window.close()" data-theme="a">Close</a>
+          <h1>Home - DisApp</h1>
+       </div>
+       <!-- /header -->
+      <div data-role="content">
+
+        <p>Welcome to the DisApp. Feel free to have a look around and report and bugs to the <a href="https://github.com/niebert/DisApp/issues" target="_blank">GitHub issues page</a>.</p>
+
+    		<ul data-role="listview" data-inset="true">
+    			<li style="display:none" id="MenuMaplocation"><a href="javascript:openWinHTML('map4location.html','wMapLocation')">Map Location (Window)</a></li>
+    			<li><a href="#pSubmitData" onclick="gotoSubmitQuestionnaire()">Submit Observation</a></li>
+    			<li><a href="#pCollectedData">My Collected Data</a></li>
+          <li><a href="#pResponseOptions">Ways to Stop Dengue</a></li>
+    			<li><a href="#pSendFeedback">Send DisApp Feedback</a></li>
+    			<li><a href="#pSettings">Settings</a></li>
+    			<li><a href="#acknowledgements">Acknowledgements</a></li>
+    		</ul>
+    		<p>Please use Firefox for App (<a href="https://www.mozilla.org" target="_blank">Firefox-Homepage</a>)</p>
+
+    		<!-- p>Press key [F] to enter Fullscreen Mode</p -->
+
+    		<br />
+    		<button class="ui-btn-plain" onclick="window.location.href='#quitDialogApp'">Quit App</button>
+    	<br />
+
+
+      </div>
+    </div>
+
+     <!--
+     =============================================
+              SUBMIT DATA
+     =============================================
+      -->
+
+     <div data-role="page" id="pSubmitData">
          <div data-role="header" data-position="fixed">
-            <a href="javascript:window.close()" data-theme="a">Close</a>
             <h1>Submit Data</h1>
+            <a href="#pHome" data-theme="a">Home</a>
          </div>
          <!-- /header -->
          <div data-role="content">
             <form name="send2appdb" id="send2appdb" action="http://www.example.com/cgi-bin/appdb/submitscript.php" >
                <input type='hidden' id='app_database' name='database' value=''>
                <input type='hidden' id='currentGeolocation' name='currentGeolocation' value=''>
-               <input type='hidden' id='app_email' name='email' value=''>
-               <input type='hidden' id='app_usergroup' name='usergroup' value=''>
-               <input type='hidden' id='app_recdate'  name='recdate' value=''>
-               <input type='hidden' id='app_sampledate' name='sampledate' value=''>
-               <input type='hidden' id='app_moddate' name='moddate' value='---'>
-               <input type='hidden' name='autonr' value='1'>
                <input type='hidden' name='action' value='subscribeapp'>
                <input type='hidden' name='login' value=''>
                <input type='hidden' name='mailnotification' value=''>
                <input type='hidden' name='session' value=''>
                <input type='hidden' name='language' value=''>
-               <input type='hidden' name='database' value='disapp.db'>
                <input type='hidden' name='viewpwd' value=''>
                <input type='hidden' name='ided' value=''>
                <input type='hidden' name='idrecord' value=''>
-               <input type='hidden' name='OLDrecdate' value=''>
-               <input type='hidden' name='OLDautonr' value=''>
-               <input type='hidden' name='OLDgeolocation' value=''>
-               <input type='hidden' name='OLDcountapprox1' value=''>
-               <input type='hidden' name='OLDcountapprox2' value=''>
-               <input type='hidden' name='OLDpeopleapproxii' value=''>
-               <input type='hidden' name='OLDcountapprox3' value=''>
-               <input type='hidden' name='OLDsampledate' value=''>
-               <input type='hidden' name='OLDmoddate' value=''>
                <script  type="text/javascript">
                   printHeader();
                </script>
@@ -266,19 +510,35 @@
             </form>
             <br />
             <label id="errormsg" style="color:red"></label>
-            <div id="divJSCALL"></div>
-            <div id="iFrameContainer" style="display:none">
-              <iframe id="iLoader" src="loader/setonline.html" width="90%" height="100" name="iLoader"></iframe>
-            </div>
             <!--
             <iframe id="iLoader" src="./loader/empty.html" width="90%" height="100" name="iLoader"></iframe>
             -->
             <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
+            <!--
+            =============================================
+                     MAIN MENU
+            =============================================
+             -->
+
          </div>
          <!-- /ui-body wrapper -->
       </div>
       <!-- /page -->
-      <script type="text/javascript">
+      <!--
+      =============================================
+               END OF PAGES
+      =============================================
+       -->
+      <div id="divJSCALL"></div>
+      <div id="iFrameContainer" style="display:none">
+        <iframe id="iLoader" src="loader/setonline.html" width="90%" height="100" name="iLoader"></iframe>
+      </div>
+      <!--
+      =============================================
+               END OF CONTAINER
+      =============================================
+       -->
+    <script type="text/javascript">
          var vDebug = 0;
          var vLoaderURL = "";
          var vQueryHash = readQueryParams();
@@ -291,22 +551,7 @@
          handleLocalJSONDB(vQueryHash);
          handleOfflineJSONDB(vQueryHash);
          setFormLocation();
-         write4name2value("recdate",getDate());
-         write4name2value("moddate",getDate());
-         write4name2value("sampledate",getDate());
-         write4name2value("autonr","-");
-         write4name2value("usergroup",vQueryHash["app_usergroup"]);
-         write2value("app_email",vQueryHash["app_email"]);
-         write2value("app_database",vQueryHash["app_database"]);
-         write2value("save_database",vQueryHash["app_database"]);
-         write2innerHTML("disclaimer_database",vQueryHash["app_database"]);
-         if (vQueryHash["app_submiturl"]) {
-            write2innerHTML("disclaimer_submiturl",vQueryHash["app_submiturl"]);
-          	document.getElementById("send2appdb").action = vQueryHash["app_submiturl"];
-            document.getElementById("save_submiturl").value = vQueryHash["app_submiturl"];
-         } else {
-            console.log("Submit URL was undefined!");
-         };
+         initVariables4DOM();
          var vKey = "sDisclaimer";
          write2value(vKey,loadLocalVar(vKey));
          //checkOnlineMode();

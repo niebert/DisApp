@@ -10,11 +10,21 @@ function saveLocalStorageValue(pID) {
 };
 
 function loadLocalStorageValue(pID) {
+	var vDecode = true;
+	loadLocalStorageValue_Decode(pID,vDecode);
+};
+
+
+function loadLocalStorageValue_Decode(pID) {
   if (localStorage.getItem(pID) === null) {
     console.log("Local Storage Variable ["+pID+"] was not set!");
   } else {
-    write2value(pID, localStorage.getItem(pID));
-    console.log("LocalStorage Load: ["+pID+"]='"+localStorage.getItem(pID)+"'");
+		var vValue = localStorage.getItem(pID);
+		if (pDecode) {
+			vValue = decodeURLparam(vValue);
+		};
+    write2value(pID, vValue);
+    console.log("LocalStorage Load: ["+pID+"]='"+vValue+"'");
   };
 };
 
@@ -33,31 +43,17 @@ function loadLocalStorageInnerHTML(pID) {
   };
 };
 
-
 function handleOfflineJSONDB(pQueryHash) {
 	var vDBName = pQueryHash["app_database"];
 	vJSONDB_Offline = loadOfflineDB(vDBName);
-	if (typeof(vJSONDB_Offline)  != "undefined" )  {
-		if (vJSONDB_Offline) {
-			if (vJSONDB_Offline["DBlines"]) {
-				 if(vOnlineMode == true) {
-					 compareSyncDB();
-				 } else {
-					 console.log("Offline Mode: no Server Sync comparision possible");
-				 }
-			} else {
-				console.log("DBlines in Offline DB does not exist");
-			};
-		} else {
-			console.log("After loading no vJSONDB_Offline DBlines available - Array 'DBlines,DBsubmitted,DBsynced' are created");
+	if (typeof(vJSONDB_Offline)  !== "undefined" )  {
+		console.log("Offline DB: vJSON_Offline exists in handleOfflineJSONDB()-Call");
+	} else {
+			console.log("WARNING: vJSONDB_Offline does NOT exists!\nArrays 'DBlines,DBsubmitted,DBsampledate' are created");
 			vJSONDB_Offline = {};
 			vJSONDB_Offline["DBlines"] = [];
 			vJSONDB_Offline["DBsubmitted"] = [];
-			vJSONDB_Offline["DBsynced"] = [];
-		};
-	} else {
-		console.log("vJSONDB_Offline was undefined - no Data submitted!");
-		vJSONDB_Offline = {};
+			vJSONDB_Offline["DBsampledate"] = [];
 	};
 }
 
@@ -100,6 +96,7 @@ function getDBformatIndex (pDBformat,pID) {
 }
 
 function compareSyncDB() {
+	// DEPRICATED Function
 	console.log("Check if Records are Synced");
 	console.log("Primary Key of DB = 'sampledate' and 'email'");
 	var vDBlines_Offline = vJSONDB_Offline["DBlines"];
@@ -192,9 +189,9 @@ function compare_Offline_Online_DB() {
 };
 
 function loadOfflineDB(pDBName) {
-	var vJSONDB_Offline = loadLocalDB("OFFLINE_"+pDBName);
+	var lvJSONDB_Offline = loadLocalDB("OFFLINE_"+pDBName);
 	check_Local_Init();
-	return vJSONDB_Offline;
+	return lvJSONDB_Offline;
 }
 
 function saveOfflineDB(pDBName,pJSONDB_Offline) {

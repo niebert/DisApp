@@ -128,7 +128,7 @@
 		vKey = IDs[i];
 		loadLocalStorageValue(vKey);
 		if (vQueryHash[vKey]) {
-			write2value(vKey,vQueryHash[vKey]);
+			write2value(vKey,decodeURLparam(vQueryHash[vKey]));
 		};
    };
 	 document.addEventListener("keydown", function(e) {
