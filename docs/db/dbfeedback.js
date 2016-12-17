@@ -2,6 +2,7 @@
 //----JSON DB: feedbackdisapp.db -----
 var vFeedbackDB =  {
   "database": "feedbackdisapp.db",
+  "name":"vFeedbackDB",
   "DBtitle": "DisApp Feedback",
   "DBsubtitle": "App Prototype",
   "submiturl": "http://www.mydisappserver.org/appdb/submit.php",
@@ -28,6 +29,7 @@ var vFeedbackDB =  {
      "usergroup": "<input  id=\"feedback_\" type=\"text\" name=\"usergroup\" size=\"80\" value=\"\" />",
      "email": "<input  id=\"feedback_email\" type=\"text\" name=\"email\" size=\"80\" value=\"\" />"
      },
-  "DBlines": [
-   ]
+  "DBlines": [],
+  "DBsubmitted": [],
+  "LastSyncLine": -1
 }

@@ -1,3 +1,17 @@
+function disableButton(pID,pValue) {
+  var vValue = pValue || true;
+  $("#"+pID).prop("disabled",vValue);
+  if (vValue) {
+    console.log("Button ["+pID+"] disabled");
+  } else {
+    console.log("Button ["+pID+"] enabled");
+  }
+};
+
+function addOnClick4Button(pID,pFunction) {
+  $('#'+pID).on('click',pFunction);
+}
+
 function lengthObject(pObject) {
     var count = 0;
     for (var i=0;i<pObject.length;i++) {
@@ -6,9 +20,10 @@ function lengthObject(pObject) {
     return count;
 };
 
-function showErrorMessage(pMSG) {
-  console.log("Show Error Message");
-  document.getElementById("errormsg").innerHTML = pMSG;
+function showErrorMessage(pMSG,pType) {
+  var vType = pType || "app";
+  console.log("Show Error Message ["+vType+"]");
+  write2innerHTML("errormsg",pMSG);
   pMSG = pMSG.replace(/<BR>/gi,"\n");
   pMSG = pMSG.replace(/<BR[^>]+]>/gi,"\n");
   pMSG = pMSG.replace(/<[^>]+>/gi,"");

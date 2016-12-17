@@ -2,10 +2,48 @@
 //---(1) OnlineMode
 //---(2) JSON Sync Server
 //---------------------------------------------
+function readOnlineStatus() {
+  var vOnline = top.vOnlineMode;
+  var vAppOnline = getInnerHTML("taOnlineMode");
+  if (vOnline) {
+    if (vAppOnline.match(/NO/)) {
+      console.log("Inconsistent HTML Values for OnlineMode - HTML now set to: FALSE");
+      top.setOnlineModeHTML(false);
+    };
+    console.log("readOnlineStatus()=TRUE");
+  } else {
+    if (vAppOnline.match(/YES/)) {
+      console.log("Inconsistent HTML Values for OnlineMode - HTML now set to: FALSE");
+      top.setOnlineModeHTML(false);
+    };
+    console.log("readOnlineStatus()=FALSE");
+  };
+  return vOnline;
+};
+
+function readOnlineStatusHTML() {
+  var vAppOnline = getInnerHTML("taOnlineMode");
+  if (vAppOnline.match(/NO/i)) {
+    console.log("readOnlineStatusHTML()=FALSE");
+    if (top.vOnlineMode) {
+      top.vOnlineMode = false;
+      console.log("Inconsistent vOnlineMode - Boolean now: FALSE");
+    };
+    return false;
+  } else {
+    console.log("readOnlineStatusHTML()=TRUE");
+    if (!top.vOnlineMode) {
+      top.vOnlineMode = true;
+      console.log("Inconsistent vOnlineMode - Boolean now: TRUE");
+    };
+    return true;
+  }
+};
 
 function checkOnlineMode() {
+  // DEPRICATED
     var vCallJS = "https://niebert.github.io/DisApp/loader/onlinecheck.js";
-    alert("CallJS URL: "+vCallJS);
+    console.log("checkOnlineMode()-Call with URL: "+vCallJS);
     top.vLoaderURL = vCallJS;
     //vURL +="loader/setonline.html?calljson="+encodeURLparam(vCallJS);
     var vURL = "loader/setonline.html";
@@ -25,8 +63,8 @@ function selectOnlineMode(pSelect) {
 };
 
 function setOnlineMode(pMode) {
-  vOnlineMode = pMode;
-  setOnlineModeHTML(pMode);
+  top.vOnlineMode = pMode;
+  top.setOnlineModeHTML(pMode);
 };
 
 function setOnlineModeHTML(pMode) {
@@ -94,7 +132,12 @@ function submitForm2JSON(pDatabase,pType) {
   var vURL = getSubmitURLbasic("subscribejson",vDB)+vParam;
   //alert(vURL);
   console.log("submitForm2JSON() with URL: "+vURL);
-  submitJSON(vURL);
+  if (vOnlineMode) {
+    submitJSON(vURL);
+    console.log("vOnlineMode=TRUE will try to submit()");
+  } else {
+    console.log("vOnlineMode=FALSE will store in LocalStorage()");
+  }
 };
 
 function submitJSON(pURL)
@@ -162,16 +205,16 @@ function submitSuccess(pSubmitted,pMessage,pError) {
     console.log("SERVER["+vDB+"]: Call of submitSuccess(pSubmitted,pMessage,pError) seems to be sucessful");
     switch (vDB) {
       case "responsedisapp.db":
-        top.submitData2LocalStorage(pSubmitted,vResponseDB);
-        top.gotoPageJQ("RiskMitigation");
+        //top.submitData2LocalStorage(pSubmitted,vResponseDB);
+        gotoPostSubmit("response",pSubmitted);
         break;
       case "feedbackdisapp.db":
-        top.submitData2LocalStorage(pSubmitted,vFeedbackDB);
-        top.gotoPageJQ("Menu");
+        //top.submitData2LocalStorage(pSubmitted,vFeedbackDB);
+        gotoPostSubmit("feedback",pSubmitted);
         break;
       default:
-        top.submitData2LocalStorage(pSubmitted);
-        top.gotoPageJQ("Response");
+        gotoPostSubmit("app",pSubmitted);
+        //top.submitData2LocalStorage(pSubmitted);
     };
   }
 };
@@ -205,20 +248,29 @@ function submitResponseJSON() {
   submitForm2JSON(vDatabase,vType);
 };
 
-
-function readResponse2URLparam() {
-  console.log("JSONDB.name='"+top.vResponseDB["name"]+"' - readResponse2URLparam()-Call");
+function getResponseDBFormat() {
   var vDBformat = [];
   var vCount = top.vResponseDB["home"].length;
   var vShift = 1;
   // create and array vDBformat = ["home1","home2",...]
   appendArrayID("home",vCount,vShift,vDBformat);
-  console.log("readResponse2URLparam(1) - vResponseDB['home'].length="+vCount);
+  console.log("getResponseDBFormat(1) - vResponseDB['home'].length="+vCount);
   vArray = vResponseDB["yourself"];
   var vCount = top.vResponseDB["yourself"].length;
   // create and array vDBformat = ["yourself1","yourself2",...]
   appendArrayID("yourself",vCount,vShift,vDBformat);
-  console.log("readResponse2URLparam(2) - vResponseDB['yourself'].length="+vCount);
+  console.log("getResponseDBFormat(2) - vResponseDB['yourself'].length="+vCount);
+  vDBformat.push("geolocation");
+  vDBformat.push("usergroup");
+  vDBformat.push("email");
+  vDBformat.push("moddate");
+  vDBformat.push("recdate");
+
+  return vDBformat;
+}
+
+function readResponse2URLparam() {
+  var vDBformat = getResponseDBFormat();
   var vDBHash = readRecordDOM2Hash(vDBformat,"response_");
   //vDBHash['sampledate'] = Date.now(); is set at the end of readRecord2Hash()
   var vParam = record2URLparam(vDBHash);
@@ -272,8 +324,10 @@ function readRecord2URLparam() {
   return vParam;
 };
 
-function readRecord2Hash (pDBformat) {
-  var vDBformat = vJSONDB_Offline["DBformat"] || vJSONDB["DBformat"];
+function readRecord2Hash () {
+//function readRecord2Hash (pDBformat) {
+  //var vDBformat = vJSONDB_Offline["DBformat"] || vJSONDB["DBformat"];
+  var vDBformat = vJSONDB["DBformat"];
   var vForm = document.send2appdb;
   //var vDBtitles   = vJSONDB["DBtitles"];
   //var vDBcolinput = vJSONDB["DBcolinput"];
@@ -396,8 +450,8 @@ function readRecord2Array () {
   return convertHash2Array(vDBHash);
 };
 
-function convertArray2Hash(pDBarray) {
-  var vDBformat = vJSONDB["DBformat"];
+function convertArray2Hash(pDBarray,pDBformat) {
+  var vDBformat = pDBformat || vJSONDB["DBformat"];
   var vDBhash = {};
   var vMax = vDBformat.length;
   if (pDBarray.length != vDBformat.length) {
@@ -412,9 +466,9 @@ function convertArray2Hash(pDBarray) {
   return vDBhash;
 };
 
-function convertHash2Array(pDBhash) {
+function convertHash2Array(pDBhash,pDBformat) {
   var vDBarray = [];
-  var vDBformat = vJSONDB["DBformat"];
+  var vDBformat = pDBformat || vJSONDB["DBformat"];
   var vID = "";
   var vValue = "";
   for (var i = 0; i < vDBformat.length; i++) {
@@ -425,8 +479,29 @@ function convertHash2Array(pDBhash) {
   return vDBarray;
 };
 
+function convertHash2DBLine(pHash,pDBformat) {
+  var vOut = "";
+  var vPipe = "";
+  if (pDBformat) {
+    for (var i = 0; i < pDBformat.length; i++) {
+      vOut += vPipe + encodeURLparam(pHash[pDBformat[i]]);
+      vPipe = "|";
+    }
+  }  else {
+    for (var iID in pHash) {
+      if (pDBformat.hasOwnProperty(iID)) {
+          vOut += vPipe + encodeURLparam(pHash[iID]);
+          vPipe = "|";
+      } else {
+        vOut += vPipe + "";
+        vPipe = "|";
+      }
+    }
+  };
+  return vOut;
+}
 
-function submitData2DB () {
+function submitData2DB () { // DEPRICATED
   //var vAction="undefined";
   //document.send2appdb.action = getValueDOM("app_submiturl");
   //get
@@ -454,11 +529,12 @@ function submitData2DB () {
   //document.location("#postDialogExample");
 }
 
-function submitData2LocalStorage(pSubmitted) {
+function submitData2LocalStorage(pSubmitted,pJSONDB,pDBHash) {
   //alert("Offline Mode - Store Record in Local Storage!\nSync Database when you are ONLINE again (Internet Access)");
-  var vDBlines     = vJSONDB_Offline["DBlines"];
-	var vDBsubmitted = vJSONDB_Offline["DBsubmitted"]; //Boolean Array showing that data was submitted by App
-	var vDBhash = readRecord2Hash();
+  var vDB = pJSONDB || vJSONDB;
+  var vDBlines     = vDB["DBlines"];
+	var vDBsubmitted = vDB["DBsubmitted"]; //Boolean Array showing that data was submitted by App
+	var vDBhash = pDBHash || readRecord2Hash();
   vDBhash["recdate"] = getDate4DB();
   var vDBarray = convertHash2Array(vDBhash);
   if (pSubmitted) {

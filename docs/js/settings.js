@@ -1,3 +1,7 @@
+function initDisApp() {
+  initVariables4DOM();  
+}
+
 function updateSetting(pNameID,pValue) {
   switch (pNameID) {
     //--------
@@ -30,7 +34,8 @@ function initVariables4DOM() {
   write2value("app_database",vQueryHash["app_database"]);
   write2value("save_database",vQueryHash["app_database"]);
   write2value("settings_database",vQueryHash["app_database"]);
-  write2innerHTML("disclaimer_database",vQueryHash["app_database"]);
+  //write2innerHTML("disclaimer_database",vQueryHash["app_database"]);
+  write2value("disclaimer_database",vQueryHash["app_database"]);
   if (vQueryHash["app_submiturl"]) {
      write2innerHTML("disclaimer_submiturl",vQueryHash["app_submiturl"]);
      document.getElementById("send2appdb").action = vQueryHash["app_submiturl"];

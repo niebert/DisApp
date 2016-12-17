@@ -1,6 +1,8 @@
 vResponseDB = {
+  "database": "localsurvey.db",
   "name":"vResponseDB",
-  "title":"Ways to stop Dengue:",
+  "DBtitle":"Ways to stop Dengue:",
+  "DBsubtitle": "Database Prototype",
   "home":[
     "Turn over empty flower pots and buckets, so water does not collect",
     "Change water in flower pots at least once a week",
@@ -33,5 +35,10 @@ vResponseDB = {
     "using":"<select id='___COUNT___' name='___COUNT___'><option value='NA'></option><option value='0.0'>DO NOT USE</option><option value='1.0'>ALREADY USING</option><option value='0.5'>ARE GOING TO START US</option></select>",
     "yesnoslider": "<select id='___COUNT___' name='___COUNT___' data-role='slider'><option value='0.0'>set NO</option><option value='1.0'>set YES</option></select>",
     "yesnodontknow": "<select id=\"___COUNT___\" name=\"___COUNT___\" size=\"1\"><OPTION></OPTION><option value='1.0'>Yes</option><option value='0.0'>No</option><option value='NA'>don`t know</option></select>"
-  }
+  },
+  "DBtitles": [],
+  "DBformat": [],
+  "DBlines": [],
+  "DBsubmitted": [],
+  "LastSyncLine": -1
 }

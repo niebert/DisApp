@@ -1,3 +1,4 @@
+
 function saveLocalStorageValueOK(pID,pText) {
 	saveLocalStorageValue(pID);
 	alert(pText+" saved!");
@@ -5,8 +6,9 @@ function saveLocalStorageValueOK(pID,pText) {
 
 function saveLocalStorageValue(pID) {
 	//localStorage.setItem(pID,document.getElementById(pID).value);
-	localStorage.setItem(pID,getValueDOM(pID));
-  console.log("LocalStorage Save: ["+pID+"]");
+	var vValue = getValueDOM(pID);
+	localStorage.setItem(pID,vValue);
+  console.log("LocalStorage Save: ["+pID+"]='"+vValue+"'");
 };
 
 function loadLocalStorageValue(pID) {
@@ -15,7 +17,7 @@ function loadLocalStorageValue(pID) {
 };
 
 
-function loadLocalStorageValue_Decode(pID) {
+function loadLocalStorageValue_Decode(pID,pDecode) {
   if (localStorage.getItem(pID) === null) {
     console.log("Local Storage Variable ["+pID+"] was not set!");
   } else {
@@ -43,11 +45,13 @@ function loadLocalStorageInnerHTML(pID) {
   };
 };
 
-function handleOfflineJSONDB(pQueryHash) {
+function handleOfflineJSONDB(pQueryHash,pType) {
+	var vType = pType || "app";
 	var vDBName = pQueryHash["app_database"];
-	vJSONDB_Offline = loadOfflineDB(vDBName);
-	if (typeof(vJSONDB_Offline)  !== "undefined" )  {
-		console.log("Offline DB: vJSON_Offline exists in handleOfflineJSONDB()-Call");
+	vDBName = vType+"_"+vDBName;
+	var vDB_Offline = loadOfflineDB(vDBName);
+	if (typeof(vDB_Offline)  !== "undefined" )  {
+		console.log("Offline DB: vDB_Offline ["+vDBName+"] exists in handleOfflineJSONDB()-Call");
 	} else {
 			console.log("WARNING: vJSONDB_Offline does NOT exists!\nArrays 'DBlines,DBsubmitted,DBsampledate' are created");
 			vJSONDB_Offline = {};
@@ -61,23 +65,21 @@ function handleLocalJSONDB(pQueryHash) {
 	//var vDBName = "DissAppJSONDB";
 	//var vDBsourceJS = document.getElementById("DissAppJSONDB").innerHTML;
 	var vDBName = pQueryHash["app_database"];
+	//var vJSONDB_Offline =
 	if (typeof(vJSONDB)  != "undefined" )  {
 		//alert("JSONDB exists");
 		if (vJSONDB) {
 			console.log("vJSONDB as JS Object is defined and saved");
-			vOnlineMode = true;
 			saveLocalDB(vDBName,vJSONDB);
 		} else {
-			vOnlineMode = false;
 			vJSONDB = loadLocalDB(vDBName);
 			console.log("vJSONDB as JS Object is NOT defined");
 		};
 		vJSONDB_Offline["DBformat"] = vJSONDB["DBformat"];
 	} else {
-		//alert("JSONDB does not exist");
-		vOnlineMode = false;
-		vJSONDB = loadLocalDB(vDBName);
-		console.log("vJSONDB was undefined - go online once!");
+		var vMSG = "vJSONDB was undefined - please check '/db/"+vDBName+"'!"
+		console.log(vMSG);
+		alert(vMSG);
 	};
 };
 
@@ -95,7 +97,7 @@ function getDBformatIndex (pDBformat,pID) {
 	return vIndex;
 }
 
-function compareSyncDB() {
+function compareSyncDB(pJSONDB) {
 	// DEPRICATED Function
 	console.log("Check if Records are Synced");
 	console.log("Primary Key of DB = 'sampledate' and 'email'");
@@ -158,6 +160,7 @@ function compareRecordsDB(pRecord_Offline,pRecord) {
 
 function check_Local_Init() {
 	// check if localstorage database is initialized with DBformat
+	var vJSONDB_Offline = loadLocalDB()
 	if (vJSONDB_Offline) {
 		if (vJSONDB_Offline["DBlines"]) {
 			console.log("OFFLINE_"+vJSONDB["database"]+" is defined");
@@ -178,14 +181,31 @@ function check_Local_Init() {
 }
 
 
+function convertDBformat(pFormatSource,pFormatDest,pLine) {
+	// Convert DB-Line to SourceHash in pFormatSource
+	var vSourceHash
+	// init the Destination Hash DestHash with "" in pFormatDest;
 
-function compare_Offline_Online_DB() {
-	// compare Offline and Online DB format
-	if (vJSONDB_Offline["DBformat"].length != vJSONDB["DBformat"].length) {
-		alert("WARNING: Database Format of '"+vJSONDB["database"]+"'has changed");
-		vJSONDB_Offline["DBformat"] = vJSONDB["DBformat"];
+	// Fill DestHash with Value from SourceHash with pFormatSource
+	// export DestHash to DB-Line with Destination Hash
+}
+
+
+
+function compare_Format_DB(pDB1,pDB2) {
+	// compare Format of DBs
+	var vRet = true;
+	if (pDB1.length != pDB2.length) {
+		vRet = false;
+	} else {
+		for (var i = 0; i < pDB1.length; i++) {
+			if (pDB1[i] != pDB2[i]) {
+				vRet = false;
+			}
+		}
 	};
 	// if differences occur sync data first
+	return vRet;
 };
 
 function loadOfflineDB(pDBName) {
@@ -202,14 +222,30 @@ function saveOfflineDB(pDBName,pJSONDB_Offline) {
 	pJSONDB_Offline["LastSyncLine"] = vLastSyncLine; //syncing will start at the same last records
 };
 
+function parseJSONDB(pDBName,pStringJSON) {
+  var vJSONDB = null;
+  if (pStringJSON) {
+    var vTest = pStringJSON.replace(/\S\t/g,"");
+    if (vTest.length > 0) {
+      console.log("JSONDB is defined in localStorage");
+      vJSONDB = JSON.parse(pStringJSON)
+    } else {
+      console.log("parseJSONDB()-Call: JSONDB ["+pDBName+"] cannot be parsed - empty String in LocalStorage");
+    }
+  } else {
+    console.log("parseJSONDB()-Call: JSONDB ["+pDBName+"] is undefined in LocalStorage.");
+  }
+};
+
+
 function loadLocalDB(pDBName) {
-  var vJSONDB = {};
+  var vJSONDB = null;
   if (typeof(Storage) != "undefined") {
     // Store
     if (typeof(localStorage.getItem(pDBName)) != undefined) {
-      console.log("JSON-DB '"+pDBName+"' loaded from Local Storage");
+      console.log("JSON-DB '"+pDBName+"' try loading from Local Storage");
       var vJSONstring = localStorage.getItem(pDBName);
-      vJSONDB = JSON.parse(vJSONstring);
+      vJSONDB = parseJSONDB(pDBName,vJSONstring);
     } else {
       console.log("JSON-DB '"+pDBName+"' is undefined in Local Storage");
     };
@@ -217,8 +253,28 @@ function loadLocalDB(pDBName) {
     console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
   };
   return vJSONDB;
+};
 
+
+function copy_array(pArray) {
+	return pArray.slice();
+};
+
+function init_JSONDB(pJSONDB) {
+	if (pJSONDB) {
+		pJSONDB["DBlines"] = [];
+		pJSONDB["DBsubmitted"] = []; //Boolean Array showing that data was submitted by App
+		pJSONDB["LastSyncLine"] = -1;
+		if (vJSONDB["DBformat"]) {
+		} else {
+			pJSONDB["DBformat"] = ["sampledate","email","usergroup","geolocation","moddate","recdate"];
+		};
+	} else {
+		alert("ERROR: No Database is loaded! - init_JSONDB(pJSONDB)-Call");
+		//vJSONDB_Init["DBformat"] = ["email","username","geolocation","sampledate"];
+	};
 }
+
 
 function getJSONDB_Local_Default() {
 	vJSONDB_Offline["DBlines"] = [];
@@ -226,7 +282,7 @@ function getJSONDB_Local_Default() {
 	vJSONDB_Offline["DBsynced"] = []; //Boolean Array showing that data is already in Online DB
 	vJSONDB_Offline["LastSyncLine"] = -1;
 	if (vJSONDB["DBformat"]) {
-		vJSONDB_Offline["DBformat"] = vJSONDB["DBformat"].slice();
+		vJSONDB_Offline["DBformat"] = copy_array(vJSONDB["DBformat"]);
 		//vJSONDB_Offline["DBtitles"] = vJSONDB["DBtitles"];
 	} else {
 		console.log("Init of vJSONDB_Offline failed, due to no DBformat definition of vJSONDB.");

@@ -1,13 +1,30 @@
 //---------------------------------------------
 //---1 checkForm
 //---------------------------------------------
-function checkForm() {
-  document.getElementById("errormsg").innerHTML = "";
-  var vForm = document.send2appdb.elements;
-  var vDBformat     = vJSONDB["DBformat"];
-  var vDBtitles     = vJSONDB["DBtitles"];
-  var vDBvisible    = vJSONDB["DBvisible"];
-  var vDBmandatory  = vJSONDB["DBmandatory"];
+function checkForm(pType) {
+  var vType = pType || "app";
+  switch (vType) {
+    case "app":
+      return checkFormDB(vJSONDB,pType);
+    break;
+    case "response":
+      return checkFormDB(vResponseDB,pType);
+    break;
+    case "feedback":
+      return checkFormDB(vFeedbackDB,pType);
+    break;
+    default:
+      console.log("Check Form called with unknown pType");
+  }
+};
+
+function checkFormDB(pJSONDB,pType) {
+  write2innerHTML(pType+"_errormsg", "");
+  //var vForm = document.send2appdb.elements;
+  var vDBformat     = pJSONDB["DBformat"];
+  var vDBtitles     = pJSONDB["DBtitles"];
+  var vDBvisible    = pJSONDB["DBvisible"];
+  var vDBmandatory  = pJSONDB["DBmandatory"];
   var vElement = null;
   var vSubmit = true;
   var vMSG = "";
@@ -24,7 +41,18 @@ function checkForm() {
           console.log("["+vDBformat[i]+"] exists");
           if (vNodeArr[0].value == "") {
             vSubmit = false;
-            vMSG += vErr
+            vMSG += vErr;
+            if (vDBformat[i] == "geolocation") {
+              vSubmit = confirm("Missing Geolocation!\nDo you want to submit data anyway?");
+              if (vSubmit == true) {
+                //history.back();
+                vNodeArr[0].value = "GPS_location_undefined";
+                var vGeoLocation = getLastGeoLocation();
+                vUseLastGPS = confirm("Stored Geo Location FOUND!\n  GeoLoc: "+vGeoLocation+"\nDo you want to use this Geo Location?");
+
+                console.log("Submit without GPS Location");
+              };
+            };
           } else {
             console.log("Input ["+vDBformat[i]+"] OK");
           };
@@ -41,15 +69,9 @@ function checkForm() {
   };
   if (vSubmit) {
     //document.send2appdb.submit();
-    if (vOnlineMode) {
-      //alert("Submit Online - please wait ...");
-      submitForm2JSON();
-    } else {
-      alert("Submit Offline");
-    };
+    return "";
   } else {
-    showErrorMessage("INPUT ERROR:"+vMSG);
-    return false;
+    return "INPUT ERROR:"+vMSG;
   };
 };
 //---------------------------------------------

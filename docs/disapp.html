@@ -13,12 +13,14 @@
       <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
       <script type="text/javascript" src="js/login.js"></script>
       <script type="text/javascript" src="js/fullscreen.js"></script>
+      <script type="text/javascript" src="js/fuzzycontrol.js"></script>
       <script type="text/javascript" src="js/fuzzymain.js"></script>
       <script type="text/javascript" src="js/fuzzylayer.js"></script>
       <script type="text/javascript" src="js/jsondb.js"></script>
       <script type="text/javascript" src="js/geolocation.js"></script>
       <script type="text/javascript" src="js/htmlrequest.js"></script>
       <script type="text/javascript" src="js/localstorage.js"></script>
+      <script type="text/javascript" src="js/mathcode.js"></script>
       <script type="text/javascript" src="js/navigate.js"></script>
       <script type="text/javascript" src="js/openwin.js"></script>
       <script type="text/javascript" src="js/settings.js"></script>
@@ -54,7 +56,7 @@
 
     <div data-role="page" id="pWelcome">
         <div data-role="header" data-position="fixed">
-           <a href="javascript:window.close()" data-theme="a">Close</a>
+           <a href="javascript:window.close()" data-theme="c">Quit</a>
            <h1>Welcome</h1>
            <a href="#pHome" data-theme="a">Home</a>
       </div>
@@ -87,7 +89,7 @@
                 <div id="tdOnlineMode">
                 ???
                 </div>
-            </td>
+              </td>
             <td>
               <select name="sOnlineMode" id="sOnlineMode" data-role="X_slider" onchange="selectOnlineMode(this.value)">
                 <option value="-"></option>
@@ -128,7 +130,8 @@
      -->
    <div data-role="page" id="pLocalStorageDB">
       <div data-role="header" data-position="fixed">
-         <h1>Local Storage </h1>
+        <a href="javascript:window.close()" data-theme="c">Quit</a>
+          <h1>Local Storage </h1>
          <a href="#pHome" data-theme="a">Home</a>
       </div>
       <!-- /header -->
@@ -235,15 +238,13 @@
           <!-- /header -->
           <div data-role="content">
             <h1>Risk Response:</h1>
-            <h3>Your calculated risk is:</h3>
+            <h3>Your calculated RISK is:</h3>
             <center>
-              <h2 id="divRiskResponse">
-                <font color="red">
+              <h2 id="valDefuzzyRiskA" style="color:red">
                   high
-                </font>
               </h2>
            </center>
-          </hr>
+          <hr>
            <table bgcolor="white" cellspacing="10px">
              <tr>
                <td>
@@ -281,29 +282,11 @@
                <script  type="text/javascript">
                  printAllResponses();
               </script>
+              <br />
+              <label id="response_errormsg" style="color:red"></label>
          </div>
      </div>
-     <!--
-     =============================================
-              FEEDBACK for APP
-     =============================================
-      -->
-
-    <div data-role="page" id="pFeedback">
-       <div data-role="header" data-position="fixed">
-          <a href="#pHome" data-theme="a">Home</a>
-          <h1>Send Feedback</h1>
-       </div>
-       <!-- /header -->
-      <div data-role="content">
-        <ul data-role='listview' data-inset='true'>
-           <script  type="text/javascript">
-              printAllFeedback();
-           </script>
-        </ul>
-      </div>
-  </div>
-   <!--
+      <!--
      =============================================
               RISK MITIGATION
      =============================================
@@ -320,19 +303,19 @@
       <div data-role="content">
         <h1>Risk Mitigation Response:</h1>
         <h3>Your calculated risk <u>including</u> Risk Mitigation is:</h3>
-        <center>
-          <h2 id="divRiskResponse">
-            <font color="red">
-              Medium
-            </font>
+        <center>  <!-- RISK WITH MITIGATION -->
+          <h2>
+            <div id="valDefuzResponse_X" style="color:red">
+             Medium?
+           </div>
           </h2>
        </center>
        <h3>Your calculated risk <u>without Risk Mitigation</u> is:</h3>
-       <center>
-         <h2 id="divRiskResponse">
-           <font color="red">
-             High
-           </font>
+       <center> <!-- RISK WITHOUT MITIGATION -->
+         <h2>
+           <div id="valDefuzzyRiskB" style="color:red">
+             High?
+          </div>
          </h2>
       </center>
        <table bgcolor="white" cellspacing="10px" width="95%">
@@ -347,6 +330,29 @@
         </table>
 
       </div>
+   </div>
+   <!--
+   =============================================
+            FEEDBACK for APP
+   =============================================
+    -->
+
+   <div data-role="page" id="pFeedback">
+     <div data-role="header" data-position="fixed">
+        <a href="#pHome" data-theme="a">Home</a>
+        <h1>Send Feedback</h1>
+        <a href="javascript:window.close()" data-theme="c">Quit</a>
+      </div>
+     <!-- /header -->
+    <div data-role="content">
+      <ul data-role='listview' data-inset='true'>
+         <script  type="text/javascript">
+            printAllFeedback();
+         </script>
+      </ul>
+      <br />
+      <label id="feedback_errormsg" style="color:red"></label>
+    </div>
    </div>
 
      <!--
@@ -429,6 +435,26 @@
      </div>
      <!--
      =============================================
+              THANk YOU
+     =============================================
+      -->
+     <div data-role="page" id="pThankYou">
+
+      <div data-role="header" data-position="fixed">
+        <h1>Connect</h1>
+        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+      </div><!-- /header -->
+
+      <div data-role="content">
+          <h1>Thank You:</h1>
+          <h2>Thank you very much for the submission of feefback.<br>
+            Improvements of DisApp will be shared with you ...
+          </h2>
+      </div>
+
+     </div>
+     <!--
+     =============================================
               Settings
      =============================================
       -->
@@ -436,8 +462,8 @@
 
       <div data-role="header" data-position="fixed">
         <h1>Settings:</h1>
-        <a href="#pHome"  data-theme="a">Home</a>
-      </div><!-- /header -->
+        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+        </div><!-- /header -->
 
       <div data-role="content">
 
@@ -458,11 +484,9 @@
 
      <!--
      =============================================
-              ACKNOWLEDGMENT
+              ACKNOWLEDEGMENT
      =============================================
       -->
-
-
 
      <div data-role="page" id="pAcknowledgements" data-theme="b">
 
@@ -523,7 +547,7 @@
         <p>Welcome to the DisApp. Feel free to have a look around and report and bugs to the <a href="https://github.com/niebert/DisApp/issues" target="_blank">GitHub issues page</a>.</p>
 
     		<ul data-role="listview" data-inset="true">
-    			<li style="display:none" id="MenuMaplocation"><a href="javascript:openWinHTML('map4location.html','wMapLocation')">Map Location (Window)</a></li>
+    			<li style="display:none" id="MenuMaplocation"><a href="javascript:openWinHTML('map4location.html','wMapLocation')">Show Map Location</a></li>
     			<li><a href="#pSubmitData" onclick="gotoSubmitQuestionnaire()">Submit Observation</a></li>
     			<li><a href="#pCollectedData">My Collected Data</a></li>
           <li><a href="#pResponseOptions">Ways to Stop Dengue</a></li>
@@ -551,7 +575,8 @@
 
      <div data-role="page" id="pSubmitData">
          <div data-role="header" data-position="fixed">
-            <h1>Submit Data</h1>
+           <a href="#pWelcome" data-theme="a">Welcome</a>
+           <h1>Submit Data</h1>
             <a href="#pHome" data-theme="a">Home</a>
          </div>
          <!-- /header -->
@@ -576,10 +601,10 @@
                   </script>
                </ul>
                <!-- input type="button" name=bOK value='   Save   ' -->
-               <input type="button" name=bOK value='   Submit   ' onclick="checkForm()">
+               <input type="button" name=bOK value='   Submit   ' onclick="processQuestionnaire()">
             </form>
             <br />
-            <label id="errormsg" style="color:red"></label>
+            <label id="app_errormsg" style="color:red"></label>
             <!--
             <iframe id="iLoader" src="./loader/empty.html" width="90%" height="100" name="iLoader"></iframe>
             -->
@@ -621,10 +646,11 @@
          handleLocalJSONDB(vQueryHash);
          handleOfflineJSONDB(vQueryHash);
          setFormLocation();
-         initVariables4DOM();
+         initDisApp();
          var vKey = "sDisclaimer";
          write2value(vKey,loadLocalVar(vKey));
-         //checkOnlineMode();
+         var vFuzzyControl = new FuzzyControl();
+         checkOnlineMode();
       </script>
    </body>
 </html>
