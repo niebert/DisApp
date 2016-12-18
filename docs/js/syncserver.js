@@ -380,7 +380,7 @@ function syncNextRecord() {
   }
 }
 
-function updateDOM(pQuery) {
+function updateSubmitForm(pQuery) {
   // pQuery is the Query String of the document location
   //$("#app_database").value = pQuery["app_database"]; //$("#database").value;
   //document.getElementById("app_submiturl").value = pQuery["app_submiturl"];
