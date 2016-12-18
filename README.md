@@ -33,7 +33,7 @@ It uses the browser LocalStorage to store data on the client and uses call of re
 * **IMPORTANT NOTICE for alpha-Version:** Users must trust the remote server and the maintainers of the server, that they do not inject malicious code in the response javascript code. The calls of the javascript code should be performed in a HTTPS-call and the parameters of the call should be encrypted on the client side (e.g. `par1=Firstname&par2=Lastname&...` into * `encryptpars=82hl324o823llj405443l9EJDL9ERKRkdlsHjsdasku7758...`) this adds an additional security layer on the client server communication.
 ### beta-Version: ODK Connected ###
 * (**beta**): The beta-Version allows the communication to [OpenDataKit](https://opendatakit.org), to allow communication with an well developed OpenSource project for questionnaire management and Online and Offline data collection. The proposed developement of ODKJS API allows the client server communication with the ODK server. The developed App allows the design of tailored response to the users that submit data to the ODK server. In a Citizen Science Approach for Risk Management Convert the code base into an Object Oriented Model.
-* (**ODKJS OpenDataKit-Javascript Package**) The OpenDataKit Javascript Package is written in Javascript and the package is able to interact with an ODK Server. Altering the Server the users wants to connect to should be visible in the app so that the users can decide, if she/he trusts the maintainers of the server (injection of malicious code through the remotely called Javascript Libraries from the server). The Package ODKJS should be developed in a separate repository and it should contain a basic wrapper for a web application that uses the OKDJS for interacting with the default OpenDataKit server infrastructure. `aODKJS` is regards as an attribute of a javascript class for the application (e.g. `vApp = new WebApp()` (not implemented yet)). The variable `vApp` is an instance of the class `WebApp` (see [JavascriptClassGenerator](https://niebert.github.com/JavascriptClassGenerator) for creating you own classes). The Class `WebApp` creates with the method `vApp.init()` an ODKJS attribute `vApp.aQuestionnaire` as an instance of `ODKJS` by `this.aQuestionnaire = new ODKJS()` ). Main features of `ODKJS` are:
+* (**ODKJS OpenDataKit-Javascript Package**) The OpenDataKit Javascript Package is written in Javascript and the package is able to interact with an ODK Server. Altering the Server the users wants to connect to should be visible in the app so that the users can decide, if she/he trusts the maintainers of the server (injection of malicious code through the remotely called Javascript Libraries from the server). The Package ODKJS should be developed in a separate repository and it should contain a basic wrapper for a web application that uses the OKDJS for interacting with the default OpenDataKit server infrastructure. `aODKJS` is regards as an attribute of a javascript class for the application (e.g. `vApp = new WebApp()` (not implemented yet)). The variable `vApp` is an instance of the class `WebApp` (see [JavascriptClassGenerator](https://niebert.github.io/JavascriptClassCreator/) for creating you own classes). The Class `WebApp` creates with the method `vApp.init()` an ODKJS attribute `vApp.aQuestionnaire` as an instance of `ODKJS` by `this.aQuestionnaire = new ODKJS()` ). Main features of `ODKJS` are:
   * **aQuestionnaire.getServerList(pURL)** Downloading a list of available questionnaires from the ODK server defined by `pURL`. Stores the list (returned JSON file) as Hash in `aQuestionnaire.aQuestList`.
   * **aQuestionnaire.getQuest(pQuestID)** Select a particular questionnaire from that list by the mobile device user and start the download of that questionnaire.
   * store the downloaded questionnaire in the LocalStorage of the browser
@@ -134,6 +134,7 @@ The function `getQueryParams()` return a hash with the parameters that can be ac
 ```
 var vQueryHash = readQueryParams();
 alert(vQueryHash['par1']);   // will show 'Firstname'
+alert(vQueryHash['par2']);   // will show 'Lastname'
 ```
 ### Check the Online Mode of an App ###
 For the functionality of Online/Offline mode of an App it is important, that the HTML in the browser can access certain server resources or check if the device is Online or Offline in general to explore an implementation of an app, we tested an iFrame in the web pages for that purpose.
@@ -190,10 +191,61 @@ The GitHub repository is setup in way that the `/docs` subfolder is used as a se
     * **GitHub Pages** (scroll down on Options page)
       * **Source** (select `master branch docs folder`)
 
+## Library ##
+* **fuzzycontrol.js**  The library `fuzzycontrol.js` contains the fuzzy controller for calculating the reponse for the uses. This is the only lib that was generated in the Object Oriented way  (see [JavascriptClassGenerator](https://niebert.github.io/JavascriptClassCreator/))
+* **fuzzymain.js**  The library `fuzzymain.js` contains functions for calculating Fuzzy `AND`, `Fuzzy OR`, `Fuzzy NOT`.
+* **geolocation.js**  The library `geolocation.js` contains functions to retrieve a GPS location even by the IP address of the client.
+* **htmlrequest.js**  The library `htmlrequest.js` contains functions for handling the QueryString and URL parameters.
+* **jquery*.js**  The library `jquery*.js` contains the [JQuery](http://www.jquery.com) package
+**jquery.mobile.*.js**  The library `jquery*.js` contains the [JQuery Mobile](https://jquerymobile.com/) package
+* **jsondb.js**  The library `jsondb.js` contains functions for handling a JSON Database
+* **leaflet.js**  The library `leaflet.js` contains the package [LeafLetJS](http://leafletjs.com/) for displaying maps in a HTML page. The package can be replace by [OpenLayers](https://openlayers.org) if the feature analysis of **Leaflet** (see  [LL examples](http://leafletjs.com/examples.html) and [LL plugins](http://leafletjs.com/plugins.html)) and **OpenLayers** (see [OL examples](https://openlayers.org/en/latest/examples/)) indicates a preference of OpenLayer as on OpenSoure mobile friendly package of interactive maps.
+* **leaflet4location.js**  The library `leaflet4location.js.js` contains functions for displaying a leaflet map for current geolocation.
+* **localstorage.js**  The library `localstorage.js` contains functions for handling JSON database with the `[LocalStorage](http://www.w3schools.com/html/html5_webstorage.asp)`
+* **login.js**  The library `login.js` contains functions for login to the main window of the app or in general to authenticate to remote server. In this DisApp example it is implemented in way that it supports a rapid prototype for the alpha-version of DisApp.
+* **openwin.js**  The library `openwin.js` contains functions for opening new browser windows with a specific size and URL.
+* **settings.js**  The library `settings.js` contains functions for initialisation of DOM variable provide by the QueryString from `htmlrequest.js`
+* **showhide.js**  The library `showhide.js` contains functions for showing and hiding DOM elements in the HTML page. DOM elements need to have an `id="myID"` in the tag to hide and display them. The following examples show the basic functionality of those functions.  
+```
+<script src="js/showhide.js"></script>
+
+<button id="bShow" onclick="show('myText')"> Show Text </button>
+<button id="bHide" onclick="hide('myText')"> Hide Text </button>
+
+<div id="myText" style="display:none">Hidden Text</div>
+```
+* **string.js**  The library `string.js` contains functions for string manipulation
+* **syncserver.js**  The library `syncserver.js` contains functions for syncing a questionnaire with a server.
+* **urlgen.js**  The library `urlgen.js` contains functions for creating a URL with parameters from a hash.
+* **writedom.js**  The library `writedom.js` contains functions for writing dynamically in the content of a webpage.
+```
+<html>
+  <body>
+    <script src="js/writedom.js"></script>
+
+    <button id="bShow" onclick="write2value('myInput','Hello Input')">
+      Set Input
+    </button>
+
+    <button id="bHide" onclick="write2innerHTML('myText','Hello World')">
+      Set Text
+    </button>
+
+    <input type="text" id="myInput" value="my default text as input" />
+
+    <div id="myText">
+      My default text in HTML
+    </div>
+</body>
+</html>
+```
+The example can be used to test the functions. The library is mainly implemented to write debugging information into console of the browser. This was helpful during prototyping (e.g. missing IDs or typos in IDs when these functions write dynamically to the DOM of you web site)
+
 ## Acknowledgements ##
 * [JQuery Mobile](http://themeroller.jquerymobile.com) used for GUI Development, for sharing a multipurpose HTML5 environment to handle the GUI in Apps.
 * we follow the work of git-flow by http://danielkummer.github.io/git-flow-cheatsheet/ (recommendation to use in DisApp by Suraj Shah).
 * **iOS-Inspired jQuery Mobile theme** by [@taitems](http://twitter.com/taitems). Resources at [GitHub page](https://github.com/taitems/iOS-Inspired-jQuery-Mobile-Theme).
+* Blake Giradot ([Humanitarian Open Streetmap Team]() for supporting the OpenLayers integration)
 * Ajit N. Babu for Work flow development
 * Jitendra Shah for Support, Recommendations for Development
 * Suray Shah for Backend Development
