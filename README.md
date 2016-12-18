@@ -1,3 +1,4 @@
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 # DisApp
 ## Introduction ##
 Disease App - Demo of Features for Crowd Sourcing and Spatial Risk Assessment, with
