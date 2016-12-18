@@ -5,17 +5,21 @@
 - [DisApp](#disapp)
   - [Introduction](#introduction)
   - [Core Approach of Software Development](#core-approach-of-software-development)
+  - [News for DisApp](#news-for-disapp)
   - [Explored Features in Demo](#explored-features-in-demo)
   - [Development Cycle](#development-cycle)
     - [alpha-Version: Web-App](#alpha-version-web-app)
-  - [Explored Features in Detail](#explored-features-in-detail)
+    - [beta-Version: ODK Connected](#beta-version-odk-connected)
+  - [Explored Features in DisApp](#explored-features-in-disapp)
     - [Create a Server Call with Javascript](#create-a-server-call-with-javascript)
     - [Generate the URL for a Server Call with Javascript](#generate-the-url-for-a-server-call-with-javascript)
     - [Submit Data to HTML pages with the URL](#submit-data-to-html-pages-with-the-url)
     - [Check the Online Mode of an App](#check-the-online-mode-of-an-app)
+    - [Load/Save JSON Databases from Local Storage](#loadsave-json-databases-from-local-storage)
     - [HTTPS Servers to deploy Web-Apps](#https-servers-to-deploy-web-apps)
   - [Setup of DisApp Repository](#setup-of-disapp-repository)
   - [Library](#library)
+  - [Development Tools](#development-tools)
   - [Acknowledgements](#acknowledgements)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -23,7 +27,7 @@
 # DisApp
 ## Introduction ##
 Disease App - Demo of Features for Crowd Sourcing and Spatial Risk Assessment, with
-and basic Fuzzy-Logic Feedback system, that allows client-side analysis of questionnaire for individual responsess.
+and basic Fuzzy-Logic Feedback system, that allows client-side analysis of questionnaire for individual responses.
 * Sources are in HTML/Javascript so that **Desktop**, **Mobile Phone** and **Web-Apps** can be created from the same code base.
 * **Mobile Device Apps:** Compiler [Intel XDK](https://software.intel.com/en-us/xdk/videos/intel-xdk-app-designer) (Android, iOS, ...) Apps, [Cordova](https://www.tutorialspoint.com/cordova/), ...
 * **Desktop Application:** with [Electron](http://electron.atom.io/)
@@ -44,7 +48,8 @@ We can think of these *application types* as a container for  our web app with
   * Document Converting with [PanDoc](https://niebert.github.com/PanDocElectron)
 
 ## News for DisApp ##
-* (Nov. 15th 2016) [Analyzing OpenStreetMap for the fight against Malaria](https://hotosm.org/updates/2016-11-15_analyzing_openstreetmap_for_the_fight_against_malaria)
+* (2016/12/18) [alpha-Version of DisApp release](https://niebert.github.com/DisApp)
+* (2016/11/15) [Analyzing OpenStreetMap for the fight against Malaria](https://hotosm.org/updates/2016-11-15_analyzing_openstreetmap_for_the_fight_against_malaria)
 
 ## Explored Features in Demo ##
 * **[AppCache](http://www.w3schools.com/html/html5_app_cache.asp)** to allow Offline use of the Web-App on the Mobile Device. A script `appcache_filecollect.pl` collects all files in the subdirectory `/docs` and adds them to the AppCache manifest `docs/disapp.appcache`. This perl script simplifies the management of the AppCache manifest, when libraries and files are added. When you miss files in the appcache (e.g. an icon) that the icon or the background is missing, when the users wants to use the app in offline mode.
@@ -56,6 +61,7 @@ We can think of these *application types* as a container for  our web app with
 [`https://niebert.github.com/DisApp`](https://niebert.github.com/DisApp)
 It uses the browser LocalStorage to store data on the client and uses call of remote Javascript Libraries and a JS Timeout Command to communicate with the Server. It works like a remote call of e.g. [JQuery](https://jquery.com). The JS-Timeout Call waits until a defined time of milliseconds and checks if a certain ResultDB-Hash is existing, that contains the returned data from the server. To submit data to the server, the SRC-Attribute with the remote javascript libraries has additional parameters that are evaluated on the server. Normally the Website will expect javascript code as a returned content, so the server has to generate proper Javascript Code. The benefit of this strategy is, that the server can add additional functionality to the app.
 * **IMPORTANT NOTICE for alpha-Version:** Users must trust the remote server and the maintainers of the server, that they do not inject malicious code in the response javascript code. The calls of the javascript code should be performed in a HTTPS-call and the parameters of the call should be encrypted on the client side (e.g. `par1=Firstname&par2=Lastname&...` into * `encryptpars=82hl324o823llj405443l9EJDL9ERKRkdlsHjsdasku7758...`) this adds an additional security layer on the client server communication.
+
 ### beta-Version: ODK Connected ###
 * (**beta**): The beta-Version allows the communication to [OpenDataKit](https://opendatakit.org), to allow communication with an well developed OpenSource project for questionnaire management and Online and Offline data collection. The proposed developement of ODKJS API allows the client server communication with the ODK server. The developed App allows the design of tailored response to the users that submit data to the ODK server. In a Citizen Science Approach for Risk Management Convert the code base into an Object Oriented Model.
 * (**ODKJS OpenDataKit-Javascript Package**) The OpenDataKit Javascript Package is written in Javascript and the package is able to interact with an ODK Server. Altering the Server the users wants to connect to should be visible in the app so that the users can decide, if she/he trusts the maintainers of the server (injection of malicious code through the remotely called Javascript Libraries from the server). The Package ODKJS should be developed in a separate repository and it should contain a basic wrapper for a web application that uses the OKDJS for interacting with the default OpenDataKit server infrastructure. `aODKJS` is regards as an attribute of a javascript class for the application (e.g. `vApp = new WebApp()` (not implemented yet)). The variable `vApp` is an instance of the class `WebApp` (see [JavascriptClassGenerator](https://niebert.github.io/JavascriptClassCreator/) for creating you own classes). The Class `WebApp` creates with the method `vApp.init()` an ODKJS attribute `vApp.aQuestionnaire` as an instance of `ODKJS` by `this.aQuestionnaire = new ODKJS()` ). Main features of `ODKJS` are:
@@ -67,7 +73,7 @@ It uses the browser LocalStorage to store data on the client and uses call of re
   * In Online mode the App submits the collected data of the selected questionnaire directly to the ODK server and marks the record in the LocalStorage as `submitted`.
   * create a list of unsubmitted records in the  `[LocalStorage](http://www.w3schools.com/html/html5_webstorage.asp)`. This list is necessary to submit unsubmitted data to the server.
 
-## Explored Features in Detail ##
+## Explored Features in DisApp ##
 ### Create a Server Call with Javascript ###
 In GitHub folder `/docs/js/syncserver.js` you find a Javascript functions that creates a script tag and appends the script tag to DOM element with the `id=divJSCALL` in HTML page.
 ```
@@ -206,6 +212,27 @@ vConnectStatus["OnlineMode"] = true;
 ```
 To access a function in the parent window of iFrame a function `top.setSelectOnline(pOnline)` is called. The DOM object `top` indicates that the function is defined in the parent HTML page (i.e. `disapp.html`).
 
+### Load/Save JSON Databases from Local Storage ###
+The following functions loads JSON database from the `[LocalStorage](http://www.w3schools.com/html/html5_webstorage.asp)`. The LocalStorage contains a string and the string is parsed into a JSON database that is returned by the function (e.g. `loadLocalDB('disapp.db')`). An [example of an JSON database](https://github.com/niebert/DisApp/blob/master/appdb_response/jsondatabase.js) with no records in the database (i.e. `DBlines`) is stored in the folder `appdb_response/` of the DisApp repository. Parsing is just one called of `JSON.parse(vJSONstring)`, it is performed by a separate function `parseJSONDB(...)`, to write more message to the console for debugging purpose during the development phase.
+```
+function loadLocalDB(pDBName) {
+  var vJSONDB = null;
+  if (typeof(Storage) != "undefined") {
+    // Store
+    if (typeof(localStorage.getItem(pDBName)) != undefined) {
+      console.log("JSON-DB '"+pDBName+"' try loading from Local Storage");
+      var vJSONstring = localStorage.getItem(pDBName);
+      vJSONDB = parseJSONDB(pDBName,vJSONstring);
+    } else {
+      console.log("JSON-DB '"+pDBName+"' is undefined in Local Storage");
+    };
+  }	 else {
+    console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
+  };
+  return vJSONDB;
+};
+```
+
 ### HTTPS Servers to deploy Web-Apps ###
 It is a requirement to encrypted HTTPS-calls, especially when personalized information like e-mail, names, ... are submitted. Encryption of URL parameters an decoding on the Backend server add additional security to client server interaction.
 
@@ -265,6 +292,13 @@ The GitHub repository is setup in way that the `/docs` subfolder is used as a se
 </html>
 ```
 The example can be used to test the functions. The library is mainly implemented to write debugging information into console of the browser. This was helpful during prototyping (e.g. missing IDs or typos in IDs when these functions write dynamically to the DOM of you web site)
+
+## Development Tools ##
+* [JavascriptClassGenerator](https://niebert.github.io/JavascriptClassCreator/) to generate Javascript Classes in an Object Oriented Programming.
+* [Atom Editor](https://atom.io/) for editing Javascript, CSS and HTML Source Code of the Project.
+* [Javscript Minifier](http://search.cpan.org/~pmichaux/JavaScript-Minifier-1.05/lib/JavaScript/Minifier.pm) Perl Script to compress Javascript Code.
+* [AppCache FileCollect] a Perl Script for collecting all files for the AppCache manifest for Offline use of WebApplication (is part of the `DisApp` repository).
+* [Git GUI](https://git-scm.com/downloads/guis) to sync to GitHub, choose your preferred Graphic User Interface for GIT.
 
 ## Acknowledgements ##
 * [JQuery Mobile](http://themeroller.jquerymobile.com) used for GUI Development, for sharing a multipurpose HTML5 environment to handle the GUI in Apps.
