@@ -43,6 +43,9 @@ We can think of these *application types* as a container for  our web app with
   * Geograhic Information Systems [GRASS](https://grass.osgeo.org/)
   * Document Converting with [PanDoc](https://niebert.github.com/PanDocElectron)
 
+## News for DisApp ##
+* (Nov. 15th 2016) [Analyzing OpenStreetMap for the fight against Malaria](https://hotosm.org/updates/2016-11-15_analyzing_openstreetmap_for_the_fight_against_malaria)
+
 ## Explored Features in Demo ##
 * **[AppCache](http://www.w3schools.com/html/html5_app_cache.asp)** to allow Offline use of the Web-App on the Mobile Device. A script `appcache_filecollect.pl` collects all files in the subdirectory `/docs` and adds them to the AppCache manifest `docs/disapp.appcache`. This perl script simplifies the management of the AppCache manifest, when libraries and files are added. When you miss files in the appcache (e.g. an icon) that the icon or the background is missing, when the users wants to use the app in offline mode.
 * **[LocalStorage](http://www.w3schools.com/html/html5_webstorage.asp)** to store data on the device in the browser, when the App is Offline and running from the AppCache.
@@ -267,7 +270,7 @@ The example can be used to test the functions. The library is mainly implemented
 * [JQuery Mobile](http://themeroller.jquerymobile.com) used for GUI Development, for sharing a multipurpose HTML5 environment to handle the GUI in Apps.
 * we follow the work of git-flow by http://danielkummer.github.io/git-flow-cheatsheet/ (recommendation to use in DisApp by Suraj Shah).
 * **iOS-Inspired jQuery Mobile theme** by [@taitems](http://twitter.com/taitems). Resources at [GitHub page](https://github.com/taitems/iOS-Inspired-jQuery-Mobile-Theme).
-* Blake Giradot ([Humanitarian Open Streetmap Team]() for supporting the OpenLayers integration)
+* Blake Giradot ([Humanitarian Open Streetmap Team](https://hotosm.org/users/blake_girardot) for supporting the OpenLayers integration for [OpenStreetMap](https://openstreemap.org) and  [Humanitarian OpenStreetMap](http://hotosm.org)).
 * Ajit N. Babu for Work flow development
 * Jitendra Shah for Support, Recommendations for Development
 * Suray Shah for Backend Development
