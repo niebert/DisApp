@@ -5,25 +5,42 @@ and basic Fuzzy-Logic Feedback system, that allows client-side analysis of quest
 * Sources are in HTML/Javascript so that **Desktop**, **Mobile Phone** and **Web-Apps** can be created from the same code base.
 * **Mobile Device Apps:** Compiler [Intel XDK](https://software.intel.com/en-us/xdk/videos/intel-xdk-app-designer) (Android, iOS, ...) Apps, [Cordova](https://www.tutorialspoint.com/cordova/), ...
 * **Desktop Application:** with [Electron](http://electron.atom.io/)
+* **Server Application:** e.g. create simple [Server with Electron](https://gist.github.com/bellbind/6ae79ebef25504107650))
 
 ## Core Approach of Software Development ##
 Share the same code base for
-* Desktop Applications
+* Desktop Applications (e.g. Electron)
 * Server Applications that handle the Client-Server-Interactions
 * Mobile Device App Development
 * Web-Apps
-
+We can think of these *application types* as a container for  our web app with
+* accessing the file system of the device
+* connecting with native mobile functionalities (GPS, Camera, SD-Card, Mircophone, ...).
+* performing server task with other OpenSource Software
+  * Statistical Analysis with [R](https://www.r-project.org/)
+  * Geograhic Information Systems [GRASS](https://grass.osgeo.org/)
+  * Document Converting with [PanDoc](https://niebert.github.com/PanDocElectron)
 
 ## Explored Features in Demo ##
 * **[AppCache](http://www.w3schools.com/html/html5_app_cache.asp)** to allow Offline use of the Web-App on the Mobile Device. A script `appcache_filecollect.pl` collects all files in the subdirectory `/docs` and adds them to the AppCache manifest `docs/disapp.appcache`. This perl script simplifies the management of the AppCache manifest, when libraries and files are added. When you miss files in the appcache (e.g. an icon) that the icon or the background is missing, when the users wants to use the app in offline mode.
 * **[LocalStorage](http://www.w3schools.com/html/html5_webstorage.asp)** to store data on the device in the browser, when the App is Offline and running from the AppCache.
 
 ## Development Cycle ##
+### alpha-Version: Web-App ###
 * (**[alpha](https://niebert.github.com/DisApp)**): Rapid Prototyping, Generate a *Look and Feel* for user groups from the very beginning. Deployment in the `docs/` Folder of the Github repository is available on the url:
 [`https://niebert.github.com/DisApp`](https://niebert.github.com/DisApp)
 It uses the browser LocalStorage to store data on the client and uses call of remote Javascript Libraries and a JS Timeout Command to communicate with the Server. It works like a remote call of e.g. [JQuery](https://jquery.com). The JS-Timeout Call waits until a defined time of milliseconds and checks if a certain ResultDB-Hash is existing, that contains the returned data from the server. To submit data to the server, the SRC-Attribute with the remote javascript libraries has additional parameters that are evaluated on the server. Normally the Website will expect javascript code as a returned content, so the server has to generate proper Javascript Code. The benefit of this strategy is, that the server can add additional functionality to the app.
 * **IMPORTANT NOTICE for alpha-Version:** Users must trust the remote server and the maintainers of the server, that they do not inject malicious code in the response javascript code. The calls of the javascript code should be performed in a HTTPS-call and the parameters of the call should be encrypted on the client side (e.g. `par1=Firstname&par2=Lastname&...` into * `encryptpars=82hl324o823llj405443l9EJDL9ERKRkdlsHjsdasku7758...`) this adds an additional security layer on the client server communication.
-* (**beta**): The beta-Version allows the communication to OpenDataKit, to allow communication with an well developed OpenSource project for questionnaire management and Online and Offline data collection. The proposed developement of ODKJS API allows the client server communication with the ODK server. The developed App allows the design of tailored response to the users that submit data to the ODK server. In a Citizen Science Approach for Risk Management Convert the code base into an Object Oriented Model.
+### beta-Version: ODK Connected ###
+* (**beta**): The beta-Version allows the communication to [OpenDataKit](https://opendatakit.org), to allow communication with an well developed OpenSource project for questionnaire management and Online and Offline data collection. The proposed developement of ODKJS API allows the client server communication with the ODK server. The developed App allows the design of tailored response to the users that submit data to the ODK server. In a Citizen Science Approach for Risk Management Convert the code base into an Object Oriented Model.
+* (**ODKJS OpenDataKit-Javascript Package**) The OpenDataKit Javascript Package is written in Javascript and the package is able to interact with an ODK Server. Altering the Server the users wants to connect to should be visible in the app so that the users can decide, if she/he trusts the maintainers of the server (injection of malicious code through the remotely called Javascript Libraries from the server). The Package ODKJS should be developed in a separate repository and it should contain a basic wrapper for a web application that uses the OKDJS for interacting with the default OpenDataKit server infrastructure. `aODKJS` is regards as an attribute of a javascript class for the application (e.g. `vApp = new WebApp()` (not implemented yet)). The variable `vApp` is an instance of the class `WebApp` (see [JavascriptClassGenerator](https://niebert.github.com/JavascriptClassGenerator) for creating you own classes). The Class `WebApp` creates with the method `vApp.init()` an ODKJS attribute `vApp.aQuestionnaire` as an instance of `ODKJS` by `this.aQuestionnaire = new ODKJS()` ). Main features of `ODKJS` are:
+  * **aQuestionnaire.getServerList(pURL)** Downloading a list of available questionnaires from the ODK server defined by `pURL`. Stores the list (returned JSON file) as Hash in `aQuestionnaire.aQuestList`.
+  * **aQuestionnaire.getQuest(pQuestID)** Select a particular questionnaire from that list by the mobile device user and start the download of that questionnaire.
+  * store the downloaded questionnaire in the LocalStorage of the browser
+  * start collecting data by the user in Online or Offline mode. The collected data are stored as JSON files in the `[LocalStorage](http://www.w3schools.com/html/html5_webstorage.asp)` of the Client.
+  * delete a downloaded questionnaire from the LocalStorage of the browser
+  * In Online mode the App submits the collected data of the selected questionnaire directly to the ODK server and marks the record in the LocalStorage as `submitted`.
+  * create a list of unsubmitted records in the  `[LocalStorage](http://www.w3schools.com/html/html5_webstorage.asp)`. This list is necessary to submit unsubmitted data to the server.
 
 ## Explored Features in Detail ##
 ### Create a Server Call with Javascript ###
@@ -153,16 +170,25 @@ function checkIfSuccess() {
     top.setSelectOnline(false);
   } ;
 }
+
+setTimeout("checkIfSuccess()",5000);
 ```
-The remote Javscript library `https://niebert.github.io/DisApp/loader/onlinecheck.js` will be loaded. This remote library does not contain very much. Just a hash for the connection status.
+The remote Javscript library `https://niebert.github.io/DisApp/loader/onlinecheck.js` will be loaded. This remote library does not contain very much. Just a hash for the connection status (content of `docs/loader/onlinecheck.js` is included in the repository).
 ```
 var vConnectStatus = {};
 vConnectStatus["OnlineMode"] = true;
 ```
-To access a function in the parent window of iFrame a function `setSelectOnline(pOnline)` is called. The `top.` DOM objects indicates that the function is defined in the parent HTML page.
+To access a function in the parent window of iFrame a function `top.setSelectOnline(pOnline)` is called. The DOM object `top` indicates that the function is defined in the parent HTML page (i.e. `disapp.html`).
 
 ### HTTPS Servers to deploy Web-Apps ###
 It is a requirement to encrypted HTTPS-calls, especially when personalized information like e-mail, names, ... are submitted. Encryption of URL parameters an decoding on the Backend server add additional security to client server interaction.
+
+## Setup of DisApp Repository ##
+The GitHub repository is setup in way that the `/docs` subfolder is used as a server root for `https://niebert.github.com/DisApp`. This can be accomplished by going to
+* **Settings** (of the repository)
+  * **Options** (left menu)
+    * **GitHub Pages** (scroll down on Options page)
+      * **Source** (select `master branch docs folder`)
 
 ## Acknowledgements ##
 * [JQuery Mobile](http://themeroller.jquerymobile.com) used for GUI Development, for sharing a multipurpose HTML5 environment to handle the GUI in Apps.
