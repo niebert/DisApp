@@ -1,3 +1,25 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [DisApp](#disapp)
+  - [Introduction](#introduction)
+  - [Core Approach of Software Development](#core-approach-of-software-development)
+  - [Explored Features in Demo](#explored-features-in-demo)
+  - [Development Cycle](#development-cycle)
+    - [alpha-Version: Web-App](#alpha-version-web-app)
+  - [Explored Features in Detail](#explored-features-in-detail)
+    - [Create a Server Call with Javascript](#create-a-server-call-with-javascript)
+    - [Generate the URL for a Server Call with Javascript](#generate-the-url-for-a-server-call-with-javascript)
+    - [Submit Data to HTML pages with the URL](#submit-data-to-html-pages-with-the-url)
+    - [Check the Online Mode of an App](#check-the-online-mode-of-an-app)
+    - [HTTPS Servers to deploy Web-Apps](#https-servers-to-deploy-web-apps)
+  - [Setup of DisApp Repository](#setup-of-disapp-repository)
+  - [Library](#library)
+  - [Acknowledgements](#acknowledgements)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 **Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 # DisApp
 ## Introduction ##
