@@ -1,3 +1,95 @@
+// -------------------------------------------
+//  DOM injection of DB Views
+// -------------------------------------------
+function injectListDB2DOM(pType,pUnsubmittedONLY) {
+  var vID = "divListDB";
+  var vOut = "";
+  switch (pType) {
+    case "app":
+      vSelDB = vJSONDB;
+    break;
+    case "response":
+      vSelDB = vResponseDB;
+    break;
+    case "feedback":
+      vSelDB = vFeedbackDB;
+      //vTitle = vSelDB["DBtitle"];
+    break;
+    default:
+      alert("DB Type was not valid, use default JSON Database")
+      console.log("DB Type was not found in injectListDB2DOM()-Call");
+      vSelDB = vJSONDB;
+  };
+  vOut = getListJSONDB(vSelDB,pType,pUnsubmittedONLY);
+  write2innerHTML(vID,vOut);
+};
+
+function countUnsubmitted(pDBsubmitted) {
+  var vCount = -1;
+  if (pDBsubmitted) {
+    vCount = 0;
+    for (var i = 0; i < pDBsubmitted.length; i++) {
+      if(!pDBsubmitted[i]) {
+        vCount++;
+      };
+    };
+  } else {
+    console.log("ERROR: pDBsubmitted undefined in countUnsubmitted()-Call ");
+  };
+  return vCount;
+}
+
+function getListJSONDB(pJSONDB,pType,pUnsubmittedONLY) {
+  var vListPrefixDB = getListPrefixDB(pType);
+  var vOut = getHeaderDB(pJSONDB);
+  var vInfo = "";
+  if (pUnsubmittedONLY) {
+    vInfo += "OFFLINE";
+  } else {
+    vInfo += "ALL";
+  };
+  vOut += '<ul id="ul-dbviewer'+pType+'" data-role="listview">';
+  if (pJSONDB) {
+    var vDBformat    = pJSONDB["DBformat"];
+    var vDB          = pJSONDB["DBlines"];
+    var vDBsubmitted = pJSONDB["DBsubmitted"];
+    vInfo += " - [";
+    var vLength = vDB.length;
+    if (pUnsubmittedONLY) {
+      vInfo += countUnsubmitted(pDBsubmitted)+"/"+vLength+"]";
+    } else {
+      vInfo += vLength+"]";
+    };
+    vOut += '<li data-role="list-divider">Database - '+vInfo+'</li>';
+    var vPrefix = getListPrefixDB(pType);
+    var vCount = 0;
+    var vDBhash = {};
+    for (var i=0;i<vDB.length;i++) {
+      vCount = i+1;
+      vDBhash = convertArray2Hash(vDB[i]);
+      vOut += getItem4DisplayDB(i,vDBhash);
+      //document.write("<li><a href='#displaydbrecord' onclick=\"fillContentRecordDB("+i+");alert('Display Record "+vCount+"')\">"+vCount+" "+vDB[i][0]+"</a></li>");
+    };
+  };
+  vOut += '</ul>';
+  return vOut;
+};
+
+function getListPrefixDB(pType) {
+  switch (pType) {
+    case "app":
+      return "Questionnaire";
+    break;
+    case "repsonse":
+      return "Risk Mitigation";
+    break;
+    case "feedback":
+      return "Feedback";
+    break;
+    default:
+      return "Undefined DB"
+  };
+};
 //---------------------------------------------
 //---1 checkForm
 //---------------------------------------------
@@ -163,7 +255,6 @@ function printAllFeedback() {
   document.write(createAllFeedback("feedback_"));
 };
 
-
 function createAllFeedback(pIDprefix) {
   var vIDprefix = pIDprefix || "feedback_";
   var vOut = "";
@@ -277,7 +368,11 @@ function setSelectTable (pSelTableNumber,pSelPages,pPageType) {
   }
 };
 
-function printPageSelector (pPages,pPageType) {
+function printPageSelector(pPages,pPageType) {
+  document.write(getPageSelector(pPages,pPageType));
+};
+
+function getPageSelector (pPages,pPageType) {
   var vPageType = pPageType || "Form";
   var vOut = "";
   var vSelCount = 0;
@@ -324,21 +419,30 @@ function printPageSelector (pPages,pPageType) {
   vOut += "</tr></table>";
   vOut += "</div>";
   //document.getElementById("PageButtons").innerHTML = vOut;
-  document.write(vOut);
+  return vOut;
+};
+
+function getHeaderDB(pJSONDB) {
+  var vOut = "<h2>"+pJSONDB["DBtitle"]+"</h2>";
+  vOut += "<i>"+pJSONDB["DBsubtitle"]+" ["+pJSONDB["database"]+"]</i>";
+  return vOut
 };
 
 function printHeader() {
-  document.write("<h2>"+vJSONDB["DBtitle"]+"</h2>");
-  document.write("<i>"+vJSONDB["DBsubtitle"]+" ["+vJSONDB["database"]+"]</i>");
+  document.write(getHeaderDB(vJSONDB));
 };
 
-
 function printFormPages(pMax4Page) {
+  document.write(getFormPages(pMaxPage,vJSONDB));
+};
+
+function getFormPages(pMax4Page,pJSONDB) {
+  var vOut = "";
   var vMax4Page = pMax4Page || 4;
-  var vDBformat   = vJSONDB["DBformat"];
-  var vDBtitles   = vJSONDB["DBtitles"];
-  var vDBcolinput = vJSONDB["DBcolinput"];
-  var vDBvisible  = vJSONDB["DBvisible"];
+  var vDBformat   = pJSONDB["DBformat"];
+  var vDBtitles   = pJSONDB["DBtitles"];
+  var vDBcolinput = pJSONDB["DBcolinput"];
+  var vDBvisible  = pJSONDB["DBvisible"];
   var vMax4Page = pMax4Page || 4;
   var vPage = 0;
   var vCount = 0;
@@ -353,35 +457,41 @@ function printFormPages(pMax4Page) {
       if (vCount == 1) {
         vPage++;
         if (vPage == 1) {
-          document.write("<div id=\"forminput"+vPage+"\" >");
+          vOut += "<div id=\"forminput"+vPage+"\" >";
         } else {
-          document.write("<div id=\"forminput"+vPage+"\" style=\"display:none\">");
+          vOut += "<div id=\"forminput"+vPage+"\" style=\"display:none\">";
         };
       };
       //document.write("<li>"+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+"</li>");
-      document.write(vPage+"."+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+" ");
+      vOut += vPage+"."+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+" ";
       if (vCount == vMax4Page) {
-        document.write("</div>");
+        vOut += "</div>";
         vCount = 0;
       };
       //alert(vDBformat[i]+" visible");
     } else {
       //alert(vDBformat[i]+" not visible");
       if (vDebug > 0) {
-        document.write(vID+": ");
+        vOut += vID+": ";
       };
-      document.write("<input type='"+vType+"' name='"+vID+"' id='\"formdb_"+vID+"' style='\"display:none\"'>");
+      vOut += "<input type='"+vType+"' name='"+vID+"' id='\"formdb_"+vID+"' style='\"display:none\"'>";
     };
   };
-  document.write("</div>");
+  vOut += "</div>";
+  return vOut;
 };
 
 function printDisplayPages(pMax4Page) {
+  document.write(getDisplayPages(pMax4Page,vJSONDB));
+};
+
+function getDisplayPages(pMax4Page,pJSONDB) {
+  var vOut = "";
   var vMax4Page = pMax4Page || 4;
-  var vDBformat   = vJSONDB["DBformat"];
-  var vDBtitles   = vJSONDB["DBtitles"];
-  //var vDBcolinput = vJSONDB["DBcolinput"];
-  var vDBvisible  = vJSONDB["DBvisible"];
+  var vDBformat   = pJSONDB["DBformat"];
+  var vDBtitles   = pJSONDB["DBtitles"];
+  //var vDBcolinput = pJSONDB["DBcolinput"];
+  var vDBvisible  = pJSONDB["DBvisible"];
   var vMax4Page = pMax4Page || 4;
   var vPage = 0;
   var vCount = 0;
@@ -392,17 +502,17 @@ function printDisplayPages(pMax4Page) {
       if (vCount == 1) {
         vPage++;
         if (vPage == 1) {
-          document.write("<div id=\"displayinput"+vPage+"\" >");
+          vOut += "<div id=\"displayinput"+vPage+"\" >";
         } else {
-          document.write("<div id=\"displayinput"+vPage+"\" style=\"display:none\">");
+          vOut += "<div id=\"displayinput"+vPage+"\" style=\"display:none\">";
         };
       };
       vID = vDBformat[i];
       //document.write("<li>"+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+"</li>");
       //document.write(vPage+"."+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+" ");
-      document.write(vPage+"."+vCount+" "+vDBtitles[i]+": <div style='background:white' id='dbcontent_"+vID+"'>"+vID+"</div><hr/>");
+      vOut += vPage+"."+vCount+" "+vDBtitles[i]+": <div style='background:white' id='dbcontent_"+vID+"'>"+vID+"</div><hr/>";
       if (vCount == vMax4Page) {
-        document.write("</div>");
+        vOut += "</div>";
         vCount = 0;
       };
       //alert(vDBformat[i]+" visible");
@@ -410,7 +520,8 @@ function printDisplayPages(pMax4Page) {
       //alert(vDBformat[i]+" not visible");
     };
   };
-  document.write("</div>");
+  vOut += "</div>";
+  return vOut;
 };
 
 
@@ -544,18 +655,30 @@ function fillOfflineRecordDB(pIndex,pIDprefix) {
 
 };
 
-function fillContentRecordDB(pIndex) {
-  var vDBformat   = vJSONDB["DBformat"];
-  var vDBtitles   = vJSONDB["DBtitles"];
-  var vDBvisible  = vJSONDB["DBvisible"];
-  var vDBlines    = vJSONDB["DBlines"];
+function fillContentRecordDB(pIndex,pType,pJSONDB) {
+  var vDB = pJSONDB || vJSONDB;
+  var vType = pType || "app";
+  var vDBformat    = vDB["DBformat"];
+  var vDBtitles    = vDB["DBtitles"];
+  var vDBvisible   = vDB["DBvisible"];
+  var vDBlines     = vDB["DBlines"];
+  var vDBsubmitted = vDB["DBsubmitted"];
   var vID = "";
   if ((pIndex >=0) && (pIndex < vDBlines.length)) {
     for (var i=0;i<vDBformat.length;i++) {
       if (vDBvisible[i]) {
         vID = vDBformat[i];
-        $("#dbcontent_"+vID).html(vDBlines[pIndex][i]);
+        $("#"+vType+"_"+vID).html(vDBlines[pIndex][i]);
       };
+    };
+    // if already submitted
+    if (vDB["DBsubmitted"][pIndex]) {
+      console.log("fillContentRecordDB() SUBMITTED (1) hide the submit button and (2) display an update Button");
+    } else {
+      console.log("fillContentRecordDB() NOT SUBMITTED YET (1) show submit button and (2) hide an update Button");
+      //JQuery $('.myclass') Class
+      //JQuery $('#myid') ID of DOM element
+      //JQuery $('tag') all DOM elements with TAG
     }
   } else {
     console.log("pIndex="+pIndex+" is out of range. vDBlines.length="+vDBlines.length);
@@ -563,10 +686,14 @@ function fillContentRecordDB(pIndex) {
 
 }
 
-function getItem4DisplayDB(pIndex,pDBhash) {
+function getItem4DisplayDB(pIndex,pDBhash,pType,pPrefix,pStrDB) {
+  var vType = pType || "app";
+  var vStrDB = pStrDB || "vJSONDB";
+  var vPrefix = pPrefix || "Questionnaire";
   var vCount = pIndex + 1;
-  var vLabel = pDBhash["sampledate"];
-  return "<li><a href='#pDisplayRecord' onclick=\"fillContentRecordDB("+pIndex+");alert('Display Record "+vCount+"')\">"+vCount+" "+vLabel+"</a></li>";
+  //var vLabel = pPrefix+" ["+pType+"] "+pDBhash["recdate"];
+  var vLabel = vPrefix+" - "+pDBhash["recdate"];
+  return "<li><a href='#pDisplayRecord' onclick=\"fillContentRecordDB("+pIndex+",'"+vType+"',"+vStrDB+")\">"+vCount+" "+vLabel+"</a></li>";
 };
 
 function createHiddenFormJSON(pDBType,pArrID) {
@@ -582,4 +709,23 @@ function createHiddenFormJSON(pDBType,pArrID) {
     vOut += '<input type="'+vType+'" name="'+vArrID[i]+'" id="'+vDBType+vArrID[i]+'" value="" />';
   };
   return vOut;
+}
+
+
+function write_OLD_DB4DOM() {
+  if (typeof(vJSONDB) != undefined) {
+    //alert("JSONDB was defined!");
+    var vDB = vJSONDB["DBlines"];
+    var vCount = 0;
+    var vDBhash = {};
+    for (var i=0;i<vDB.length;i++) {
+      vCount = i+1;
+      vDBhash = convertArray2Hash(vDB[i]);
+      document.write(getItem4DisplayDB(i,vDBhash));
+      //document.write("<li><a href='#displaydbrecord' onclick=\"fillContentRecordDB("+i+");alert('Display Record "+vCount+"')\">"+vCount+" "+vDB[i][0]+"</a></li>");
+    };
+  } else {
+    alert("Offline JSONDB was undefined!")
+  }
+
 }

@@ -35,8 +35,7 @@ function readWriteQueryParams() {
         alert("Key:"+vKey+" not found!\nhtmlrequest.js:24 - readWriteQueryParams()");
       };
     };
-    write2value("save_submiturl",vQuery["app_submiturl"])
-    updateSubmitForm(vQuery); // defined in syncserver.js
+    updateQuery2DOM(vQuery); // defined in setting.js
 }
 
 function X_encodeURLparam(pParam) {

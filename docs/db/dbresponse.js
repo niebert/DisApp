@@ -1,5 +1,5 @@
 vResponseDB = {
-  "database": "localsurvey.db",
+  "database": "response.db",
   "name":"vResponseDB",
   "DBtitle":"Ways to stop Dengue:",
   "DBsubtitle": "Database Prototype",

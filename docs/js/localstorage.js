@@ -1,3 +1,167 @@
+//--------------------------------------
+//  LOAD Local Storage JSONDB
+//--------------------------------------
+function loadLocalDB(pDBName) {
+  var vJSONDB = null;
+  if (typeof(Storage) != "undefined") {
+    // Store
+    if (typeof(localStorage.getItem(pDBName)) != undefined) {
+      console.log("JSON-DB '"+pDBName+"' try loading from Local Storage");
+      var vJSONstring = localStorage.getItem(pDBName);
+      vJSONDB = parseJSONDB(pDBName,vJSONstring);
+    } else {
+      console.log("JSON-DB '"+pDBName+"' is undefined in Local Storage");
+    };
+  }	 else {
+    console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
+  };
+  return vJSONDB;
+};
+
+//--------------------------------------
+//  PARSE Local Storage JSONDB
+//--------------------------------------
+function parseJSONDB(pDBName,pStringJSON) {
+  var vJSONDB = null;
+  if (pStringJSON) {
+    var vTest = pStringJSON.replace(/\S\t/g,"");
+    if (vTest.length > 0) {
+      console.log("JSONDB is defined in localStorage");
+      vJSONDB = JSON.parse(pStringJSON)
+    } else {
+      console.log("parseJSONDB()-Call: JSONDB ["+pDBName+"] cannot be parsed - empty String in LocalStorage");
+    }
+  } else {
+    console.log("parseJSONDB()-Call: JSONDB ["+pDBName+"] is undefined in LocalStorage.");
+  }
+};
+
+//--------------------------------------
+//  SAVE Local Storage JSONDB
+//--------------------------------------
+function saveLocalDB(pDBName,pJSONDB) {
+  if (typeof(Storage) != "undefined") {
+    // Store
+    if (typeof(pJSONDB) != undefined) {
+      console.log("JSON-DB '"+pDBName+"' is defined, JSONDB in  Local Storage");
+      if (pJSONDB) {
+        console.log("pJSONDB '"+pDBName+"' is saved to Local Storage");
+        localStorage.setItem(pDBName,JSON.stringify(pJSONDB));
+      } else {
+        console.log("pJSONDB DOM-Node is NOT defined");
+      }
+    } else {
+      console.log("pJSONDB is undefined");
+    };
+  }	 else {
+    console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
+  }
+};
+
+//--------------------------------------
+//  LOAD ALL Local Storage JSONDB
+//--------------------------------------
+
+function loadAllOfflineJSONDB(pArrayDB) {
+	console.log("loadAllOfflineJSONDB()-Call");
+	var vDBname = "";
+	for (var i = 0; i < pArrayDB.length; i++) {
+		vDBname = pArrayDB[i];
+		vLocalDB[vDBname] = loadLocalDB(vDBname);
+		if (typeof(vLocalDB[vDBname])  !== "undefined" )  {
+			console.log("Offline DB: ["+vDBName+"] exists in loadAllOfflineJSONDB()-Call");
+			if (vLocalDB[vDBname]["DBlines"]) {
+				switch (vDBname) {
+					case vJSONDB["database"]:
+							vJSONDB["DBlines"] =  vLocalDB[vDBname]["DBlines"];
+							vJSONDB["DBsubmitted"] =  vLocalDB[vDBname]["DBsubmitted"];
+					break;
+					case vResponseDB["database"]:
+							vResponseDB["DBlines"] =  vLocalDB[vDBname]["DBlines"];
+							vResponseDB["DBsubmitted"] =  vLocalDB[vDBname]["DBsubmitted"];
+					break;
+					case vFeedbackDB["database"]:
+							vFeedbackDB["DBlines"] =  vLocalDB[vDBname]["DBlines"];
+							vFeedbackDB["DBsubmitted"] =  vLocalDB[vDBname]["DBsubmitted"];
+					break;
+					default:
+							console.log("Offline DB: ["+vDBname+"] is unknown in loadAllOfflineJSONDB()-Call");
+				}
+			}
+		} else {
+			console.log("Offline DB: ["+vDBname+"] is undefined in loadAllOfflineJSONDB()-Call");
+		}; // if vLocalDB[vDBname] unde
+	}; // for
+};
+
+//--------------------------------------
+//  SAVE ALL Local Storage JSONDB
+//--------------------------------------
+
+function saveAllOfflineJSONDB(pArrayDB) {
+	console.log("saveAllOfflineJSONDB()-Call");
+	var vDBname = "";
+	for (var i = 0; i < pArrayDB.length; i++) {
+		vDBname = pArrayDB[i];
+		console.log("Offline DB: ["+vDBName+"] will be save AllOfflineJSONDB()-Call");
+ 		switch (vDBname) {
+			case vJSONDB["database"]:
+					saveLocalDB(vDBName,vJSONDB);
+			break;
+			case vResponseDB["database"]:
+				saveLocalDB(vDBName,vResponseDB);
+			break;
+			case vFeedbackDB["database"]:
+				saveLocalDB(vDBName,vFeedbackDB);
+			break;
+			default:
+					console.log("Offline DB: ["+vDBName+"] is unknown in saveAllOfflineJSONDB()-Call");
+		}
+	};
+};
+
+//--------------------------------------
+//  LOAD VARIABLE Local Storage JSONDB
+//--------------------------------------
+
+function loadLocalVar(pKey) {
+ var vReturn = "";
+ if (typeof(Storage) != "undefined") {
+    // Load
+  	if (typeof(localStorage.getItem(pKey)) != undefined) {
+      console.log("Variable ["+pKey+"] loaded from Local Storage");
+      vReturn = localStorage.getItem(pKey);
+    } else {
+      console.log("Variable ["+pKey+"] is undefined in Local Storage");
+    };
+  }	 else {
+    console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
+  };
+	return vReturn
+};
+
+//--------------------------------------
+//  SAVE VARIABLE Local Storage JSONDB
+//--------------------------------------
+
+function saveLocalVar(pKey,pValue) {
+ if (typeof(Storage) != "undefined") {
+    // Store
+    localStorage.setItem(pKey,pValue);
+		console.log("Save Local Variable: ["+pKey+"]='"+pValue+"'");
+
+  }	 else {
+    console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
+  }
+};
+
+//---------------------------------------
+// Array Tools
+//---------------------------------------
+function copy_array(pArray) {
+	return pArray.slice();
+};
+
 
 function saveLocalStorageValueOK(pID,pText) {
 	saveLocalStorageValue(pID);
@@ -43,44 +207,6 @@ function loadLocalStorageInnerHTML(pID) {
     write2innerHTML(pID, localStorage.getItem(pID));
     console.log("LocalStorage Load: ["+pID+"]");
   };
-};
-
-function handleOfflineJSONDB(pQueryHash,pType) {
-	var vType = pType || "app";
-	var vDBName = pQueryHash["app_database"];
-	vDBName = vType+"_"+vDBName;
-	var vDB_Offline = loadOfflineDB(vDBName);
-	if (typeof(vDB_Offline)  !== "undefined" )  {
-		console.log("Offline DB: vDB_Offline ["+vDBName+"] exists in handleOfflineJSONDB()-Call");
-	} else {
-			console.log("WARNING: vJSONDB_Offline does NOT exists!\nArrays 'DBlines,DBsubmitted,DBsampledate' are created");
-			vJSONDB_Offline = {};
-			vJSONDB_Offline["DBlines"] = [];
-			vJSONDB_Offline["DBsubmitted"] = [];
-			vJSONDB_Offline["DBsampledate"] = [];
-	};
-}
-
-function handleLocalJSONDB(pQueryHash) {
-	//var vDBName = "DissAppJSONDB";
-	//var vDBsourceJS = document.getElementById("DissAppJSONDB").innerHTML;
-	var vDBName = pQueryHash["app_database"];
-	//var vJSONDB_Offline =
-	if (typeof(vJSONDB)  != "undefined" )  {
-		//alert("JSONDB exists");
-		if (vJSONDB) {
-			console.log("vJSONDB as JS Object is defined and saved");
-			saveLocalDB(vDBName,vJSONDB);
-		} else {
-			vJSONDB = loadLocalDB(vDBName);
-			console.log("vJSONDB as JS Object is NOT defined");
-		};
-		vJSONDB_Offline["DBformat"] = vJSONDB["DBformat"];
-	} else {
-		var vMSG = "vJSONDB was undefined - please check '/db/"+vDBName+"'!"
-		console.log(vMSG);
-		alert(vMSG);
-	};
 };
 
 function getDBformatIndex (pDBformat,pID) {
@@ -222,43 +348,6 @@ function saveOfflineDB(pDBName,pJSONDB_Offline) {
 	pJSONDB_Offline["LastSyncLine"] = vLastSyncLine; //syncing will start at the same last records
 };
 
-function parseJSONDB(pDBName,pStringJSON) {
-  var vJSONDB = null;
-  if (pStringJSON) {
-    var vTest = pStringJSON.replace(/\S\t/g,"");
-    if (vTest.length > 0) {
-      console.log("JSONDB is defined in localStorage");
-      vJSONDB = JSON.parse(pStringJSON)
-    } else {
-      console.log("parseJSONDB()-Call: JSONDB ["+pDBName+"] cannot be parsed - empty String in LocalStorage");
-    }
-  } else {
-    console.log("parseJSONDB()-Call: JSONDB ["+pDBName+"] is undefined in LocalStorage.");
-  }
-};
-
-
-function loadLocalDB(pDBName) {
-  var vJSONDB = null;
-  if (typeof(Storage) != "undefined") {
-    // Store
-    if (typeof(localStorage.getItem(pDBName)) != undefined) {
-      console.log("JSON-DB '"+pDBName+"' try loading from Local Storage");
-      var vJSONstring = localStorage.getItem(pDBName);
-      vJSONDB = parseJSONDB(pDBName,vJSONstring);
-    } else {
-      console.log("JSON-DB '"+pDBName+"' is undefined in Local Storage");
-    };
-  }	 else {
-    console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
-  };
-  return vJSONDB;
-};
-
-
-function copy_array(pArray) {
-	return pArray.slice();
-};
 
 function init_JSONDB(pJSONDB) {
 	if (pJSONDB) {
@@ -290,49 +379,3 @@ function getJSONDB_Local_Default() {
 		//vJSONDB_Init["DBformat"] = ["email","username","geolocation","sampledate"];
 	};
 }
-
-function saveLocalDB(pDBName,pJSONDB) {
-  if (typeof(Storage) != "undefined") {
-    // Store
-    if (typeof(pJSONDB) != undefined) {
-      console.log("JSON-DB '"+pDBName+"' is defined, JSONDB in  Local Storage");
-      if (pJSONDB) {
-        console.log("pJSONDB '"+pDBName+"' is saved to Local Storage");
-        localStorage.setItem(pDBName,JSON.stringify(pJSONDB));
-      } else {
-        console.log("pJSONDB DOM-Node is NOT defined");
-      }
-    } else {
-      console.log("pJSONDB is undefined");
-    };
-  }	 else {
-    console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
-  }
-}
-
-function saveLocalVar(pKey,pValue) {
- if (typeof(Storage) != "undefined") {
-    // Store
-    localStorage.setItem(pKey,pValue);
-		console.log("Save Local Variable: ["+pKey+"]='"+pValue+"'");
-
-  }	 else {
-    console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
-  }
-};
-
-function loadLocalVar(pKey) {
- var vReturn = "";
- if (typeof(Storage) != "undefined") {
-    // Load
-  	if (typeof(localStorage.getItem(pKey)) != undefined) {
-      console.log("Variable ["+pKey+"] loaded from Local Storage");
-      vReturn = localStorage.getItem(pKey);
-    } else {
-      console.log("Variable ["+pKey+"] is undefined in Local Storage");
-    };
-  }	 else {
-    console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
-  };
-	return vReturn
-};

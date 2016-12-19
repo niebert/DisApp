@@ -72,11 +72,13 @@ function setOnlineModeHTML(pMode) {
   if (pMode) {
     top.write2innerHTML("tdOnlineMode","YES");
     top.write2innerHTML("OffOnlineTag","Online");
-    top.show("MenuMaplocation");
+    $( ".MenuMaplocation" ).show();
+    //top.show("MenuMaplocation");
   } else {
     top.write2innerHTML("tdOnlineMode","NO");
     top.write2innerHTML("OffOnlineTag","Offline");
-    top.hide("MenuMaplocation");
+    $( ".MenuMaplocation" ).hide();
+    //top.hide("MenuMaplocation");
   };
 };
 
@@ -103,8 +105,30 @@ function setSelectOnline(pMode) {
 //---2 JSON Handler Sync Server
 //---------------------------------------------
 
-function submitForm2JSON(pDatabase,pType) {
-  var vDB = vQueryHash["app_database"];
+function submitData2LocalStorage(pSubmitted,pJSONDB,pDBHash) {
+  //alert("Offline Mode - Store Record in Local Storage!\nSync Database when you are ONLINE again (Internet Access)");
+  var vDB = pJSONDB || vJSONDB;
+  var vDBlines     = vDB["DBlines"];
+	var vDBsubmitted = vDB["DBsubmitted"]; //Boolean Array showing that data was submitted by App
+	var vDBhash = pDBHash || readRecord2Hash();
+  vDBhash["recdate"] = getDate4DB();
+  var vDBarray = convertHash2Array(vDBhash);
+  if (pSubmitted) {
+    // Record was submitted
+    vDBsubmitted.push(true);
+    //Submission could end up in Server failure, so checking if syncing was successful
+    // can be performed only on next restart of the app, when DB was reload remotely
+  } else {
+    // Record was stored in local storage
+    vDBsubmitted.push(false);
+  };
+  vDBlines.push(vDBarray);
+  saveOfflineDB(vDB["database"],vDB);
+  vDB["DBlines"].push(vDBarray);
+};
+
+function submitForm2JSON(pDB,pType) {
+  var vDB = vQueryHash["app_database"] || pDB;
   var vType = pType || "app";
   var vParam = "";
   console.log("submitForm2JSON('"+vDB+"','"+vType+"')");
@@ -228,10 +252,7 @@ function submitFeedbackJSON() {
 };
 
 function readFeedback2URLparam() {
-  var vDBformat = [];
-  var vCount = vResponseDB["feedback"].length;
-  var vShift = 0;
-  appendArrayID(vDBformat,"feedback",vCount,vShift);
+  var vDBformat = vResponseDB["DBformat"];
   var vDBHash = readRecordDOM2Hash(vDBformat);
   //vDBHash['sampledate'] = Date.now(); is set at the end of readRecord2Hash()
   var vParam = record2URLparam(vDBHash);
@@ -380,18 +401,6 @@ function syncNextRecord() {
   }
 }
 
-function updateSubmitForm(pQuery) {
-  // pQuery is the Query String of the document location
-  //$("#app_database").value = pQuery["app_database"]; //$("#database").value;
-  //document.getElementById("app_submiturl").value = pQuery["app_submiturl"];
-  //var vNode = document.getElementById("send2appdb");
-  //if (vNode) {
-  	//vNode.setAttribute("action",pQuery["app_database"]);
-  //};
-  $('#send2appdb').attr('action', pQuery["app_database"]);
-  //$("#send2appdb").action  = $("#app_database").value;
-};
-
 function countDBvisible() {
   // var vDBvisible = vJSONDB["DBvisible"];
   // var vDBformat  = vJSONDB["DBformat"];
@@ -499,61 +508,4 @@ function convertHash2DBLine(pHash,pDBformat) {
     }
   };
   return vOut;
-}
-
-function submitData2DB () { // DEPRICATED
-  //var vAction="undefined";
-  //document.send2appdb.action = getValueDOM("app_submiturl");
-  //get
-  vURL = getSubmitURLbasic("subscribeapp")+readRecord2URLparam();
-  //vURL = getSubmitURLbasic("subscribeapp")+readRecord2URLparam()+"&windowclose=1";
-
-  //var vNode = document.getElementById("send2appdb");
-  //if (vNode) {
-  //	vAction = vNode.getAttribute("action")
-  //};
-  //$('#send2appdb').submit();
-  if (vOnlineMode == true) {
-    var vDate = getDate4DB();
-    alert('Submit Data to Server\nDate='+vDate);
-    var vWinName = getWinName();
-    //openWinHTML(vURL,vWinName);
-    submitData2LocalStorage(vOnlineMode);
-    //document.send2appdb.submit();
-  } else {
-    alert('OFFLINE: Store Data in Local Storage!\nDate='+Date());
-    submitData2LocalStorage(vOnlineMode);
-  };
-  setSelectTableForm(1,getSelectPageCount());
-  changeJQueryPage("#collecteddata");
-  //document.location("#postDialogExample");
-}
-
-function submitData2LocalStorage(pSubmitted,pJSONDB,pDBHash) {
-  //alert("Offline Mode - Store Record in Local Storage!\nSync Database when you are ONLINE again (Internet Access)");
-  var vDB = pJSONDB || vJSONDB;
-  var vDBlines     = vDB["DBlines"];
-	var vDBsubmitted = vDB["DBsubmitted"]; //Boolean Array showing that data was submitted by App
-	var vDBhash = pDBHash || readRecord2Hash();
-  vDBhash["recdate"] = getDate4DB();
-  var vDBarray = convertHash2Array(vDBhash);
-  if (pSubmitted) {
-    // Record was submitted
-    vDBsubmitted.push(true);
-    //Submission could end up in Server failure, so checking if syncing was successful
-    // can be performed only on next restart of the app, when DB was reload remotely
-  } else {
-    // Record was stored in local storage
-    vDBsubmitted.push(false);
-  };
-  vDBlines.push(vDBarray);
-  saveOfflineDB(getValueDOM("app_database"),vJSONDB_Offline);
-  vJSONDB["DBlines"].push(vDBarray);
-  appendHash2ClickableList(vJSONDB["DBlines"].length,vDBhash);
-}
-
-function appendHash2ClickableList(pIndex,pDBhash) {
-  var vListID = "ul-dbviewer";
-  var vContent = getItem4DisplayDB(pIndex,pDBhash);
-  append2innerHTML(vListID,vContent);
 }

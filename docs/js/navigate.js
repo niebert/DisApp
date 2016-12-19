@@ -1,3 +1,28 @@
+function quitApp() {
+  var txt;
+  var r = confirm("Do you want to quit!");
+  if (r == true) {
+      txt = "You pressed OK!";
+      saveAllOfflineJSONDB(vArrayDB);
+      window.close();
+  } else {
+      txt = "You pressed Cancel!";
+  };
+  console.log(txt);
+};
+function displayCollectedData() {
+    var vType = getValueDOM("sDisplayTypeDB");
+    var vUnsubmittedONLY = getValueDOM("sUnsubmittedONLY");
+    var vDisUnsubONLY = true;
+    if (vUnsubmittedONLY = "NO") {
+      vDisUnsubONLY = false;
+    };
+    console.log("Display DB ["+vType+"] with Unsubmitted ONLY='"+vUnsubmittedONLY+"'");
+    injectListDB2DOM(vType,vDisUnsubONLY); //defined in jsondb.js
+    gotoPageJQ("DisplayListDB");
+};
+
+
 function processQuestionnaire() {
   processForm("app");
 };
@@ -58,10 +83,12 @@ function processRecordSubmit(pDB,pDBType) {
 function checkDisclaimer4Submit() {
   var vDisclaimerYesNo = getValueDOM("sDisclaimer");
   if (vDisclaimerYesNo == "yes") {
-    $.mobile.changePage( '#pSubmitData', { transition: 'slideup', changeHash: false })
+    //$.mobile.changePage( '#pSubmitData', { transition: 'slideup', changeHash: false })
+    gotoPageJQ("SubmitData");
   } else {
     alert("Please accept Disclaimer and Terms of Use first!");
-    $.mobile.changePage( '#pDisclaimer', { transition: 'slideup', changeHash: false })
+    gotoPageJQ("SubmitData");
+    //$.mobile.changePage( '#pDisclaimer', { transition: 'slideup', changeHash: false })
   }
 };
 

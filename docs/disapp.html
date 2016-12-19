@@ -56,12 +56,12 @@
 
     <div data-role="page" id="pWelcome">
         <div data-role="header" data-position="fixed">
-           <a href="javascript:window.close()" data-theme="c">Quit</a>
+            <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
            <h1>Welcome</h1>
-           <a href="#pHome" data-theme="a">Home</a>
+           <a href="#" onclick="quitApp();return false" data-theme="c">Quit</a>
       </div>
         <!-- /header -->
-         <div data-role="content"><h1>Welcome to DisApp</h1>
+      <div data-role="content"><h1>Welcome to DisApp</h1>
          <table bgcolor="white" cellspacing="10px">
            <tr>
              <td>
@@ -107,22 +107,89 @@
               <button onclick="checkDisclaimer4Submit()">Questionnaire</button>
             </td>
           </tr>
-            <!--
-            <tr>
-              <td  colspan="2">
-                Switch Online Mode:
-              </td>
-              <td id="tdOnlineMode">
-                <select name="sOnlineMode" id="sOnlineMode" data-role="X_slider" onchange="selectOnlineMode(this.value)">
-                  <option value="no">set NO</option>
-                  <option value="yes">set YES</option>
-                </select>
-              </td>
-            </tr>
-       -->
         </table>
       </div>
     </div>
+    <!--
+    =============================================
+             HOME
+    =============================================
+     -->
+
+   <div data-role="page" id="pHome">
+      <div data-role="header" data-position="fixed">
+         <a href="javascript:window.close()" data-theme="a">Close</a>
+         <h1>Home - DisApp</h1>
+      </div>
+      <!-- /header -->
+     <div data-role="content">
+
+       <p>Welcome to the DisApp. Feel free to have a look around and report and bugs to the <a href="https://github.com/niebert/DisApp/issues" target="_blank">GitHub issues page</a>.</p>
+
+       <ul data-role="listview" data-inset="true">
+         <li><a href="#pSubmitData" onclick="gotoSubmitQuestionnaire()">Submit Observation</a></li>
+         <li><a href="#pCollectedData">My Collected Data</a></li>
+         <li><a href="#pResponseOptions">Ways to Stop Dengue</a></li>
+         <li><a href="#pFeedback">Send DisApp Feedback</a></li>
+         <li id="MenuMaplocation"><a href="javascript:openWinHTML('map4location.html','wMapLocation')">Show Map Location</a></li>
+         <li><a href="#pSettings">Settings</a></li>
+         <li><a href="#pAcknowledgements">Acknowledgements</a></li>
+       </ul>
+       <p>Please use Firefox for App (<a href="https://www.mozilla.org" target="_blank">Firefox-Homepage</a>)</p>
+
+       <!-- p>Press key [F] to enter Fullscreen Mode</p -->
+
+       <br />
+       <button class="ui-btn-plain" onclick="quitApp()">Quit App</button>
+       <!-- quitApp() defined in navigate.js -->
+     <br />
+
+
+     </div>
+   </div>
+   <!--
+   =============================================
+            SUBMIT DATA
+   =============================================
+    -->
+
+   <div data-role="page" id="pSubmitData">
+       <div data-role="header" data-position="fixed">
+         <a href="#pHome" data-theme="a">Home</a>
+          <h1>Submit Data</h1>
+          <a href="#pWelcome" data-theme="a">Welcome</a>
+         </div>
+       <!-- /header -->
+       <div data-role="content">
+          <form name="send2appdb" id="send2appdb" action="http://www.example.com/cgi-bin/appdb/submitscript.php" >
+             <input type='hidden' id='app_database' name='database' value=''>
+             <input type='hidden' id='currentGeolocation' name='currentGeolocation' value=''>
+             <input type='hidden' name='action' value='subscribeapp'>
+             <input type='hidden' name='login' value=''>
+             <input type='hidden' name='mailnotification' value=''>
+             <input type='hidden' name='session' value=''>
+             <input type='hidden' name='language' value=''>
+             <input type='hidden' name='viewpwd' value=''>
+             <input type='hidden' name='ided' value=''>
+             <input type='hidden' name='idrecord' value=''>
+             <script  type="text/javascript">
+                printHeader();
+             </script>
+             <ul data-role='listview' data-inset='true'>
+                <script  type="text/javascript">
+                   printAllQuestions();
+                </script>
+             </ul>
+             <!-- input type="button" name=bOK value='   Save   ' -->
+             <input type="button" name=bOK value='   Submit   ' onclick="processQuestionnaire()">
+          </form>
+          <br />
+          <label id="app_errormsg" style="color:red"></label>
+
+       </div>
+       <!-- /ui-body wrapper -->
+    </div>
+
     <!--
     =============================================
            OFFLINE DATA
@@ -130,22 +197,22 @@
      -->
    <div data-role="page" id="pLocalStorageDB">
       <div data-role="header" data-position="fixed">
-        <a href="javascript:window.close()" data-theme="c">Quit</a>
-          <h1>Local Storage </h1>
-         <a href="#pHome" data-theme="a">Home</a>
-      </div>
+          <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+           <h1>Local Storage </h1>
+           <a href="#" onclick="quitApp();return false;" data-theme="c">Quit</a>
+        </div>
       <!-- /header -->
       <div data-role="content">
         <h1>Offline Data:</h1>
 
      </div>
+   </div>
 
      <!--
      =============================================
             DISCLAIMER
      =============================================
       -->
-    </div>
        <div data-role="page" id="pDisclaimer">
          <div data-role="header" data-position="fixed">
             <a href="#pWelcome" data-theme="a">Back</a>
@@ -176,7 +243,7 @@
                     </td>
                     <td>
                       <div id="disclaimer_submiturl" style="display:none"></div>
-                      <input type='text' id='save_submiturl' name="save_submiturl" value='---' readonly="readonly">
+                      <input type='text' id='save_submiturl' name="submiturl" value='---' readonly="readonly">
                     </td>
                  </tr>
                  <tr>
@@ -184,8 +251,8 @@
                      <b>Database:</b>
                   </td>
                   <td>
-                    <div id="disclaimer_database" style="display:none"></div>
-                    <input type='text' id='save_database' name="save_database"  value='---' readonly="readonly">
+                    <div id="disclaimer_database" name="datbase" style="display:none"></div>
+                    <input type='text' id='save_database' name="database"  value='---' readonly="readonly">
                  </td>
                </tr>
                <tr>
@@ -232,8 +299,8 @@
 
        <div data-role="page" id="pResponse">
           <div data-role="header" data-position="fixed">
-            <a href="#pWelcome" data-theme="a">Back</a>
-            <h1>Risk Response</h1>
+            <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+             <h1>Risk Response</h1>
           </div>
           <!-- /header -->
           <div data-role="content">
@@ -274,8 +341,9 @@
 
        <div data-role="page" id="pResponseOptions">
           <div data-role="header" data-position="fixed">
-             <a href="#pResponse" data-theme="a">Back</a>
-             <h1>Response Options</h1>
+            <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+              <h1>Response Options</h1>
+              <a href="#" onclick="gotoPageJQ('Response');return false" data-theme="a">Back</a>
           </div>
           <!-- /header -->
          <div data-role="content">
@@ -283,6 +351,7 @@
                  printAllResponses();
               </script>
               <br />
+              <button id="bResponseForm" onclick="submitForm2JSON('response.db','response')">Submit Response</button>
               <label id="response_errormsg" style="color:red"></label>
          </div>
      </div>
@@ -294,10 +363,9 @@
 
     <div data-role="page" id="pRiskMitigation">
        <div data-role="header" data-position="fixed">
-          <a href="#pResponseOptions" data-theme="a">Back</a>
-          <h1>Risk Mitigation</h1>
-          <a href="#pHome" data-theme="a">Home</a>
-
+         <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+        <h1>Risk Mitigation</h1>
+        <a href="#" onclick="gotoPageJQ('ResponseOptions');return false" data-theme="a">Response</a>
        </div>
        <!-- /header -->
       <div data-role="content">
@@ -305,7 +373,7 @@
         <h3>Your calculated risk <u>including</u> Risk Mitigation is:</h3>
         <center>  <!-- RISK WITH MITIGATION -->
           <h2>
-            <div id="valDefuzResponse" style="color:red">
+            <div id="valDefuzzyResponse" style="color:red">
              Reponse undefined?
            </div>
           </h2>
@@ -339,10 +407,10 @@
 
    <div data-role="page" id="pFeedback">
      <div data-role="header" data-position="fixed">
-        <a href="#pHome" data-theme="a">Home</a>
-        <h1>Send Feedback</h1>
-        <a href="javascript:window.close()" data-theme="c">Quit</a>
-      </div>
+       <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+       <h1>Send Feedback</h1>
+        <a href="#" onclick="quitApp();return false" data-theme="c">Quit</a>
+       </div>
      <!-- /header -->
     <div data-role="content">
       <ul data-role='listview' data-inset='true'>
@@ -351,47 +419,96 @@
          </script>
       </ul>
       <br />
+      <button id="bFeedbackForm" onclick="submitForm2JSON('feedback.db','feedback')">Submit Response</button>
       <label id="feedback_errormsg" style="color:red"></label>
     </div>
    </div>
+   <!--
+   =============================================
+            WAIT FOR SERVER
+   =============================================
+    -->
+   <div data-role="page" id="pWait">
 
+     <div data-role="header" data-position="fixed">
+       <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+       <h1>Connect</h1>
+     </div><!-- /header -->
+
+     <div data-role="content">
+         <h1>Connect to Server:</h1>
+         <h2>Try to submit data to server<br>Please wait ...</h2>
+     </div>
+
+   </div>
      <!--
      =============================================
-              COLLECTED DATA
+             COLLECTED DATA QUESTIONNAIRE
      =============================================
       -->
      <div data-role="page" id="pCollectedData">
 
      	<div data-role="header" data-position="fixed">
-     		<h1>Database</h1>
-     		<a href="#"  onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+     	  <h1>Database</h1>
      	</div><!-- /header -->
 
      	<div data-role="content">
+        <h2>Display Database Selector:</h1>
+          <ul id="ul-dbviewer" data-role="listview" style="display:none">
+            <li data-role="list-divider">Database Selector</li>
+          </ul>
 
-     		<ul id="ul-dbviewer" data-role="listview">
-     			<li data-role="list-divider">Database Records</li>
-     			<script>
-     				if (typeof(vJSONDB) != undefined) {
-     					//alert("JSONDB was defined!");
-     					var vDB = vJSONDB["DBlines"];
-     					var vCount = 0;
-     					var vDBhash = {};
-     					for (var i=0;i<vDB.length;i++) {
-     						vCount = i+1;
-     						vDBhash = convertArray2Hash(vDB[i]);
-     						document.write(getItem4DisplayDB(i,vDBhash));
-     						//document.write("<li><a href='#displaydbrecord' onclick=\"fillContentRecordDB("+i+");alert('Display Record "+vCount+"')\">"+vCount+" "+vDB[i][0]+"</a></li>");
-     					};
-     				} else {
-     					alert("JSONDB was undefined!")
-     				}
-     			</script>
-     			</ul>
-
+        <table cellspacing="10px" bgcolor="white" width="100%">
+          <tr>
+            <td colspan="2">
+              <select id="sDisplayTypeDB">
+                <option value="app" selected>
+                  Risk Questionnaire
+                </option>
+                <option value="response">
+                  Risk Mitigation / Protect
+                </option>
+                <option value="feedback">
+                  Feedback
+                </option>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="slider">Unsubmitted Record ONLY:</label>
+            </td>
+            <td>
+              <select name="sUnsubmittedONLY" id="sUnsubmittedONLY" data-role="slider" onchange="saveLocalVar(this.id,this.value);">
+                <option value="yes" selected>YES</option>
+                <option value="no">NO</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+        <button class="ui-btn-plain" onclick="displayCollectedData()">Display DB</button>
+        <!-- displayCollectedData() is defined in navigate.js -->
      	</div>
 
      </div>
+     <!--
+     =============================================
+              DISPLAY LIST OF RECORD
+     =============================================
+      -->
+     <div data-role="page" id="pDisplayListDB">
+
+      <div data-role="header" data-position="fixed">
+        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+        <h1>Display DB List</h1>
+        <a href="#" onclick="gotoPageJQ('CollectedData');return false" data-theme="a">Collected Data</a>
+      </div><!-- /header -->
+
+      <div data-role="content">
+        <h3 id="h1SPACER">&nbsp;</h3>
+        <div id="divListDB">
+        </div>
+      </div>
 
      <!--
      =============================================
@@ -401,7 +518,8 @@
      <div data-role="page" id="pDisplayRecord">
 
       <div data-role="header" data-position="fixed">
-        <h1>Display Record</h1>
+        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+      <h1>Display Record</h1>
         <a href="#" onclick="gotoPageJQ('CollectedData');return false" data-theme="a">Collected Data</a>
       </div><!-- /header -->
 
@@ -415,24 +533,8 @@
       </div>
 
      </div>
-     <!--
-     =============================================
-              WAIT FOR SERVER
-     =============================================
-      -->
-     <div data-role="page" id="pWait">
 
-      <div data-role="header" data-position="fixed">
-        <h1>Connect</h1>
-        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
-      </div><!-- /header -->
 
-      <div data-role="content">
-          <h1>Connect to Server:</h1>
-          <h2>Try to submit data to server<br>Please wait ...</h2>
-      </div>
-
-     </div>
      <!--
      =============================================
               THANk YOU
@@ -441,8 +543,9 @@
      <div data-role="page" id="pThankYou">
 
       <div data-role="header" data-position="fixed">
-        <h1>Connect</h1>
         <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+        <h1>Connect</h1>
+        <a href="#" onclick="quitApp();return false" data-theme="c">Quit</a>
       </div><!-- /header -->
 
       <div data-role="content">
@@ -458,11 +561,11 @@
               Settings
      =============================================
       -->
-     <div data-role="page" id="pDisplayRecord">
+     <div data-role="page" id="pSettings">
 
       <div data-role="header" data-position="fixed">
-        <h1>Settings:</h1>
         <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+        <h1>Settings:</h1>
         </div><!-- /header -->
 
       <div data-role="content">
@@ -471,7 +574,7 @@
     		<br />
         Usergroup: <input type="text" name="usergroup" id="settings_usergroup" onchange="updateSetting('usergroup',this.value)" value="undefined usergroup"/>
     		<br />
-        My e-Mail: <input type="text" name="usergroup" id="settings_email" onchange="updateSetting('email',this.value)" value="undefined e-mail"/>
+        My e-Mail: <input type="text" name="email" id="settings_email" onchange="updateSetting('email',this.value)" value="undefined e-mail"/>
     		<br />
     		<!-- DB Access View Password: <input type="settings_password" id="app_viewpwd" value="unknown"/> -->
 
@@ -498,7 +601,7 @@
      	<div data-role="content">
      		<ul>
           <li>
-     				<b>iOS-Inspired jQuery Mobile theme</b> by <a href="http://twitter.com/taitems" target="_blank">@taitems</a>. Resources at <a href="https://github.com/taitems/iOS-Inspired-jQuery-Mobile-Theme" target="_blank">GitHub page</a>.
+     				<b>iOS-Inspired jQuery Mobile theme</b> by Tait Brown. Resources at <a href="https://github.com/taitems/iOS-Inspired-jQuery-Mobile-Theme" target="_blank">GitHub page</a>.
      			</li>
           <li>
      				<b>Ajit N. Babu</b> for Work flow development
@@ -530,95 +633,8 @@
 
      </div>
 
-     <!--
-     =============================================
-              HOME
-     =============================================
-      -->
 
-    <div data-role="page" id="pHome">
-       <div data-role="header" data-position="fixed">
-          <a href="javascript:window.close()" data-theme="a">Close</a>
-          <h1>Home - DisApp</h1>
-       </div>
-       <!-- /header -->
-      <div data-role="content">
-
-        <p>Welcome to the DisApp. Feel free to have a look around and report and bugs to the <a href="https://github.com/niebert/DisApp/issues" target="_blank">GitHub issues page</a>.</p>
-
-    		<ul data-role="listview" data-inset="true">
-    			<li style="display:none" id="MenuMaplocation"><a href="javascript:openWinHTML('map4location.html','wMapLocation')">Show Map Location</a></li>
-    			<li><a href="#pSubmitData" onclick="gotoSubmitQuestionnaire()">Submit Observation</a></li>
-    			<li><a href="#pCollectedData">My Collected Data</a></li>
-          <li><a href="#pResponseOptions">Ways to Stop Dengue</a></li>
-    			<li><a href="#pSendFeedback">Send DisApp Feedback</a></li>
-    			<li><a href="#pSettings">Settings</a></li>
-    			<li><a href="#pAcknowledgements">Acknowledgements</a></li>
-    		</ul>
-    		<p>Please use Firefox for App (<a href="https://www.mozilla.org" target="_blank">Firefox-Homepage</a>)</p>
-
-    		<!-- p>Press key [F] to enter Fullscreen Mode</p -->
-
-    		<br />
-    		<button class="ui-btn-plain" onclick="window.location.href='#quitDialogApp'">Quit App</button>
-    	<br />
-
-
-      </div>
-    </div>
-
-     <!--
-     =============================================
-              SUBMIT DATA
-     =============================================
-      -->
-
-     <div data-role="page" id="pSubmitData">
-         <div data-role="header" data-position="fixed">
-           <a href="#pWelcome" data-theme="a">Welcome</a>
-           <h1>Submit Data</h1>
-            <a href="#pHome" data-theme="a">Home</a>
-         </div>
-         <!-- /header -->
-         <div data-role="content">
-            <form name="send2appdb" id="send2appdb" action="http://www.example.com/cgi-bin/appdb/submitscript.php" >
-               <input type='hidden' id='app_database' name='database' value=''>
-               <input type='hidden' id='currentGeolocation' name='currentGeolocation' value=''>
-               <input type='hidden' name='action' value='subscribeapp'>
-               <input type='hidden' name='login' value=''>
-               <input type='hidden' name='mailnotification' value=''>
-               <input type='hidden' name='session' value=''>
-               <input type='hidden' name='language' value=''>
-               <input type='hidden' name='viewpwd' value=''>
-               <input type='hidden' name='ided' value=''>
-               <input type='hidden' name='idrecord' value=''>
-               <script  type="text/javascript">
-                  printHeader();
-               </script>
-               <ul data-role='listview' data-inset='true'>
-                  <script  type="text/javascript">
-                     printAllQuestions();
-                  </script>
-               </ul>
-               <!-- input type="button" name=bOK value='   Save   ' -->
-               <input type="button" name=bOK value='   Submit   ' onclick="processQuestionnaire()">
-            </form>
-            <br />
-            <label id="app_errormsg" style="color:red"></label>
-            <!--
-            <iframe id="iLoader" src="./loader/empty.html" width="90%" height="100" name="iLoader"></iframe>
-            -->
-            <!-- button class="ui-btn-plain" onclick="window.close()"> Close </button -->
-            <!--
-            =============================================
-                     MAIN MENU
-            =============================================
-             -->
-
-         </div>
-         <!-- /ui-body wrapper -->
-      </div>
-      <!-- /page -->
+  <!-- /page -->
       <!--
       =============================================
                END OF PAGES
@@ -638,17 +654,9 @@
          var vLoaderURL = "";
          var vQueryHash = readQueryParams();
          var vOnlineMode = false;
-         var vJSONDB_Offline = {
-         	DBlines: [],
-         	DBsynced: [],
-         	DBformat: []
-         };
-         handleLocalJSONDB(vQueryHash);
-         handleOfflineJSONDB(vQueryHash);
-         setFormLocation();
+         var vLocalDB = {};
+         var vArrayDB = [vJSONDB["database"],vResponseDB["database"],vFeedbackDB["database"]];
          initDisApp();
-         var vKey = "sDisclaimer";
-         write2value(vKey,loadLocalVar(vKey));
          var vFuzzyControl = new FuzzyControl();
          checkOnlineMode();
       </script>
