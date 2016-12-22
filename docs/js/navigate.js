@@ -10,6 +10,16 @@ function quitApp() {
   };
   console.log(txt);
 };
+
+function gotoPreviousQuestion(pType) {
+  console.log("gotoPrevious()-Call Questionnaire ["+pType+"]");
+};
+
+function gotoNextQuestion(pType) {
+  console.log("gotoNext()-Call Questionnaire ["+pType+"]");
+
+};
+
 function displayCollectedData() {
     var vType = getValueDOM("sDisplayTypeDB");
     var vUnsubmittedONLY = getValueDOM("sUnsubmittedONLY");

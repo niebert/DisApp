@@ -31,6 +31,7 @@
       <script type="text/javascript" src="js/writedom.js"></script>
       <!-- Database JSON File -->
       <script type="text/javascript" src="db/dbdisapp.js"></script>
+      <script type="text/javascript" src="db/dblocalsurvey.js"></script>
       <script type="text/javascript" src="db/dbresponse.js"></script>
       <script type="text/javascript" src="db/dbfeedback.js"></script>
       <script>
@@ -157,7 +158,7 @@
        <div data-role="header" data-position="fixed">
          <a href="#pHome" data-theme="a">Home</a>
           <h1>Submit Data</h1>
-          <a href="#pWelcome" data-theme="a">Welcome</a>
+          <a href="#" onclick="clearQuest('app')" data-theme="a">Clear</a>
          </div>
        <!-- /header -->
        <div data-role="content">
@@ -175,16 +176,32 @@
              <script  type="text/javascript">
                 printHeader();
              </script>
-             <ul data-role='listview' data-inset='true'>
+             <ul  id="ulJSONDB" data-role='listview' data-inset='true'>
                 <script  type="text/javascript">
                    printAllQuestions();
                 </script>
              </ul>
              <!-- input type="button" name=bOK value='   Save   ' -->
-             <input type="button" name=bOK value='   Submit   ' onclick="processQuestionnaire()">
           </form>
           <br />
           <label id="app_errormsg" style="color:red"></label>
+          <div id="vNavQuestAPP">
+            <table width="100%">
+              <tr  align="center">
+                <td id="footerAPPprev">
+                  <button id="bPreviousAPP" onclick="gotoPreviousQuestion('app')" data-theme="c">&lt;&lt;</a>
+                </td>
+                <td id="footerAPPcount">
+                  [0/0]
+                </td>
+                <td id="footerAPPnext">
+                  <button id="bNextAPP" onclick="gotoNextQuestion('app')" data-theme="c">&gt;&gt;</a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- SUBMIT BUTTON Qestionnaire -->
+          <input type="button" name=bOK value='   Submit   ' onclick="processQuestionnaire()">
 
        </div>
        <!-- /ui-body wrapper -->
@@ -346,7 +363,7 @@
               <a href="#" onclick="gotoPageJQ('Response');return false" data-theme="a">Back</a>
           </div>
           <!-- /header -->
-         <div data-role="content">
+         <div id="ulResponseDB" data-role="content">
                <script  type="text/javascript">
                  printAllResponses();
               </script>
@@ -413,7 +430,7 @@
        </div>
      <!-- /header -->
     <div data-role="content">
-      <ul data-role='listview' data-inset='true'>
+      <ul id="ulFeedbackDB" data-role='listview' data-inset='true'>
          <script  type="text/javascript">
             printAllFeedback();
          </script>
@@ -566,7 +583,7 @@
       <div data-role="header" data-position="fixed">
         <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
         <h1>Settings:</h1>
-        </div><!-- /header -->
+      </div><!-- /header -->
 
       <div data-role="content">
 
@@ -581,9 +598,9 @@
     		<br />
     		Submit URL: <input type="text" id="settings_submiturl"  onchange="updateSetting('submiturl',this.value)" value="http://www.example.com/appdb.cgi"/>
 
-      </div>
+      </div> <!-- content -->
 
-     </div>
+    </div> <!-- page -->
 
      <!--
      =============================================
@@ -653,6 +670,9 @@
          var vDebug = 0;
          var vLoaderURL = "";
          var vQueryHash = readQueryParams();
+         if (vQueryHash["app_database"] == "localsurvey.db") {
+           vJSONDB = vLocalSurveyDB;
+         };
          var vOnlineMode = false;
          var vLocalDB = {};
          var vArrayDB = [vJSONDB["database"],vResponseDB["database"],vFeedbackDB["database"]];

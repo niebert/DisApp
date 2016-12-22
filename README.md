@@ -243,6 +243,149 @@ The GitHub repository is setup in way that the `/docs` subfolder is used as a se
     * **GitHub Pages** (scroll down on Options page)
       * **Source** (select `master branch docs folder`)
 
+## Fuzzy Controller ##
+A fuzzy control system uses the answers of questionnaires as input and operates as control system for user recommendations (Decision Support) based on the answers the user provided. Fuzzy Logic operates as a mathematical system that
+* analyzes analog input values from the questionnaire represented in linguistic values like "ALWAY", "NEVER", "SOMETIMES" in terms of linguistic description of a property and
+* converts them (fuzzyfication) them by membership functions into continuous values between 0 and 1 (e.g. "ALWAY=1.0", "NEVER=0.0", "SOMETIMES=0.5"). This in contrast to classical or digital logic, which operates on "TRUE" and "FALSE" only, represented as discrete values of either 1 or 0.
+* a fuzzy rule system consisting of *Fuzzy-AND, Fuzzy-OR, Fuzzy-NOT, alpha-CUT, weighted Means, ...* are applied on the set of fuzzified properties calculated from the  linguistic values in the Questionnaire. The result of this calculations are one or more fuzzy-values.
+* the results of the calculated fuzzy values are converted back into linguitic values because linguistic values are more comprehensive than real numbers. To perform this task a Defuzzifier is performed e.g. risk=0.96, protect=0.71 results in defuzzification
+"your RISK is VERY HIGH (SCORE: 96%) but you apply GOOD risk mitigation strategies (SCORE 71%)". Further Fuzzy-Logic calculation will lead e.g. to a sentence like
+   "With your application self-protection and risk mitigation strategies in general you OVERALL RISK is MEDIUM with SCORE of 56%. You were able to reduce your risk by 25%
+Now we will document the technical solution of the description mentioned above.
+
+### Coding of FuzzyController ###
+The code examples are generated in Javascript instead of Pseudo Code. But it can be transcribed into other languages (Python, Java, PHP, ...)
+
+### Classes for the Fuzzy Controller ###
+* **FuzzyControl** is the class for the fuzzy control system, that contains a list of FuzzyLayers. In the first implementation (alpha Version) there are a few layers only representing the processing of
+   * the Questionnaire for the RISK (1st Layer) and
+   * the Questionnaire for the RESPONSE (2nd Layer Risk Mitigation and Protect)
+   * the Layer for combining RISK and RESPONSE for the overall risk estimate as response for the users
+* **FuzzyLayer** is the class, that contains a hash of FuzzyNodes. Where a single fuzzy node is reponsible for processing the answers for a single question in the questionnaire.
+* **FuzzyNode** is the class, that is linked to single question. The class FuzzyNode is able to fuzzify the answer of a user to a question (e.g. linguistic values like "ALWAY", "NEVER", "SOMETIMES" is map to "ALWAY"=1.0", "NEVER"=0.0, "SOMETIMES"=0.5). The input of the *method fuzzify(pInput)* in Fuzzy-Node is in general a string and the fuzzification is stored in the attribute *fuzval*, which is a real number (float) between 0.0 and 1.0.
+* **** is the class, that contains
+
+### FuzzyControl ###
+
+#### Attributes ####
+This section lists the main attributes of the class and documents its semantics:
+* **aFuzzyLayerArray** is an array of FuzzyLayers that are calculated in the order of the array to determine the result of the Fuzzy Controller. The layers are used  in the exec method of the Fuzzy Controller.
+* **aFuzzyLayerArray** is an Array for fuzzy layers used for
+* **** is used for
+
+#### Method ####
+This section lists the main methods of the class and documents the task that the method performs:
+* **()** returns *v* of the class *C*. The method it used for
+* **()** returns *v* of the class *C*. The method it used for
+* **exec()** returns nothing (*void*). The method it used for calculating the result of the fuzzy controller it iterates over *aFuzzyLayerArray*. Each FuzzyLayer has an exec()-Method too, which is called in the for-loop.
+
+```
+this.exec = function () {
+  for (var i = 0; i < this.aFuzzyLayerArray.length; i++) {
+    this.aFuzzyLayerArray[i].exec()
+  }
+}
+```
+
+* **()** returns nothing (*void*). The method it used for
+
+### FuzzyLayer ###
+
+#### Attributes ####
+This section lists the main attributes of the class and documents its semantics:
+* **aNextLayer** is used to store the calculated Output of the current FuzzyLayer in the following FuzzyLayer as input Fuzzy-Nodes
+* **aPreviousLayer** is used for reading output properties from the previous fuzzy layer.
+
+#### Method ####
+This section lists the main methods of the class and documents the task that the method performs:
+* **()** returns *v* of the class *C*. The method it used for
+* **()** returns *v* of the class *C*. The method it used for
+* **exec()** returns nothing (*void*). The method it used for calculating the result of the fuzzy rules it iterates over *aFuzzyRuleArray*. Each FuzzyRule has an exec()-Method too, which is called in the for-loop.
+```
+this.exec = function () {
+  for (var i = 0; i < this.aFuzzyRuleArray.length; i++) {
+    this.aFuzzyRuleArray[i].exec()
+  }
+}
+```
+* **()** returns nothing (*void*). The method it used for
+* **()** returns nothing (*void*). The method it used for
+
+### FuzzyNode ###
+A FuzzyNode is operational if and only if the FuzzyNode is initialized with an array of linguistic values e.g. *["very low","low","medium","high","very high"]*. This array determines the fuzzification of those linguistic value in a real number between 0.0 and 1.0 (see method *setLingArr()*). The fuzzification is done with fraction
+   index/(array length - 1)
+so that the first linguistic is mapped to 0.0 and the last linguistic value to 1.0.
+Do perform this task the class FuzzyNode needs the following attributes and methods.
+
+#### Attributes ####
+This section lists the main attributes of the class and documents its semantics:
+* **aFuzVal** is used for storing the fuzzified linguistic values and the value is used to defuzzify *aFuzVal* back into linguistic values.
+* **aFuzzifyHash** is hash (associative array) used for fuzzification of input strings.
+* **aLingArr** Array of linguitic value e.g. defined as
+  *["very low","low","medium","high","very high"]*. The method setLingArr(pLingArr) sets this value and calculates the fuzzification hash *aFuzzifyHash*.
+
+#### Method ####
+This section lists the main methods of the class and documents the task that the method performs:
+* **setLingArr(pLinArr)** stores the array with linguitic values in *this.aLingArr* calculates the hash *this.aFuzzifyHash*. The method is defined like this:
+```
+this.setLingArr = function (pLingArr) {
+  if (pLinArr.length < 2) {
+    // not allowed array must contain at least 2 linguitic values
+  } else {
+    this.aLingArr = pLingArr;
+    this.aFuzzifyHash = {}; // init with empty hash.
+    for (var i = 0; i < pLinArr.length; i++) {
+        this.aFuzzifyHash[pLinArr[i]] = i/(pLinArr.length-1);
+    };  
+  }
+}    
+```
+E.g for  linguistic values with the array *pLinArr= ["NEVER", "SOMETIMES", ALWAY"]* the hash maps to  "NEVER"=0.0=0/2, "SOMETIMES"=0.5=1/2, "ALWAY"=1.0=2/2". The fraction is calculated with *i/(pLinArr.length-1);*
+* **()** returns *v* of the class *C*. The method it used for
+* **fuzzify(pInput)** takes a string *pInput* as input from a questionnaire (e.g. "ALWAY", "NEVER", "SOMETIMES") and stores the corresponding Fuzzy value in the attribute. When the questionnaires we have a finite set options for a question, then the fuzzification can be realized as hash. The method can look like this in Javascript.
+```
+this.fuzzify = function (pString) {
+  if (this.aFuzzifyHash[pString]) // check if hash value exists for pString
+    this.aFuzVal = this.aFuzzifyHash[pString];
+  } else {
+    this.aFuzVal = null;
+  }
+}
+```
+A simple call of this method could look like this:
+```
+myFuzzyNode.fuzzify("SOMETIMES");
+alert(myFuzzyNode.aFuzVal);  // show an alert box in Javscript with 0.5  
+```
+The method stores 0.5 in attribute this.aFuzVal.
+
+* **defuzzifyindex()** returns an index of an linguistic value (*integer*). The method it used in the method *defuzzify()* to calculate the index of the array this.aLingValue
+```
+function defuzzifyIndex(pValue) {
+  var vMax = this.aLingArr.length - 1;
+  var vIndex = 0;
+  vIndex = Math.floor(vMax * this.aFuzVal);
+  if (vIndex == vMax) {
+      vIndex = vMax-1;
+  };
+  return vIndex;
+}
+```
+E.g. with an array of linguistic values e.g. *["very low","low","medium","high","very high"]* and *this.aFuzVal=0.95* the defuzzifyIndex()
+* **defuzzify()** returns a string with the defuzzified attribute aFuzVal. Due to calculations (operations on the fuzzy values), the value might be an arbitrary value between 0.0 and 1.0. The method could look like this:
+
+```
+this.defuzzify = function() {
+  var vMax = this.aLingArr.length;
+  var i = defuzzifyIndex(pValue,vMax);
+  return this.aLingArr[i];
+};
+```
+
+* **()** returns nothing (*void*). The method it used for
+
+### Fuzzy Rule ###
+
 ## Library ##
 * **fuzzycontrol.js**  The library `fuzzycontrol.js` contains the fuzzy controller for calculating the reponse for the uses. This is the only lib that was generated in the Object Oriented way  (see [JavascriptClassGenerator](https://niebert.github.io/JavascriptClassCreator/))
 * **fuzzymain.js**  The library `fuzzymain.js` contains functions for calculating Fuzzy `AND`, `Fuzzy OR`, `Fuzzy NOT`.

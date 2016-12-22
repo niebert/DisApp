@@ -212,18 +212,34 @@ function checkSubmitSuccess() {
       console.log("Record seems to be submitted to Server\n but vReturnDB['database'] is missing in Server Response");
     };
   } else {
+    vMSG += "\nWill save collected Data in LocalStorage";
     alert(vMSG);
     console.log(vMSG);
-    submitSuccess(false,vReturnDB["message"],vReturnDB["error"]);
+    submitSuccess(false,vMSG+"Save Collected Record in LocalStorage","");
   };
 };
+
 
 function submitSuccess(pSubmitted,pMessage,pError) {
   top.setSelectOnline(pSubmitted);
   if ((pError) && (pError != "")) {
+    var vDB = vReturnDB["database"] || "disapp.db";
     pError = replaceString(pError,"|","\n");
     console.log("Submit Error in submitSuccess()-Call: "+pError);
     alert("ERROR(S) in SUBMISSION:\n"+pError);
+    switch (vDB) {
+      case "responsedisapp.db":
+        //top.submitData2LocalStorage(pSubmitted,vResponseDB);
+        gotoPageJQ("response");
+        break;
+      case "feedbackdisapp.db":
+        //top.submitData2LocalStorage(pSubmitted,vFeedbackDB);
+        gotoPageJQ("feedback");
+        break;
+      default:
+        gotoPageJQ("app");
+        //top.submitData2LocalStorage(pSubmitted);
+    };
   } else {
     var vDB = vReturnDB["database"] || "disapp.db";
     console.log("SERVER["+vDB+"]: Call of submitSuccess(pSubmitted,pMessage,pError) seems to be sucessful");

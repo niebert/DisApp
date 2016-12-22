@@ -29,7 +29,6 @@ function defuzzifyIndex(pValue,pMax) {
   return vIndex;
 }
 
-
 function defuzzifyLow2High(pValue) {
   var vLingArr = ["very low","low","medium","high","very high"];
   var vMax = vLingArr.length;
@@ -45,9 +44,14 @@ function calcFuzzyForm(pDBType) {
       console.log("Read Questionnaire Form to URL parameter in calcFuzzyForm()");
       var vQuestHash = readRecord2Hash();
       //readFuzzyJSON(pDBType);
+      vFuzzyControl.create(vQuestHash,"app");
+      vFuzzyControl.calcFuzzyRisk();
     break;
     case "response":
       console.log("calcFuzzyForm() for Response");
+      var vQuestHash = readRecordDOM2Hash(vResponseDB["DBformat"],"response_");
+      vFuzzyControl.create(vQuestHash,"response");
+      vFuzzyControl.calcFuzzyRiskMitigation();
       //vParam = readResponse2URLparam();
     break;
     case "feedback":
