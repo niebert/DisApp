@@ -1,8 +1,9 @@
 CACHE MANIFEST
 
-# Time: 2016/12/14 17:03:25
+# Time: 2016/12/24 03:13:20
 
 CACHE:
+.gitignore
 css/disapp.css
 css/images/ajax-loader.gif
 css/images/arrow_right.png
@@ -137,6 +138,7 @@ ios_inspired/images/tick.png
 ios_inspired/images/tiling_stripes.gif
 ios_inspired/styles.css
 js/fullscreen.js
+js/fuzzycontrol.js
 js/fuzzylayer.js
 js/fuzzymain.js
 js/geolocation.js
@@ -164,6 +166,7 @@ loader/onlinecheck.js
 loader/submitjson.html
 localsurvey.html
 map4location.html
+npm-debug.log
 
 NETWORK:
  * 
