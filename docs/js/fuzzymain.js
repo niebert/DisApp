@@ -91,29 +91,30 @@ function fuzzyCHECK_value(pValueArr) {
 function fuzzyPARSE_string2real(pStringHash) {
   // "NA" (Boolean Array) not available - String "NA" or ""
   // "empty" (Boolean Array) string empty - Subset of NA with String ""
+  // hash with values contains the usable Answers that could be fuzzyfied successful
   var vRetJSON = {"data":pStringHash,"missing":{},"NA":{},"empty":{},"values":{}};
   var vMis = vRetJSON["missing"];
   var vEmp = vRetJSON["empty"];
   var vNA = vRetJSON["NA"];
   var vVal = vRetJSON["values"];
-  var s = "";
+  var vAnswer = "";
   for (var iID in pStringHash) {
     vMis[iID] = false;
     vEmp[iID] = false;
     vNA[iID] = false;
     if (pStringHash.hasOwnProperty(iID)) {
-      s = pStringHash[iID];
-      if (s == "") {
+      vAnswer = pStringHash[iID];
+      if (vAnswer == "") {
         console.log("["+iID+"] empty");
         vMis[iID] = true;
         vEmp[iID] = true;
-      } else if (s == "NA"){
+      } else if (vAnswer == "NA"){
         console.log("["+iID+"] missing");
         vMis[iID] = true;
         vNA[iID] = true;
-      } else if (!isNaN(s)) {
+      } else if (!isNaN(vAnswer)) {
         console.log("["+iID+"] float value="+s);
-        vVal[iID] = parseFloat(s);
+        vVal[iID] = parseFloat(vAnswer);
       } else {
         console.log("["+iID+"] NaN");
         vMis[iID] = true;

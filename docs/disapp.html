@@ -47,7 +47,7 @@
       <script src="js/jquery.mobile-1.2.0.min.js"></script>
       <link href="css/ios_post.css" rel="stylesheet" />
    </head>
-   <body>
+   <body class="bodyui">
 
     <!--
     =============================================
@@ -119,8 +119,10 @@
 
    <div data-role="page" id="pHome">
       <div data-role="header" data-position="fixed">
-         <a href="javascript:window.close()" data-theme="a">Close</a>
+         <!-- <a href="javascript:window.close()" data-theme="a">Close</a> -->
+         <a href="#pCollectedData" onclick="" data-theme="a">Data</a>
          <h1>Home - DisApp</h1>
+         <a href="#" onclick="quitApp();return false" data-theme="c">Quit</a>
       </div>
       <!-- /header -->
      <div data-role="content">
@@ -128,10 +130,11 @@
        <p>Welcome to the DisApp. Feel free to have a look around and report and bugs to the <a href="https://github.com/niebert/DisApp/issues" target="_blank">GitHub issues page</a>.</p>
 
        <ul data-role="listview" data-inset="true">
-         <li><a href="#pSubmitData" onclick="gotoSubmitQuestionnaire()">Submit Observation</a></li>
-         <li><a href="#pCollectedData">My Collected Data</a></li>
-         <li><a href="#pResponseOptions">Ways to Stop Dengue</a></li>
-         <li><a href="#pFeedback">Send DisApp Feedback</a></li>
+         <li><a href="#" onclick="gotoSubmitForm('app')">Submit Observation</a></li>
+         <!-- <li><a href="#pSubmitData" onclick="gotoSubmitQuestionnaire()">Submit Observation</a></li> -->
+         <li><a href="#pCollectedData">Collected Data</a></li>
+         <li><a href="#" onclick="gotoSubmitForm('response')">Ways to Stop Dengue</a></li>
+         <li><a href="##" onclick="gotoSubmitForm('feedback')">DisApp Feedback</a></li>
          <li id="MenuMaplocation"><a href="javascript:openWinHTML('map4location.html','wMapLocation')">Show Map Location</a></li>
          <li><a href="#pSettings">Settings</a></li>
          <li><a href="#pAcknowledgements">Acknowledgements</a></li>
@@ -158,50 +161,47 @@
        <div data-role="header" data-position="fixed">
          <a href="#pHome" data-theme="a">Home</a>
           <h1>Submit Data</h1>
+          <a href="#" onclick="processQuestionnaire()" data-theme="a">Submit</a>
+
+          <!--
           <a href="#" onclick="clearQuest('app')" data-theme="a">Clear</a>
+        -->
          </div>
        <!-- /header -->
        <div data-role="content">
-          <form name="send2appdb" id="send2appdb" action="http://www.example.com/cgi-bin/appdb/submitscript.php" >
-             <input type='hidden' id='app_database' name='database' value=''>
-             <input type='hidden' id='currentGeolocation' name='currentGeolocation' value=''>
-             <input type='hidden' name='action' value='subscribeapp'>
-             <input type='hidden' name='login' value=''>
-             <input type='hidden' name='mailnotification' value=''>
-             <input type='hidden' name='session' value=''>
-             <input type='hidden' name='language' value=''>
-             <input type='hidden' name='viewpwd' value=''>
-             <input type='hidden' name='ided' value=''>
-             <input type='hidden' name='idrecord' value=''>
-             <script  type="text/javascript">
+          <script  type="text/javascript">
                 printHeader();
-             </script>
+           </script>
              <ul  id="ulJSONDB" data-role='listview' data-inset='true'>
+               <li>
+                 <div id="vNavQuestAPP" >
+                   <table width="100%">
+                     <tr  align="center">
+                       <td id="footerAPPprev">
+                         <button id="bPreviousAPP" onclick="gotoPreviousQuestion('app')" data-theme="c" style="visibility:hidden">&lt;&lt;</a>
+                       </td>
+                       <td id="footerAPPcount">
+                         [1/0]
+                       </td>
+                       <td id="footerAPPnext">
+                         <button id="bNextAPP" onclick="gotoNextQuestion('app')" data-theme="c">&gt;&gt;</a>
+                       </td>
+                     </tr>
+                   </table>
+                 </div>
+              </li>
                 <script  type="text/javascript">
                    printAllQuestions();
                 </script>
-             </ul>
+                <li>
+                  <input type="button" id="bSubmitOK" name="bSubmitOK" value='   Submit   ' onclick="processQuestionnaire()">
+                </li>
+              </ul>
              <!-- input type="button" name=bOK value='   Save   ' -->
-          </form>
           <br />
           <label id="app_errormsg" style="color:red"></label>
-          <div id="vNavQuestAPP">
-            <table width="100%">
-              <tr  align="center">
-                <td id="footerAPPprev">
-                  <button id="bPreviousAPP" onclick="gotoPreviousQuestion('app')" data-theme="c">&lt;&lt;</a>
-                </td>
-                <td id="footerAPPcount">
-                  [0/0]
-                </td>
-                <td id="footerAPPnext">
-                  <button id="bNextAPP" onclick="gotoNextQuestion('app')" data-theme="c">&gt;&gt;</a>
-                </td>
-              </tr>
-            </table>
-          </div>
+
           <!-- SUBMIT BUTTON Qestionnaire -->
-          <input type="button" name=bOK value='   Submit   ' onclick="processQuestionnaire()">
 
        </div>
        <!-- /ui-body wrapper -->
@@ -360,7 +360,11 @@
           <div data-role="header" data-position="fixed">
             <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
               <h1>Response Options</h1>
+            <a href="#bResponseForm" data-theme="a">Down</a>
+
+              <!--
               <a href="#" onclick="gotoPageJQ('Response');return false" data-theme="a">Back</a>
+            -->
           </div>
           <!-- /header -->
          <div id="ulResponseDB" data-role="content">
@@ -368,10 +372,11 @@
                  printAllResponses();
               </script>
               <br />
-              <button id="bResponseForm" onclick="submitForm2JSON('response.db','response')">Submit Response</button>
-              <label id="response_errormsg" style="color:red"></label>
          </div>
-     </div>
+         <button id="bResponseForm" onclick="submitForm2JSON('response.db','response')">Submit Response</button>
+         <label id="response_errormsg" style="color:red"></label>
+
+       </div>
       <!--
      =============================================
               RISK MITIGATION
@@ -391,7 +396,7 @@
         <center>  <!-- RISK WITH MITIGATION -->
           <h2>
             <div id="valDefuzzyResponse" style="color:red">
-             Reponse undefined?
+             Reponse is undefined until questionnaire submitted!
            </div>
           </h2>
        </center>
@@ -399,7 +404,7 @@
        <center> <!-- RISK WITHOUT MITIGATION -->
          <h2>
            <div id="valDefuzzyRiskB" style="color:red">
-             Risk undefined?
+             Risk is undefined until questionnaire submitted!
           </div>
          </h2>
       </center>
@@ -422,7 +427,7 @@
    =============================================
     -->
 
-   <div data-role="page" id="pFeedback">
+   <div data-role="page" id="pSubmitFeedback">
      <div data-role="header" data-position="fixed">
        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
        <h1>Send Feedback</h1>
@@ -435,8 +440,8 @@
             printAllFeedback();
          </script>
       </ul>
-      <br />
-      <button id="bFeedbackForm" onclick="submitForm2JSON('feedback.db','feedback')">Submit Response</button>
+      <br>
+      <button id="bFeedbackForm" onclick="processRecordSubmit('feedback.db','feedback')">Submit Response</button>
       <label id="feedback_errormsg" style="color:red"></label>
     </div>
    </div>
@@ -458,6 +463,85 @@
      </div>
 
    </div>
+   <!--
+   =============================================
+            Settings
+   =============================================
+    -->
+   <div data-role="page" id="pSettings">
+
+    <div data-role="header" data-position="fixed">
+      <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+      <h1>Settings:</h1>
+    </div><!-- /header -->
+
+    <div data-role="content">
+
+      Database: <input type="text" name="database" id="settings_database" onchange="updateSetting('name',this.value)" value="undefined.db"/>
+      <br />
+      Usergroup: <input type="text" name="usergroup" id="settings_usergroup" onchange="updateSetting('usergroup',this.value)" value="undefined usergroup"/>
+      <br />
+      My e-Mail: <input type="text" name="email" id="settings_email" onchange="updateSetting('email',this.value)" value="undefined e-mail"/>
+      <br />
+      <!-- DB Access View Password: <input type="settings_password" id="app_viewpwd" value="unknown"/> -->
+
+      <br />
+      Submit URL: <input type="text" id="settings_submiturl"  onchange="updateSetting('submiturl',this.value)" value="http://www.example.com/appdb.cgi"/>
+
+    </div> <!-- content -->
+
+  </div> <!-- page -->
+
+
+       <!--
+       =============================================
+                ACKNOWLEDEGMENT
+       =============================================
+        -->
+
+       <div data-role="page" id="pAcknowledgements" data-theme="b">
+
+       	<div data-role="header" data-position="fixed">
+          <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+           		<h1>Acknowledgements</h1>
+       		<!-- <a href="#" data-rel="back">Back</a> -->
+       	</div><!-- /header -->
+
+       	<div data-role="content">
+       		<ul>
+            <li>
+       				<b>iOS-Inspired jQuery Mobile theme</b> by Tait Brown. Resources at <a href="https://github.com/taitems/iOS-Inspired-jQuery-Mobile-Theme" target="_blank">GitHub page</a>.
+       			</li>
+            <li>
+       				<b>Ajit N. Babu</b> for Work flow development
+       			</li>
+            <li>
+       				<b>Jitendra Shah</b> for Backend Development
+       			</li>
+            <li>
+       				<b>Suray Shah</b> for Backend Development
+       			</li>
+            <li>
+       				<b>Arnav Puri</b> for Backend/App Development, ODKJS API
+       			</li>
+            <li>
+              <b>Chandana Unitthan</b> for Project Management Support
+            </li>
+            <li>
+       				<b>Joerg Rapp</b> Spatial Analysis
+       			</li>
+       			<li>
+       				<b>Biju Soman</b> for Public Health Support in Pilot Region
+       			</li>
+       			<li>
+       				Joseph Wain for iOS style Icons  <a href="http://www.glyphish.com" target="_blank">glyphish.com</a>. Licensed under the <a href="http://creativecommons.org/licenses/by/3.0/us/" target="_blank">Creative Commons Attribution 3.0 United States License</a>.
+       			</li>
+       		</ul>
+
+       	</div>
+
+       </div>  <!-- /page -->
+
      <!--
      =============================================
              COLLECTED DATA QUESTIONNAIRE
@@ -471,7 +555,7 @@
      	</div><!-- /header -->
 
      	<div data-role="content">
-        <h2>Display Database Selector:</h1>
+        <h2>Display Database Selector:</h2>
           <ul id="ul-dbviewer" data-role="listview" style="display:none">
             <li data-role="list-divider">Database Selector</li>
           </ul>
@@ -573,85 +657,7 @@
       </div>
 
      </div>
-     <!--
-     =============================================
-              Settings
-     =============================================
-      -->
-     <div data-role="page" id="pSettings">
 
-      <div data-role="header" data-position="fixed">
-        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
-        <h1>Settings:</h1>
-      </div><!-- /header -->
-
-      <div data-role="content">
-
-        Database: <input type="text" name="database" id="settings_database" onchange="updateSetting('name',this.value)" value="undefined.db"/>
-    		<br />
-        Usergroup: <input type="text" name="usergroup" id="settings_usergroup" onchange="updateSetting('usergroup',this.value)" value="undefined usergroup"/>
-    		<br />
-        My e-Mail: <input type="text" name="email" id="settings_email" onchange="updateSetting('email',this.value)" value="undefined e-mail"/>
-    		<br />
-    		<!-- DB Access View Password: <input type="settings_password" id="app_viewpwd" value="unknown"/> -->
-
-    		<br />
-    		Submit URL: <input type="text" id="settings_submiturl"  onchange="updateSetting('submiturl',this.value)" value="http://www.example.com/appdb.cgi"/>
-
-      </div> <!-- content -->
-
-    </div> <!-- page -->
-
-     <!--
-     =============================================
-              ACKNOWLEDEGMENT
-     =============================================
-      -->
-
-     <div data-role="page" id="pAcknowledgements" data-theme="b">
-
-     	<div data-role="header" data-position="fixed">
-     		<h1>Acknowledgements</h1>
-     		<a href="#" data-rel="back">Back</a>
-     	</div><!-- /header -->
-
-     	<div data-role="content">
-     		<ul>
-          <li>
-     				<b>iOS-Inspired jQuery Mobile theme</b> by Tait Brown. Resources at <a href="https://github.com/taitems/iOS-Inspired-jQuery-Mobile-Theme" target="_blank">GitHub page</a>.
-     			</li>
-          <li>
-     				<b>Ajit N. Babu</b> for Work flow development
-     			</li>
-          <li>
-     				<b>Jitendra Shah</b> for Backend Development
-     			</li>
-          <li>
-     				<b>Suray Shah</b> for Backend Development
-     			</li>
-          <li>
-     				<b>Arnav Puri</b> for Backend/App Development, ODKJS API
-     			</li>
-          <li>
-            <b>Chandana Unitthan</b> for Project Management Support
-          </li>
-          <li>
-     				<b>Joerg Rapp</b> Spatial Analysis
-     			</li>
-     			<li>
-     				<b>Biju Soman</b> for Public Health Support in Pilot Region
-     			</li>
-     			<li>
-     				Joseph Wain for iOS style Icons  <a href="http://www.glyphish.com" target="_blank">glyphish.com</a>. Licensed under the <a href="http://creativecommons.org/licenses/by/3.0/us/" target="_blank">Creative Commons Attribution 3.0 United States License</a>.
-     			</li>
-     		</ul>
-
-     	</div>
-
-     </div>
-
-
-  <!-- /page -->
       <!--
       =============================================
                END OF PAGES
@@ -675,9 +681,9 @@
          };
          var vOnlineMode = false;
          var vLocalDB = {};
-         var vArrayDB = [vJSONDB["database"],vResponseDB["database"],vFeedbackDB["database"]];
          initDisApp();
          var vFuzzyControl = new FuzzyControl();
+         vFuzzyControl.init(document);
          checkOnlineMode();
       </script>
    </body>

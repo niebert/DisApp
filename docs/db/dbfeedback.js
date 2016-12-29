@@ -6,16 +6,16 @@ var vFeedbackDB =  {
   "DBtitle": "DisApp Feedback",
   "DBsubtitle": "App Prototype",
   "submiturl": "http://www.mydisappserver.org/appdb/submit.php",
-  "DBformat": ["recdate","autonr","geolocation","yesnotmaybe1","yesnotsomewhat2","yesnotmaybe3","comment4","sampledate","moddate","usergroup","email" ],
+  "DBformat": ["recdate","autonr","geolocation","yesnotmaybe1","yesnotsomewhat2","yesnotmaybe3","comment4","sampledate","moddate","usergroup","email","geolocation" ],
   "DBtitles": ["Record Date","No.",
             "Geo Location",
             "Is this app <font color='red'>useful</font>?",
             "Is this app  <font color='red'>easy to use</font>?",
             "Would you <font color='red'>recommend</font> this app to other people?",
             "Please give any other <font color='red'>feedback or suggestions</font>:",
-            "Sample Date","Modify Date","User Group","e-Mail" ],
-  "DBmandatory": [false,false,false,true,true,true,true,false,false,false,false],
-  "DBvisible":   [false,false,false,true,true,true,true,false,false,false,false],
+            "Sample Date","Modify Date","User Group","e-Mail","Geolocation" ],
+  "DBmandatory": [false,false,false,true,true,true,true,false,false,false,false,false],
+  "DBvisible":   [false,false,false,true,true,true,true,false,false,false,false,false],
   "DBcolinput": {
      "recdate": "<input type=\"text\" id=\"feedback_recdate\" name=\"recdate\" size=\"80\" value=\"\" />",
      "autonr": "<input type=\"text\" id=\"feedback_autonr\" name=\"autonr\" size=\"80\" value=\"\" />",
@@ -27,9 +27,11 @@ var vFeedbackDB =  {
      "sampledate": "<input  id=\"feedback_sampledate\" type=\"text\" name=\"sampledate\" size=\"80\" value=\"\" />",
      "moddate": "<input  id=\"feedback_moddate\" type=\"text\" name=\"moddate\" size=\"80\" value=\"\" />",
      "usergroup": "<input  id=\"feedback_\" type=\"text\" name=\"usergroup\" size=\"80\" value=\"\" />",
-     "email": "<input  id=\"feedback_email\" type=\"text\" name=\"email\" size=\"80\" value=\"\" />"
+     "email": "<input  id=\"feedback_email\" type=\"text\" name=\"email\" size=\"80\" value=\"\" />",
+     "geolocation": "<table border=\"0\"><tr><td>   <button onclick=\"getCurrentGeolocation();return false\"> GPS </button></td><td><input type=\"text\"  id=\"feedback_geolocation\" name=\"geolocation\"  size=\"22\" value=\"GPS undefined\"></td></tr></table>"
      },
   "DBlines": [],
   "DBsubmitted": [],
-  "LastSyncLine": -1
+  "LastSyncLine": -1,
+  "EditIndex": -1
 }

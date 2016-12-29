@@ -91,12 +91,14 @@ function setSelectOnline(pMode) {
     //top.write2innerHTML("tdOnlineMode","YES");
     //top.write2value("sOnlineMode","yes")
     //write2innerHTML("sOnlineMode",vOptNO+vOptYESsel);
+    vQueryHash["OnlineMode"] = "1";
     vSelNode.options.selectedIndex = 2;
   } else {
     console.log("set OnlineMode: OFFLINE");
     //write2innerHTML("sOnlineMode",vOptNOsel+vOptYES);
     //top.write2value("sOnlineMode","no")
     //top.write2innerHTML("tdOnlineMode","NO");
+    vQueryHash["OnlineMode"] = "0";
     vSelNode.options.selectedIndex = 1;
   };
   setOnlineModeHTML(pMode);
@@ -132,6 +134,10 @@ function submitForm2JSON(pDB,pType) {
   var vType = pType || "app";
   var vParam = "";
   console.log("submitForm2JSON('"+vDB+"','"+vType+"')");
+  write2value(vType+"_recdate",getDate4DB());
+  write2value(vType+"_moddate",getDate4DB());
+  write2value(vType+"_email",vQueryHash["app_email"]);
+  write2value(vType+"_sampledate",Date.now());
   switch (vType) {
     case "app":
       vParam = readRecord2URLparam();
@@ -150,9 +156,6 @@ function submitForm2JSON(pDB,pType) {
     default:
       alert("Type '"+vType+"' for Database '"+vDB+"' undefined in submitForm2JSON()");
   };
-  write2value(vType+"_recdate",getDate4DB());
-  write2value(vType+"_moddate",getDate4DB());
-  write2value(vType+"_sampledate",Date.now());
   var vURL = getSubmitURLbasic("subscribejson",vDB)+vParam;
   //alert(vURL);
   console.log("submitForm2JSON() with URL: "+vURL);

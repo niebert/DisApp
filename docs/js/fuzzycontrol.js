@@ -50,6 +50,7 @@ function FuzzyControl () {
     //---------------------------------------------------------------------
     //---Attributes of Class "FuzzyControl()"
     //---------------------------------------------------------------------
+	this.doc = null;
 	this.aParent = null;
   this.aFuzzyLayers = [];
   this.aName = "FuzzyControl";
@@ -66,11 +67,13 @@ function FuzzyControl () {
   //---Calculated Risk after evaluating Questionnaire
   this.aFuzzyRisk = 0.5;
   //---Calculated Mitigation Quality of applied Risk Mitigation Strategy
-  this.aMitigationQuality = 0.9;
+  this.aMitigationQuality = 0.4;
   // The users might have applied all options for Risk Mitigation
   // But the impact of all mitigation strategies might not lead to a full
   // risk mitiation to 0. So the following variable defines the Impact Variable
-  // 0.0 = no impact -  1.0 full risk reduction possible
+  // 0.0 = no impact of risk mitigation/protection (even if all mitigating options selected)
+	// 1.0 = full risk reduction possible is possible (if all mitigating options selected)
+	// This value will be dependent on Geolocation because some activities might not be available
   this.aMitigationImpact = 1.0;
   // The Follow Attribute Calculates the total Risk
   this.aFuzzyRiskMitigation = 0.5;
@@ -93,7 +96,7 @@ function FuzzyControl () {
 //# last modifications    17.12.2016
 //#################################################################
 
-this.init = function () {
+this.init = function (pDocument) {
   //----Debugging------------------------------------------
   // The following alert-Command is useful for debugging
   //alert("fuzzycontrol.js:init(pParent)-Call")
@@ -101,6 +104,7 @@ this.init = function () {
   //    var vMyInstance = new FuzzyControl();
   //    vMyInstance.init(pParent);
   //-------------------------------------------------------
+	this.doc = pDocument; // initialized
   this.aFuzzyLayers = [];
   //this.link2dom(this.aRiskOutID);
   //this.link2dom(this.aResponse1OutID);
@@ -141,6 +145,9 @@ this.calcFuzzyRisk = function () {
   //    var vMyInstance = new FuzzyControl();
   //    vMyInstance.calcFuzzyRisk();
   //-------------------------------------------------------
+	if (this.aFuzzyLayers[0]) {
+		// FuzzyLayer for Questionnaire 
+	}
   var vOut = this.value2FuzzyScore(this.aFuzzyRisk);
   console.log("FuzzyControl Risk:"+vOut);
   return vOut;
@@ -168,6 +175,7 @@ this.calcFuzzyRiskMitigation = function () {
   //    var vMyInstance = new FuzzyControl();
   //    vMyInstance.calcFuzzyRiskMitigation();
   //-------------------------------------------------------
+	// this.aMitigationQuality is the potential q
   var vFuzRiskMit = this.aMitigationQuality * this.aMitigationImpact;
   this.aFuzzyRiskMitigation = fuzzyAND_mult(this.aFuzzyRisk,(1-vFuzRiskMit));
   var vOut = this.value2FuzzyScore(this.aFuzzyRiskMitigation);

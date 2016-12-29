@@ -23,7 +23,7 @@ function lengthObject(pObject) {
 function showErrorMessage(pMSG,pType) {
   var vType = pType || "app";
   console.log("Show Error Message ["+vType+"]");
-  write2innerHTML("errormsg",pMSG);
+  write2innerHTML(vType+"_errormsg",pMSG);
   pMSG = pMSG.replace(/<BR>/gi,"\n");
   pMSG = pMSG.replace(/<BR[^>]+]>/gi,"\n");
   pMSG = pMSG.replace(/<[^>]+>/gi,"");

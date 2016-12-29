@@ -301,10 +301,11 @@ The input of the method `fuzzify(pInput)` in Fuzzy-Node is in general a string a
 This section lists the main attributes of the class and documents its semantics:
 * **`aFuzzyLayerArray`** is an array of FuzzyLayers that are calculated in the order of the array to determine the result of the Fuzzy Controller. The layers are used  in the exec method of the Fuzzy Controller.
 * **`aFuzzyRuleArray`** is an Array for fuzzy rules. Every element of the array is an instance of the class `FuzzyRule`.
-* **`aLingArrayHash`** is an hash of arrays with linguistic values. The ID for the hash identifies the array of linguistic values. E.g. if you use the `ID="AlwayNeverSometimes"` with the associative array the hash will provide the array of linguistiv values, i.e.:
+* **`aLingArrayHash`** is an hash of arrays with linguistic values. The ID for the hash identifies the array of linguistic values. E.g. if you use the `ID="AlwaysNever"` with the associative array the hash will provide the array of linguistiv values, i.e.:
 ```
-   this.aLingArrayHash["AlwayNeverSometimes"] = ["Never","Sometimes","Alway"]
+   this.aLingArrayHash["AlwaysNever"] = ["Never","Sometimes","Alway"]
 ```
+The class `FuzzyNode` is initialized with one array of the Linguistic Array Hash.
 
 #### Method: FuzzyControl ####
 This section lists the main methods of the class and documents the task that the method performs:
@@ -338,8 +339,8 @@ This section lists the main attributes of the class and documents its semantics:
 
 #### Methods: FuzzyLayer ####
 This section lists the main methods of the class and documents the task that the method performs:
-* **()** returns *v* of the class *C*. The method it used for
-* **()** returns *v* of the class *C*. The method it used for
+* **addFuzzyNode(pFuzzyNode)** returns *Boolean* if adding a node was succesful. The method it used to populate the Layer with FuzzyNodes
+* **deleteById("pFuzzyNodeID")** returns  *String* if return string is empty `""` then deleting the fuzzy node with the ID `pFuzzyNodeID` from the layer was successful. Otherwise the return string can be displayed as Error Message. 
 * **exec()** returns nothing (*void*). The method it used for calculating the result of the fuzzy rules it iterates over *aFuzzyRuleArray*. Each FuzzyRule has an exec()-Method too, which is called in the for-loop.
 ```
 this.exec = function () {

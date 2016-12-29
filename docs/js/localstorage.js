@@ -62,18 +62,20 @@ function saveLocalDB(pDBName,pJSONDB) {
 //  LOAD ALL Local Storage JSONDB
 //--------------------------------------
 
-function loadAllOfflineJSONDB(pArrayDB) {
+function loadAllOfflineJSONDB() {
+  var vArrayDB = [vJSONDB,vResponseDB,vFeedbackDB];
 	console.log("loadAllOfflineJSONDB()-Call");
 	var vDBname = "";
-	for (var i = 0; i < pArrayDB.length; i++) {
-		vDBname = pArrayDB[i];
+	for (var i = 0; i < vArrayDB.length; i++) {
+		vDBname = vArrayDB[i]["database"];
 		vLocalDB[vDBname] = loadLocalDB(vDBname);
 		if (typeof(vLocalDB[vDBname])  !== "undefined" )  {
 			console.log("Offline DB: ["+vDBName+"] exists in loadAllOfflineJSONDB()-Call");
+      console.log("Offline DB: ["+vDBName+"] contains "+vLocalDB[vDBname]["DBlines"].length+" records");
 			if (vLocalDB[vDBname]["DBlines"]) {
 				switch (vDBname) {
 					case vJSONDB["database"]:
-							vJSONDB["DBlines"] =  vLocalDB[vDBname]["DBlines"];
+              vJSONDB["DBlines"] =  vLocalDB[vDBname]["DBlines"];
 							vJSONDB["DBsubmitted"] =  vLocalDB[vDBname]["DBsubmitted"];
 					break;
 					case vResponseDB["database"]:
@@ -98,26 +100,15 @@ function loadAllOfflineJSONDB(pArrayDB) {
 //  SAVE ALL Local Storage JSONDB
 //--------------------------------------
 
-function saveAllOfflineJSONDB(pArrayDB) {
+function saveAllOfflineJSONDB() {
 	console.log("saveAllOfflineJSONDB()-Call");
+  var vArrayDB = [vJSONDB,vResponseDB,vFeedbackDB];
 	var vDBname = "";
-	for (var i = 0; i < pArrayDB.length; i++) {
-		vDBname = pArrayDB[i];
+	for (var i = 0; i < vArrayDB.length; i++) {
+		vDBname = vArrayDB[i]["database"];
+    saveLocalDB(vDBName,vArrayDB[i]);
 		console.log("Offline DB: ["+vDBName+"] will be save AllOfflineJSONDB()-Call");
- 		switch (vDBname) {
-			case vJSONDB["database"]:
-					saveLocalDB(vDBName,vJSONDB);
-			break;
-			case vResponseDB["database"]:
-				saveLocalDB(vDBName,vResponseDB);
-			break;
-			case vFeedbackDB["database"]:
-				saveLocalDB(vDBName,vFeedbackDB);
-			break;
-			default:
-					console.log("Offline DB: ["+vDBName+"] is unknown in saveAllOfflineJSONDB()-Call");
-		}
-	};
+ 	};
 };
 
 //--------------------------------------

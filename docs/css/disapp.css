@@ -1,3 +1,6 @@
+.bodyui {
+  overflow-y:scroll;
+}
 #mapPage, #map {
   height: 100%;
 }

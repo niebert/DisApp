@@ -1,5 +1,5 @@
 function initDisApp() {
-  loadAllOfflineJSONDB(vArrayDB);
+  loadAllOfflineJSONDB();
   //handleOfflineJSONDB(vQueryHash);
   setFormLocation();
   var vKey = "sDisclaimer";
@@ -29,7 +29,7 @@ function initVariables4DOM() {
     write2value("save_submiturl",vQueryHash["app_submiturl"]); // visible in Disclaimer
     write2value("settings_submiturl",vQueryHash["app_submiturl"]); // visible in Settings
     write2innerHTML("disclaimer_submiturl",vQueryHash["app_submiturl"]); //hidden in Disclaimer
-    document.getElementById("send2appdb").action = vQueryHash["app_submiturl"];
+    //document.getElementById("send2appdb").action = vQueryHash["app_submiturl"];
   } else {
      console.log("Submit URL was undefined!");
   };

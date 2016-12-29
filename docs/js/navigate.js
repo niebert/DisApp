@@ -3,7 +3,7 @@ function quitApp() {
   var r = confirm("Do you want to quit!");
   if (r == true) {
       txt = "You pressed OK!";
-      saveAllOfflineJSONDB(vArrayDB);
+      saveAllOfflineJSONDB();
       window.close();
   } else {
       txt = "You pressed Cancel!";
@@ -11,13 +11,116 @@ function quitApp() {
   console.log(txt);
 };
 
+function gotoSubmitForm(pType) {
+  console.log("gotoSubmitForm('"+pType+"')");
+  switch (pType) {
+    case "app":
+      var vOut = "";
+      vOut += "Form for DB ["+pType+"]";
+      write2value("ulJSONDB",vOut);
+      gotoPageJQ("SubmitData");
+    break;
+    case "response":
+      var vOut = "";
+      vOut += "Form for DB ["+pType+"]";
+      write2value("ulResponseDB",vOut);
+      gotoPageJQ("ResponseOptions");
+    break;
+    case "feedback":
+      var vOut = "";
+      vOut += "Form for DB ["+pType+"]";
+      write2value("ulFeedbackDB",vOut);
+      gotoPageJQ("SubmitFeedback");
+    break;
+    default:
+      console.log("gotoPostSubmit() - wrong pType");
+  }
+};
+function getDB4Type(pType) {
+  var vDB = null;
+  switch (pType) {
+    case "app":
+      vDB = vJSONDB;
+    break;
+    case "response":
+      vDB = vResponseDB;
+    break;
+    case "feedback":
+      vDB = vFeedbackDB;
+    break;
+    default:
+      console.log("DB-Error: getDB4Type('"+pType+"') pType='"+pType+"' no match found");
+  };
+  return vDB;
+};
+
+function getNavigationHash(pType) {
+  var vNavHash = {};
+  var vDB = getDB4Type(pType);
+  vNavHash["DB"] = vDB;
+  if (vDB["EditIndex"] < 0) {
+    vDB["EditIndex"] = 0;
+    console.log("WARNING: getNavigationHash() EditIndex='"+vDB["EditIndex"]+"'");
+  };
+  if (vDB["EditIndex"] >= vDB["DBformat"].length) {
+    console.log("WARNING: getNavigationHash() EditIndex='"+vDB["EditIndex"]+"' exceed Format length");
+    vDB["EditIndex"] = vDB["DBformat"].length -1;
+  };
+  vNavHash["VisibleIDs"] = getVisibleIDs(vDB);
+  return vNavHash;
+}
+
 function gotoPreviousQuestion(pType) {
   console.log("gotoPrevious()-Call Questionnaire ["+pType+"]");
+  var vNavHash = getNavigationHash(pType);
+  var vEditIndex = vNavHash["DB"]["EditIndex"];
+  if (vNavHash["DB"]["EditIndex"]>0) {
+    vNavHash["DB"]["EditIndex"] = vNavHash["DB"]["EditIndex"] - 1;
+  };
+  setNavigatedID(pType,vNavHash);
 };
 
 function gotoNextQuestion(pType) {
   console.log("gotoNext()-Call Questionnaire ["+pType+"]");
+  var vNavHash = getNavigationHash(pType);
+  if (vNavHash["DB"]["EditIndex"] < vNavHash["VisibleIDs"].length - 1) {
+    //console.log("EditIndex can be incremented");
+    vNavHash["DB"]["EditIndex"] = vNavHash["DB"]["EditIndex"] + 1;
+  };
+  setNavigatedID(pType,vNavHash);
+};
 
+function setNavigatedID(pType,pNavHash) {
+  var vEditIndex = pNavHash["DB"]["EditIndex"];
+  var vID = "";
+  var vCount = 0;
+  //alert(pNavHash["VisibleIDs"].join(","));
+  for (var i = 0; i < pNavHash["VisibleIDs"].length; i++) {
+    vCount = i+1;
+    vID = "FORMVAR_"+pType+"_"+vCount;
+    if (vEditIndex == i) {
+      show(vID);
+    } else {
+      hide(vID);
+    }
+  };
+  vCount = vEditIndex+1;
+  var vMarker = "["+vCount+"/"+pNavHash["VisibleIDs"].length+"]";
+  write2innerHTML("footerAPPcount",vMarker);
+  setPrevNextButtonVisibility(pNavHash);
+};
+
+function setPrevNextButtonVisibility(pNavHash) {
+    if (pNavHash["DB"]["EditIndex"] == 0) {
+      hideElement("bPreviousAPP")
+    } else {
+      showElement("bNextAPP");
+    };
+    if (pNavHash["DB"]["EditIndex"] == (pNavHash["VisibleIDs"].length - 1)) {
+      hideElement("bNextAPP")
+    } else {
+      showElement("bNextAPP");
+    };
 };
 
 function displayCollectedData() {
@@ -74,7 +177,7 @@ function processForm(pType) {
 };
 
 function processRecordSubmit(pDB,pDBType) {
-    //calcFuzzyForm(pDBType);
+    calcFuzzyForm(pDBType);
     console.log("processRecordSubmit() - will try to submit ONLINE or OFFLINE");
     var vOnline = readOnlineStatusHTML();
     if (vOnline) {

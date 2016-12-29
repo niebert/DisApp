@@ -20,7 +20,7 @@ var vJSONDB =  {
   "DBcolinput": {
      "recdate": "<input type=\"text\" id=\"app_recdate\" name=\"recdate\" size=\"80\" value=\"\" />",
      "autonr": "<input type=\"text\" id=\"app_autonr\" name=\"autonr\" size=\"80\" value=\"\" />",
-     "geolocation": "<table border=\"0\"><tr><td>   <button onclick=\"getCurrentGeolocation();return false\"> GPS </button></td><td><input type=\"text\"  id=\"app_geolocation\" name=\"geolocation\" id=\"geolocation\"  size=\"22\" value=\"GPS undefined\"></td></tr></table>",
+     "geolocation": "<table border=\"0\"><tr><td>   <button onclick=\"getCurrentGeolocation();return false\"> GPS </button></td><td><input type=\"text\"  id=\"app_geolocation\" name=\"geolocation\"  size=\"22\" value=\"GPS undefined\"></td></tr></table>",
      "countapprox1": "<SELECT id=\"app_countapprox1\" name=\"countapprox1\" size=\"1\"><OPTION></OPTION><OPTION value='0.0'>None </OPTION><OPTION value='0.33333'>Very few (1-2)</OPTION><OPTION value='0.666666'>Some (3-10)</OPTION><OPTION value='1.0'>High  (more than 10)</OPTION><OPTION value='NA'>Don`t know</OPTION></SELECT>",
      "yesnodontknow1": "<select  id=\"app_yesnodontknow1\" name=\"yesnodontknow1\" size=\"1\"><OPTION></OPTION><option value='1.0'>Yes</option><option value='0.0'>No</option><option value='NA'>don`t know</option></select> <p align='center'><br><img width='90%' src='images/aedes_albopictus.jpg'></p>",
      "countapprox2": "<SELECT  id=\"app_countapprox2\" name=\"countapprox2\" size=\"1\"><OPTION></OPTION><OPTION value='0.0'>None </OPTION><OPTION value='0.33333'>Very few (1-2)</OPTION><OPTIONv alue='0.666666'>Some (3-10)</OPTION><OPTION value='1.0'>High  (more than 10)</OPTION><OPTION value='NA'>Don`t know</OPTION></SELECT>",
@@ -33,5 +33,6 @@ var vJSONDB =  {
      },
   "DBlines": [],
   "DBsubmitted": [],
-  "LastSyncLine": -1
+  "LastSyncLine": -1,
+  "EditIndex": -1
 }

@@ -55,39 +55,50 @@ function toggleCheck(pID,pChecked) {
 	} else {
 		hide(pID);
 	}
-}
-function hide(pID) {
-	var vNode = document.getElementById(pID);
-	if (vNode) {
-		vNode.style.display = "none";
-		vNode.style.visibility = "hidden";
-	} else {
-		alert("hide()-Call pID="+pID+" does not exist!");
-	}
 };
+
+function hide(pID) {
+  var vNode = document.getElementById(pID);
+  if (vNode) {
+    $( "#"+pID ).hide();
+  } else {
+    console.log("hide('"+pID+"')-Call DOM-Node for ID undefined");
+  }
+};
+
 function hideElementNode(pNode) {
 	if (pNode) vNode.style.visibility = "hidden";
 };
+
 function hideElement(pID) {
 	var vNode = document.getElementById(pID);
 	if (vNode) {
 		vNode.style.visibility = "hidden";
 	} else {
-		alert("hideElement()-Call pID="+pID+" was undefined");
+		console.log("hideElement()-Call pID='"+pID+"' was undefined");
 	}
 };
+
 function showElement(pID) {
     show(pID,"inline");
-}
+};
+
 function showNode(pNode,pDisplay) {
 	var vDisplay = pDisplay || "inline";
 	if (pNode) {
 		pNode.style.display = vDisplay;
 		//pNode.style.display = "inline"; // "block"
 		pNode.style.visibility = "visible";
+  } else {
+		alert("showNode()-Call pID='"+pID+"' was undefined");
 	};
 };
-function show(pID,pDisplay) {
+
+function show(pID) {
 	var vNode = document.getElementById(pID);
-	this.showNode(vNode,pDisplay);
+  if (vNode) {
+    $( "#"+pID ).show();
+  } else {
+    console.log("show('"+pID+"')-Call DOM-Node for ID undefined");
+  }
 };

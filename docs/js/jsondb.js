@@ -40,6 +40,7 @@ function countUnsubmitted(pDBsubmitted) {
 }
 
 function getListJSONDB(pJSONDB,pType,pUnsubmittedONLY) {
+
   var vListPrefixDB = getListPrefixDB(pType);
   var vOut = getHeaderDB(pJSONDB);
   var vInfo = "";
@@ -172,17 +173,44 @@ function checkFormDB(pJSONDB,pType) {
 
 function printAllQuestions() {
   // the IDprefix is inserted before all DOM element IDs
-  document.write(createAllQuestions("app_"));
+  var vSingleItem = true;
+  document.write(createAllQuestions("app_",vSingleItem,vJSONDB));
+  var vCount = countVisibleQuestions(vJSONDB);
+  var vEnumRec = "[1/"+vCount+"]";
+  setTimeout("write2innerHTML('footerAPPcount','"+vEnumRec+"')",400);
+};
+
+function getVisibleIDs(pDB) {
+  var vDB = pDB || vJSONDB;
+  var vDBformat   = vDB["DBformat"];
+  var vDBvisible  = vDB["DBvisible"];
+  var vCount = 0;
+  var vRetArr = [];
+  for (var i=0;i<vDBformat.length;i++) {
+    vID = vDBformat[i];
+    if (vDBvisible[i]) {
+      vRetArr.push(vID);
+    };
+  };
+  return vRetArr;
+};
+
+function countVisibleQuestions(pDB) {
+  var vArr = getVisibleIDs(pDB);
+  return vArr.length;
 };
 
 
-function createAllQuestions(pIDprefix) {
+function createAllQuestions(pIDprefix,pSingleItem,pDB) {
+  var vSingleItem = pSingleItem || false;
+  var vDB = pDB || vJSONDB;
+  var vItemVisible = "";
   var vIDprefix = pIDprefix || "app_";
   var vOut = "";
-  var vDBformat   = vJSONDB["DBformat"];
-  var vDBtitles   = vJSONDB["DBtitles"];
-  var vDBcolinput = vJSONDB["DBcolinput"];
-  var vDBvisible  = vJSONDB["DBvisible"];
+  var vDBformat   = vDB["DBformat"];
+  var vDBtitles   = vDB["DBtitles"];
+  var vDBcolinput = vDB["DBcolinput"];
+  var vDBvisible  = vDB["DBvisible"];
   var vCount = 0;
   var vType ="hidden";
   if (vDebug > 0) {
@@ -193,8 +221,11 @@ function createAllQuestions(pIDprefix) {
     if (vDBvisible[i]) {
       vCount++;
       //document.write("<li>"+vCount+" "+vDBtitles[i]+": "+vDBcolinput[vID]+"</li>");
-      vOut += "<li id='FORMVAR"+vCount+"'>("+vCount+") "+vDBtitles[i]+"<br> "+vDBcolinput[vID]+" </li>";
+      vOut += "<li id='FORMVAR_"+pIDprefix+vCount+"' "+vItemVisible+">("+vCount+") "+vDBtitles[i]+"<br> "+vDBcolinput[vID]+" </li>";
       //alert(vDBformat[i]+" visible");
+      if (vSingleItem) {
+        vItemVisible = " style='display:none' ";
+      };
     } else {
       //alert(vDBformat[i]+" not visible");
       if (vDebug > 0) {
@@ -220,7 +251,7 @@ function createAllResponses(pIDprefix) {
   vOut += createResponses(pIDprefix,"home");
   vOut += createResponses(pIDprefix,"yourself");
   vOut += createHiddenFormJSON(pIDprefix,["email","usergroup","geolocation","moddate","recdate"]);
-  vOut += "<button id='bSubmitResponses' onclick='submitResponseJSON()'>Submit Response</button>";
+  //vOut += "<button id='bSubmitResponses' onclick='submitResponseJSON()'>Submit Response</button>";
   return vOut;
 };
 
