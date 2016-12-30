@@ -50,6 +50,13 @@ def handle_request(data):
                 'errorMessage': 'Resource Not Found',
                  'errorCode': 404
             }
+        try:
+            user = get_user()
+        except:
+            #default user will be suraj in case of any problems to avoid data loss
+            user = User.objects.get(email="surajshah525@gmail.com")
+            print "Logged in used not found while trying to record user response"
+
 
         flag = False
         for each in a_list:
@@ -58,7 +65,7 @@ def handle_request(data):
                 each_question = ques.get(question_id=str(field))
                 for every in value:
                     qa_map = QuestionAnswerMapping.objects.filter(question=each_question,answer_text=str(every))[0]
-                    UsersAnswers.objects.create(question=each_question,answer=qa_map)
+                    UsersAnswers.objects.create(user=user,question=each_question,answer=qa_map)
             except Exception as e:
                 app.logger.debug(e)
                 app.logger.debug('Could not log answers for question_id:'+str(each_question.id))
