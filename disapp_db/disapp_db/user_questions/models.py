@@ -58,6 +58,8 @@ class QuestionAnswerMapping(models.Model):
 
 
 class UsersAnswers(models.Model):
+    user = models.ForeignKey(User, null = True)
     question = models.ForeignKey('Questions')
     answer = models.ForeignKey('QuestionAnswerMapping')
+    created_on = models.DateTimeField(auto_now_add=True)
     
