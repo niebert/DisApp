@@ -36,8 +36,11 @@ vResponseDB = {
     "yesnoslider": "<select id='___COUNT___' name='___COUNT___' data-role='slider'><option value='0.0'>set NO</option><option value='1.0'>set YES</option></select>",
     "yesnodontknow": "<select id=\"___COUNT___\" name=\"___COUNT___\" size=\"1\"><OPTION></OPTION><option value='1.0'>Yes</option><option value='0.0'>No</option><option value='NA'>don`t know</option></select>"
   },
-  "DBtitles": [], //populated by
-  "DBformat": [],
+  "DBcolinput": {}, //populated by initResponseDB() settings.js
+  "DBtitles": [], //populated by initResponseDB() settings.js
+  "DBformat": [], //populated by initResponseDB() settings.js
+  "DBmandatory": [], //populated by initResponseDB() settings.js
+  "DBvisible": [], //populated by initResponseDB() settings.js
   "DBlines": [],
   "DBsubmitted": [],
   "LastSyncLine": -1,

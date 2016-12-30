@@ -124,22 +124,24 @@ function checkFormDB(pJSONDB,pType) {
   var vErr = "";
   var vComma = "";
   var vCount = 0;
+  var vID = "";
   for (var i=0;i<vDBformat.length;i++) {
+    vID = pType+"_"+vDBformat[i];
     if (vDBvisible[i]) {
       vCount++;
       vErr = "<br>Missing Input: ("+vCount+") "+vDBtitles[i];
-      var vNodeArr =document.getElementsByName(vDBformat[i]);
-      if (vNodeArr) {
-        if (vNodeArr[0]) {
-          console.log("["+vDBformat[i]+"] exists");
-          if (vNodeArr[0].value == "") {
+      var vNode = document.getElementById(vID);
+      if (vNode) {
+          console.log("checkForm()-Call; ["+vID+"] exists");
+          if (vNode.value == "") {
+            console.log("checkForm()-Call; ["+vID+"]='' value empty");
             vSubmit = false;
             vMSG += vErr;
             if (vDBformat[i] == "geolocation") {
               vSubmit = confirm("Missing Geolocation!\nDo you want to submit data anyway?");
               if (vSubmit == true) {
                 //history.back();
-                vNodeArr[0].value = "GPS_location_undefined";
+                vNode.value = "GPS_location_undefined";
                 var vGeoLocation = getLastGeoLocation();
                 vUseLastGPS = confirm("Stored Geo Location FOUND!\n  GeoLoc: "+vGeoLocation+"\nDo you want to use this Geo Location?");
 
@@ -147,19 +149,15 @@ function checkFormDB(pJSONDB,pType) {
               };
             };
           } else {
-            console.log("Input ["+vDBformat[i]+"] OK");
+            console.log("Input ["+vID+"]='"+vNode.value+"' OK");
           };
         } else {
           vSubmit = false;
           vMSG += vErr
-          console.log("Input ["+vDBformat[i]+"] undefined");
+          console.log("Node ["+pType+"_"+vDBformat[i]+"] undefined");
         };
-      } else {
-        //vItem.style.backgroundColor = "green";
-        console.log("Check Form Element ["+vDBformat[i]+"] does not exist!");
-      };
-    };
-  };
+    }; // if Input visible
+  }; // for loop
   if (vSubmit) {
     //document.send2appdb.submit();
     return "";
@@ -216,6 +214,7 @@ function createAllQuestions(pIDprefix,pSingleItem,pDB) {
   if (vDebug > 0) {
     vType="text";
   };
+  console.log("createAllQuestions() vDBformat.length="+(vDBformat.length)+" pIDprefix="+pIDprefix);
   for (var i=0;i<vDBformat.length;i++) {
     vID = vDBformat[i];
     if (vDBvisible[i]) {
@@ -239,8 +238,17 @@ function createAllQuestions(pIDprefix,pSingleItem,pDB) {
 //---------------------------------------------
 //---3 printAllResponses
 //---------------------------------------------
-
 function printAllResponses() {
+  // the IDprefix is inserted before all DOM element IDs
+  var vSingleItem = true;
+  document.write(createAllQuestions("response_",vSingleItem,vResponseDB));
+  var vCount = countVisibleQuestions(vResponseDB);
+  var vEnumRec = "[1/"+vCount+"]";
+  setTimeout("write2innerHTML('footerRESPONSEcount','"+vEnumRec+"')",400);
+};
+
+
+function X_printAllResponses() {
   // the IDprefix is inserted before all DOM element IDs
   document.write(createAllResponses("response_"));
 };
@@ -282,6 +290,15 @@ function createResponses(pIDprefix,pDBID) {
 //---------------------------------------------
 
 function printAllFeedback() {
+  // the IDprefix is inserted before all DOM element IDs
+  var vSingleItem = true;
+  document.write(createAllQuestions("feedback_",vSingleItem,vFeedbackDB));
+  var vCount = countVisibleQuestions(vFeedbackDB);
+  var vEnumRec = "[1/"+vCount+"]";
+  setTimeout("write2innerHTML('footerFEEDBACKcount','"+vEnumRec+"')",400);
+};
+
+function X_printAllFeedback() {
   // the IDprefix is inserted before all DOM element IDs
   document.write(createAllFeedback("feedback_"));
 };
@@ -368,14 +385,14 @@ function getSelectPageCount(pMaxSelector) {
 function createDatabaseHTML4JSON(pPageType,pMax4Page) {
     //alert("JSONDB was defined!");
     var vID = "";
-    var vPages = getPagesCount(pMax4Page);
+    var vPages = 1; //getPagesCount(pMax4Page);
     //var vPages = divmod(getQuestionCount(),pMax4Page)+1;
-    console.log("vPages="+vPages+" Questions="+getQuestionCount());
+    console.log("createDatabaseHTML4JSON()");
     if (vPages == 1) {
       //alert("Single Page Form")
     } else {
       //alert("Multiple Pages Form "+vPage);
-      printPageSelector(vPages,pPageType);
+      //printPageSelector(vPages,pPageType);
     };
 }
 
@@ -459,8 +476,10 @@ function getHeaderDB(pJSONDB) {
   return vOut
 };
 
-function printHeader() {
-  document.write(getHeaderDB(vJSONDB));
+function printHeader(pType) {
+  var vType = pType || "app";
+  var vDB = getDB4Type(vType);
+  document.write(getHeaderDB(vDB));
 };
 
 function printFormPages(pMax4Page) {

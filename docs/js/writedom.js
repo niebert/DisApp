@@ -1,3 +1,7 @@
+function enableButton(pID) {
+  disableButton(pID,false);
+};
+
 function disableButton(pID,pValue) {
   var vValue = pValue || true;
   $("#"+pID).prop("disabled",vValue);

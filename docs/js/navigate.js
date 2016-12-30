@@ -17,19 +17,19 @@ function gotoSubmitForm(pType) {
     case "app":
       var vOut = "";
       vOut += "Form for DB ["+pType+"]";
-      write2value("ulJSONDB",vOut);
+      //write2value("ulJSONDB",vOut);
       gotoPageJQ("SubmitData");
     break;
     case "response":
       var vOut = "";
       vOut += "Form for DB ["+pType+"]";
-      write2value("ulResponseDB",vOut);
+      //write2value("ulResponseDB",vOut);
       gotoPageJQ("ResponseOptions");
     break;
     case "feedback":
       var vOut = "";
       vOut += "Form for DB ["+pType+"]";
-      write2value("ulFeedbackDB",vOut);
+      //write2value("ulFeedbackDB",vOut);
       gotoPageJQ("SubmitFeedback");
     break;
     default:
@@ -106,20 +106,32 @@ function setNavigatedID(pType,pNavHash) {
   };
   vCount = vEditIndex+1;
   var vMarker = "["+vCount+"/"+pNavHash["VisibleIDs"].length+"]";
-  write2innerHTML("footerAPPcount",vMarker);
-  setPrevNextButtonVisibility(pNavHash);
+  switch (pType) {
+    case "app":
+      write2innerHTML("footerAPPcount",vMarker);
+    break;
+    case "response":
+      write2innerHTML("footerRESPONSEcount",vMarker);
+    break;
+    case "feedback":
+      write2innerHTML("footerFEEDBACKcount",vMarker);
+    break;
+    default:
+       console.log("Wrong pType of Database");
+  };
+  //setPrevNextButtonVisibility(pNavHash);
 };
 
 function setPrevNextButtonVisibility(pNavHash) {
     if (pNavHash["DB"]["EditIndex"] == 0) {
-      hideElement("bPreviousAPP")
+      disableButton("bPreviousAPP")
     } else {
-      showElement("bNextAPP");
+      enableButton("bPreviousAPP");
     };
     if (pNavHash["DB"]["EditIndex"] == (pNavHash["VisibleIDs"].length - 1)) {
-      hideElement("bNextAPP")
+      disableButton("bNextAPP")
     } else {
-      showElement("bNextAPP");
+      enableButton("bNextAPP");
     };
 };
 
@@ -131,14 +143,10 @@ function displayCollectedData() {
       vDisUnsubONLY = false;
     };
     console.log("Display DB ["+vType+"] with Unsubmitted ONLY='"+vUnsubmittedONLY+"'");
-    injectListDB2DOM(vType,vDisUnsubONLY); //defined in jsondb.js
+    //injectListDB2DOM(vType,vDisUnsubONLY); //defined in jsondb.js
     gotoPageJQ("DisplayListDB");
 };
 
-
-function processQuestionnaire() {
-  processForm("app");
-};
 
 function processForm(pType) {
     console.log("CHECK FORM: processForm('"+pType+"')");
@@ -167,7 +175,6 @@ function processForm(pType) {
         if (vErrMSG != "") {
           showErrorMessage(vErrMSG,pType);
         } else {
-          var vStringHash = readRecordDOM2Hash(vFeedbackDB["DBformat"],pType+"_")
           processRecordSubmit(vDB,pType);
         };
       break;
@@ -178,7 +185,7 @@ function processForm(pType) {
 
 function processRecordSubmit(pDB,pDBType) {
     calcFuzzyForm(pDBType);
-    console.log("processRecordSubmit() - will try to submit ONLINE or OFFLINE");
+    console.log("processRecordSubmit('"+pDB+"','"+pDBType+"') - will try to submit ONLINE or OFFLINE");
     var vOnline = readOnlineStatusHTML();
     if (vOnline) {
       console.log("App - ONLINE");

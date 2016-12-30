@@ -140,18 +140,19 @@ function submitForm2JSON(pDB,pType) {
   write2value(vType+"_sampledate",Date.now());
   switch (vType) {
     case "app":
-      vParam = readRecord2URLparam();
+      //vParam = readRecord2URLparam();
+      vParam = readType2URLparam(vType);
       console.log("Read Questionnaire Form to URL parameter in submitForm2JSON()");
     break;
     case "response":
       vDB = vType + vDB;
       console.log("submitForm2JSON() for Response");
-      vParam = readResponse2URLparam();
+      vParam = readType2URLparam(vType);
     break;
     case "feedback":
       vDB = vType + vDB;
       console.log("submitForm2JSON() for Feedback");
-      vParam = readFeedback2URLparam();
+      vParam = readType2URLparam(vType);
     break;
     default:
       alert("Type '"+vType+"' for Database '"+vDB+"' undefined in submitForm2JSON()");
@@ -270,9 +271,19 @@ function submitFeedbackJSON() {
   submitForm2JSON(vDatabase,vType);
 };
 
+function readType2URLparam(pType) {
+  var vDB = getDB4Type(pType);
+  var vDBformat = vDB["DBformat"];
+  var vDBHash = readRecordDOM2Hash(vDBformat,pType+"_");
+  //vDBHash['sampledate'] = Date.now(); is set at the end of readRecord2Hash()
+  var vParam = record2URLparam(vDBHash);
+  console.log("readType2URLparam()\nParameter: \n"+vParam);
+  return vParam;
+};
+
 function readFeedback2URLparam() {
-  var vDBformat = vResponseDB["DBformat"];
-  var vDBHash = readRecordDOM2Hash(vDBformat);
+  var vDBformat = vFeedbackDB["DBformat"];
+  var vDBHash = readRecordDOM2Hash(vDBformat,"feedback_");
   //vDBHash['sampledate'] = Date.now(); is set at the end of readRecord2Hash()
   var vParam = record2URLparam(vDBHash);
   console.log("readRecordDOM2URLparam()\nFeedback Parameter: \n"+vParam);

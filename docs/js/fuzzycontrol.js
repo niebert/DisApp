@@ -146,8 +146,9 @@ this.calcFuzzyRisk = function () {
   //    vMyInstance.calcFuzzyRisk();
   //-------------------------------------------------------
 	if (this.aFuzzyLayers[0]) {
-		// FuzzyLayer for Questionnaire 
-	}
+		// FuzzyLayer for Questionnaire exists
+		this.aFuzzyLayers[0].exec();
+	};
   var vOut = this.value2FuzzyScore(this.aFuzzyRisk);
   console.log("FuzzyControl Risk:"+vOut);
   return vOut;

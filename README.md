@@ -336,11 +336,13 @@ this.exec = function () {
 This section lists the main attributes of the class and documents its semantics:
 * **aNextLayer** is used to store the calculated Output of the current FuzzyLayer in the following FuzzyLayer as input Fuzzy-Nodes
 * **aPreviousLayer** is used for reading output properties from the previous fuzzy layer.
+* **aInputHash** contains the input data of the fuzzy layers, shows missing input data NA, fuzzyified values of the input data and weights e.g. for questions/answers from the questionnaire.
+* **aFuzzyNodeHash** the hash of fuzzy nodes are used for especially for hidden fuzzy layers   
 
 #### Methods: FuzzyLayer ####
 This section lists the main methods of the class and documents the task that the method performs:
 * **addFuzzyNode(pFuzzyNode)** returns *Boolean* if adding a node was succesful. The method it used to populate the Layer with FuzzyNodes
-* **deleteById("pFuzzyNodeID")** returns  *String* if return string is empty `""` then deleting the fuzzy node with the ID `pFuzzyNodeID` from the layer was successful. Otherwise the return string can be displayed as Error Message. 
+* **deleteById("pFuzzyNodeID")** returns  *String* if return string is empty `""` then deleting the fuzzy node with the ID `pFuzzyNodeID` from the layer was successful. Otherwise the return string can be displayed as Error Message.
 * **exec()** returns nothing (*void*). The method it used for calculating the result of the fuzzy rules it iterates over *aFuzzyRuleArray*. Each FuzzyRule has an exec()-Method too, which is called in the for-loop.
 ```
 this.exec = function () {

@@ -89,14 +89,19 @@ function fuzzyCHECK_value(pValueArr) {
 };
 
 function fuzzyPARSE_string2real(pStringHash) {
-  // "NA" (Boolean Array) not available - String "NA" or ""
-  // "empty" (Boolean Array) string empty - Subset of NA with String ""
-  // hash with values contains the usable Answers that could be fuzzyfied successful
-  var vRetJSON = {"data":pStringHash,"missing":{},"NA":{},"empty":{},"values":{}};
+  // If user answered Question 1 with "YES DEFINITEY" then
+  // the pStringHash contains pStringHash["question1"] = "YES DEFINITEY"
+  // This string hash is stored in the Return JSON in vRetJSON["data"]
+  // "NA" (Boolean Hash) not available - String "NA" or ""
+  // "empty" (Boolean Hash) string empty - Subset of NA with String ""
+  // "values" hash with values contains the usable answers that could be fuzzyfied successful
+  // "data" just stores the StringHash coming directly from the questionnaire
+  var vRetJSON = {"data":pStringHash,"missing":{},"NA":{},"empty":{},"values":{},"weights":{}};
   var vMis = vRetJSON["missing"];
   var vEmp = vRetJSON["empty"];
   var vNA = vRetJSON["NA"];
   var vVal = vRetJSON["values"];
+  var vWeight = vRetJSON["weights"];
   var vAnswer = "";
   for (var iID in pStringHash) {
     vMis[iID] = false;
@@ -113,8 +118,9 @@ function fuzzyPARSE_string2real(pStringHash) {
         vMis[iID] = true;
         vNA[iID] = true;
       } else if (!isNaN(vAnswer)) {
-        console.log("["+iID+"] float value="+s);
+        console.log("["+iID+"] float value="+vAnswer);
         vVal[iID] = parseFloat(vAnswer);
+        vWeight[iID] = 1.0;
       } else {
         console.log("["+iID+"] NaN");
         vMis[iID] = true;
