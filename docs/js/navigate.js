@@ -9,6 +9,7 @@ function quitApp() {
       txt = "You pressed Cancel!";
   };
   console.log(txt);
+  return r
 };
 
 function gotoSubmitForm(pType) {
@@ -17,19 +18,19 @@ function gotoSubmitForm(pType) {
     case "app":
       var vOut = "";
       vOut += "Form for DB ["+pType+"]";
-      //write2value("ulJSONDB",vOut);
+      write2value("ulJSONDB",vOut);
       gotoPageJQ("SubmitData");
     break;
     case "response":
       var vOut = "";
       vOut += "Form for DB ["+pType+"]";
-      //write2value("ulResponseDB",vOut);
+      write2value("ulResponseDB",vOut);
       gotoPageJQ("ResponseOptions");
     break;
     case "feedback":
       var vOut = "";
       vOut += "Form for DB ["+pType+"]";
-      //write2value("ulFeedbackDB",vOut);
+      write2value("ulFeedbackDB",vOut);
       gotoPageJQ("SubmitFeedback");
     break;
     default:
@@ -143,8 +144,8 @@ function displayCollectedData() {
       vDisUnsubONLY = false;
     };
     console.log("Display DB ["+vType+"] with Unsubmitted ONLY='"+vUnsubmittedONLY+"'");
-    //injectListDB2DOM(vType,vDisUnsubONLY); //defined in jsondb.js
-    gotoPageJQ("DisplayListDB");
+    injectListDB2DOM(vType,vDisUnsubONLY); //defined in jsondb.js
+    setTimeout('gotoPageJQ("DisplayListDB")',200);
 };
 
 
@@ -213,35 +214,40 @@ function checkDisclaimer4Submit() {
 };
 
 function gotoPostSubmit(pType,pSubmitted) {
+  var vType = pType || "app";
   var vSubmitText = "false";
   if (pSubmitted) {
     vSubmitText = "true";
   };
   var vOut = "";
-  console.log("gotoPostSubmit('"+pType+"',"+vSubmitText+")");
+  console.log("gotoPostSubmit('"+vType+"',"+vSubmitText+")");
+  var vDBhash = readRecord2Hash(vType);
   switch (pType) {
     case "app":
-      submitData2LocalStorage(pSubmitted,vJSONDB,readRecord2Hash());
+      submitData2LocalStorage(pSubmitted,pType,vDBhash);
       //processForm(pType);
-      var vStringHash = readRecordDOM2Hash(vJSONDB["DBformat"],pType+"_")
-      vFuzzyControl.create(vStringHash,pType);
+      // readRecordHash() reads DB_Format
+      //var vStringHash = readRecordDOM2Hash(vJSONDB["DBformat"],pType+"_")
+      vFuzzyControl.create(vDBhash,pType);
       vOut = vFuzzyControl.exec(pType);
       alert("gotoPostSubmit('"+pType+"',"+vSubmitText+"): vOut='"+vOut+"'");
       write2innerHTML("valDefuzzyRiskA",vOut);
       write2innerHTML("valDefuzzyRiskB",vOut);
-      gotoPageJQ("Response");
+      top.gotoPageJQ("Response");
     break;
     case "response":
       //processForm(pType);
+      submitData2LocalStorage(pSubmitted,pType,vDBhash);
       var vStringHash = readRecordDOM2Hash(vResponseDB["DBformat"],pType+"_")
       vFuzzyControl.create(vStringHash,pType);
       vOut = vFuzzyControl.exec(pType);
       write2innerHTML("valDefuzzyResponse",vOut);
       alert("gotoPostSubmit('"+pType+"',"+vSubmitText+"): vOut='"+vOut+"'");
-      gotoPageJQ("RiskMitigation");
+      top.gotoPageJQ("RiskMitigation");
     break;
     case "feedback":
-      gotoPageJQ("ThankYou");
+      submitData2LocalStorage(pSubmitted,pType,vDBhash);
+      top.gotoPageJQ("ThankYou");
     break;
     default:
       console.log("gotoPostSubmit() - wrong pType");

@@ -1,11 +1,11 @@
 function loginDisApp() {
   var vAppStartBoolean = true;
   var vCheckGPS=getValueDOM('currentGeolocation');
-  var vUserGroup=encodeURLparam(document.getElementById('app_usergroup').value);
-  var vEMail=encodeURLparam(document.getElementById('app_email').value);
-  var vDBselect = document.getElementById('app_database').value;
-  var vDatabase = encodeURLparam(vDBselect+".db");
-  var vSubmitURL=encodeURLparam(document.getElementById('app_submiturl').value);
+  var vUserGroup=encodeURLparam(getValueDOM('app_usergroup'));
+  var vEMail=encodeURLparam(getValueDOM('app_email'));
+  var vDBselect = getValueDOM('app_database');
+  var vDatabase = encodeURLparam(vDBselect);
+  var vSubmitURL=encodeURLparam(getValueDOM('app_submiturl'));
   saveLocalVar('app_usergroup',vUserGroup);
   saveLocalVar('app_email',vEMail);
   saveLocalVar('app_submiturl',vSubmitURL);
@@ -38,9 +38,9 @@ function loginDisApp() {
     var n = d.getTime();
     if (checkMobil()) {
           //document.location.href="app.html?username="+vUser+"&database="+vDatabase;
-        openWinHTMLsize(vDBselect+".html?app_submiturl="+vSubmitURL+"&app_usergroup="+vUserGroup+"&app_database="+vDatabase+"&app_email="+vEMail,"500","700");
+        openWinHTMLsize("disapp.html?app_submiturl="+vSubmitURL+"&app_usergroup="+vUserGroup+"&app_database="+vDatabase+"&app_email="+vEMail,"500","700");
     } else {
-        openWinHTML(vDBselect+".html?app_submiturl="+vSubmitURL+"&app_usergroup="+vUserGroup+"&app_database="+vDatabase+"&app_email="+vEMail);
+        openWinHTML("disapp.html?app_submiturl="+vSubmitURL+"&app_usergroup="+vUserGroup+"&app_database="+vDatabase+"&app_email="+vEMail);
     };
   } else {
     showErrorMessage(vMSG);

@@ -65,7 +65,7 @@
         <div data-role="header" data-position="fixed">
             <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
            <h1>Welcome</h1>
-           <a href="#" onclick="quitApp();return false" data-theme="c">Quit</a>
+           <a href="#" onclick="quitApp()" data-theme="c">Quit</a>
       </div>
         <!-- /header -->
       <div data-role="content">
@@ -96,10 +96,10 @@
           </tr>
           <tr>
             <td  colspan="2">
-              <button onclick="$.mobile.changePage( '#pDisclaimer', { transition: 'slideup', changeHash: false })"> Disclaimer </button>
+              <button onclick="gotoPageJQ('Disclaimer');return false"> Disclaimer </button>
             </td>
             <td>
-              <button onclick="checkDisclaimer4Submit()">Questionnaire</button>
+              <button onclick="checkDisclaimer4Submit();return false">Questionnaire</button>
             </td>
           </tr>
         </table>
@@ -114,9 +114,9 @@
    <div data-role="page" id="pHome">
       <div data-role="header" data-position="fixed">
          <!-- <a href="javascript:window.close()" data-theme="a">Close</a> -->
-         <a href="#pCollectedData" onclick="" data-theme="a">Data</a>
+         <a href="#" onclick="gotoPageJQ('Welcome');return false" data-theme="a">Welcome</a>
          <h1>Home - DisApp</h1>
-         <a href="#" onclick="quitApp();return false" data-theme="c">Quit</a>
+         <a href="#" onclick="quitApp()" data-theme="c">Quit</a>
       </div>
       <!-- /header -->
      <div data-role="content">
@@ -124,14 +124,17 @@
        <p>Welcome to the DisApp. Feel free to have a look around and report and bugs to the <a href="https://github.com/niebert/DisApp/issues" target="_blank">GitHub issues page</a>.</p>
 
        <ul data-role="listview" data-inset="true">
-         <li><a href="#" onclick="gotoSubmitForm('app')">Submit Observation</a></li>
+         <li><a href="#" onclick="gotoSubmitForm('app');return false">Submit Observation</a></li>
          <!-- <li><a href="#pSubmitData" onclick="gotoSubmitQuestionnaire()">Submit Observation</a></li> -->
-         <li><a href="#pCollectedData">Collected Data</a></li>
-         <li><a href="#" onclick="gotoSubmitForm('response')">Ways to Stop Dengue</a></li>
-         <li><a href="#" onclick="gotoSubmitForm('feedback')">DisApp Feedback</a></li>
-         <li id="MenuMaplocation"><a href="javascript:openWinHTML('map4location.html','wMapLocation')">Show Map Location</a></li>
-         <li><a href="#pSettings">Settings</a></li>
-         <li><a href="#pAcknowledgements">Acknowledgements</a></li>
+         <li><a href="#" onclick="gotoPageJQ('CollectedData');return false" >Collected Data</a></li>
+         <li><a href="#" onclick="gotoSubmitForm('response');return false">Ways to Stop Dengue</a></li>
+         <li><a href="#" onclick="gotoSubmitForm('feedback');return false">DisApp Feedback</a></li>
+         <li id="MenuMaplocation"><a href="javascript:openWinHTML('map4location.html','wMapLocation');return false">Show Map Location</a></li>
+         <li><a href="#" onclick="gotoPageJQ('Settings');return false" >Settings</a></li>
+         <li><a href="#" onclick="gotoPageJQ('Acknowledgements');return false">Acknowledgements</a></li>
+         <!--
+         <li><a href="#pThankYou">Thank you</a></li>
+          -->
        </ul>
        <p>Please use Firefox for App (<a href="https://www.mozilla.org" target="_blank">Firefox-Homepage</a>)</p>
 
@@ -153,12 +156,12 @@
 
    <div data-role="page" id="pSubmitData">
        <div data-role="header" data-position="fixed">
-         <a href="#pHome" data-theme="a">Home</a>
+         <a href="#"  onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
           <h1>Submit Data</h1>
-          <a href="#" onclick="processForm('app')" data-theme="a">Submit</a>
+          <a href="#" onclick="processForm('app');return false" data-theme="a">Submit</a>
 
           <!--
-          <a href="#" onclick="clearQuest('app')" data-theme="a">Clear</a>
+          <a href="#" onclick="clearQuest('app');return false" data-theme="a">Clear</a>
         -->
          </div>
        <!-- /header -->
@@ -172,13 +175,13 @@
                    <table width="100%">
                      <tr  align="center">
                        <td id="footerAPPprev">
-                         <button id="bPreviousAPP" onclick="gotoPreviousQuestion('app')" data-theme="c">&lt;&lt;</button>
+                         <button id="bPreviousAPP" onclick="gotoPreviousQuestion('app');return false" data-theme="c">&lt;&lt;</button>
                        </td>
                        <td id="footerAPPcount">
                          [1]
                        </td>
                        <td id="footerAPPnext">
-                         <button id="bNextAPP" onclick="gotoNextQuestion('app')" data-theme="c">&gt;&gt;</button>
+                         <button id="bNextAPP" onclick="gotoNextQuestion('app');return false" data-theme="c">&gt;&gt;</button>
                        </td>
                      </tr>
                    </table>
@@ -188,7 +191,7 @@
                    printAllQuestions();
                 </script>
                 <li>
-                  <input type="button" id="bSubmitOK" name="bSubmitOK" value='   Submit   ' onclick="processForm('app')">
+                  <input type="button" id="bSubmitOK" name="bSubmitOK" value='   Submit   ' onclick="processForm('app');return false">
                 </li>
               </ul>
              <!-- input type="button" name=bOK value='   Save   ' -->
@@ -211,7 +214,7 @@
       <div data-role="header" data-position="fixed">
           <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
            <h1>Local Storage </h1>
-           <a href="#" onclick="quitApp();return false;" data-theme="c">Quit</a>
+           <a href="#" onclick="quitApp()" data-theme="c">Quit</a>
         </div>
       <!-- /header -->
       <div data-role="content">
@@ -227,9 +230,9 @@
       -->
        <div data-role="page" id="pDisclaimer">
          <div data-role="header" data-position="fixed">
-            <a href="#pWelcome" data-theme="a">Back</a>
+            <a href="#"  onclick="gotoPageJQ('Welcome');return false"  data-theme="a">Welcome</a>
             <h1>Disclaimer</h1>
-            <a href="#pHome" data-theme="a">Home</a>
+            <a href="#"  onclick="gotoPageJQ('Home');return false"  data-theme="a">Home</a>
          </div>
          <!-- /header -->
          <div data-role="content">
@@ -285,7 +288,7 @@
                   </td>
                 </tr>
               </table>
-              <button onclick="checkDisclaimer4Submit()"> Submit Data </button>
+              <button onclick="checkDisclaimer4Submit();return false"> Submit Data </button>
             </div> <!-- fieldcontain -->
           </div> <!-- content -->
       </div>
@@ -329,7 +332,7 @@
                </td>
               </tr>
             </table>
-            <button id="bResponseOptions" onclick="gotoPageJQ('ResponseOptions')">Response Options</button>
+            <button id="bResponseOptions" onclick="gotoPageJQ('ResponseOptions');return false">Response Options</button>
           </div>
         </div>
         <!--
@@ -342,10 +345,10 @@
           <div data-role="header" data-position="fixed">
             <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
               <h1>Response Options</h1>
-            <a href="#" onclick="processForm('response')" data-theme="a">Submit</a>
+            <a href="#" onclick="processForm('response');return false" data-theme="a">Submit</a>
 
               <!--
-              <a href="#" onclick="gotoPageJQ('Response');return false" data-theme="a">Back</a>
+              <a href="#" onclick="gotoPageJQ('Response')" data-theme="a">Back</a>
             -->
           </div>
           <!-- /header -->
@@ -360,13 +363,13 @@
                   <table width="100%">
                     <tr  align="center">
                       <td id="footerRESPONSEprev">
-                        <button id="bPreviousRESPONSE" onclick="gotoPreviousQuestion('response')" data-theme="c">&lt;&lt;</button>
+                        <button id="bPreviousRESPONSE" onclick="gotoPreviousQuestion('response');return false" data-theme="c">&lt;&lt;</button>
                       </td>
                       <td id="footerRESPONSEcount">
                         [1]
                       </td>
                       <td id="footerRESPONSEnext">
-                        <button id="bNextRESPONSE" onclick="gotoNextQuestion('response')" data-theme="c">&gt;&gt;</button>
+                        <button id="bNextRESPONSE" onclick="gotoNextQuestion('response');return false" data-theme="c">&gt;&gt;</button>
                       </td>
                     </tr>
                   </table>
@@ -376,7 +379,7 @@
                     printAllResponses();
                  </script>
               <li>
-                <button id="bResponseForm" onclick="processForm('response')">Submit Response</button>
+                <button id="bResponseForm" onclick="processForm('response');return false">Submit Response</button>
               </li>
            </ul>
            <label id="response_errormsg" style="color:red"></label>
@@ -417,10 +420,10 @@
        <table bgcolor="white" cellspacing="10px" width="95%">
           <tr>
             <td>
-             <button id="bFeedback" onclick="gotoPageJQ('Feedback')"> Provide Feedback </button>
+             <button id="bFeedback" onclick="gotoPageJQ('SubmitFeedback');return false"> Provide Feedback </button>
            </td>
            <td>
-            <button id="bHome" onclick="gotoPageJQ('Home')"> Home </button>
+            <button id="bHome" onclick="gotoPageJQ('Home');return false"> Home </button>
           </td>
          </tr>
         </table>
@@ -437,9 +440,9 @@
      <div data-role="header" data-position="fixed">
        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
        <h1>Send Feedback</h1>
-       <a href="#" onclick="processForm('feeedback')" data-theme="a">Submit</a>
+       <a href="#" onclick="processForm('feedback');return false" data-theme="a">Submit</a>
 <!--
-        <a href="#" onclick="quitApp();return false" data-theme="c">Quit</a>
+        <a href="#" onclick="quitApp()" data-theme="c">Quit</a>
       -->
        </div>
      <!-- /header -->
@@ -453,13 +456,13 @@
             <table width="100%">
               <tr  align="center">
                 <td id="footerFEEDBACKprev">
-                  <button id="bPreviousFEEDBACK" onclick="gotoPreviousQuestion('feedback')" data-theme="c">&lt;&lt;</button>
+                  <button id="bPreviousFEEDBACK" onclick="gotoPreviousQuestion('feedback');return false" data-theme="c">&lt;&lt;</button>
                 </td>
                 <td id="footerFEEDBACKcount">
                   [1]
                 </td>
                 <td id="footerFEEDBACKnext">
-                  <button id="bNextFEEDBACK" onclick="gotoNextQuestion('feedback')" data-theme="c">&gt;&gt;</button>
+                  <button id="bNextFEEDBACK" onclick="gotoNextQuestion('feedback');return false" data-theme="c">&gt;&gt;</button>
                 </td>
               </tr>
             </table>
@@ -469,7 +472,7 @@
             printAllFeedback();
          </script>
          <li>
-           <button id="bFeedbackForm" onclick="processForm('feedback')">Submit Feedback</button>
+           <button id="bFeedbackForm" onclick="processForm('feedback');return false">Submit Feedback</button>
         </li>
       </ul>
       <br>
@@ -523,6 +526,27 @@
 
   </div> <!-- page -->
 
+  <!--
+  =============================================
+           THANk YOU
+  =============================================
+   -->
+  <div data-role="page" id="pThankYou">
+
+   <div data-role="header" data-position="fixed">
+     <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
+     <h1>Connect</h1>
+     <a href="#" onclick="quitApp()" data-theme="c">Quit</a>
+   </div><!-- /header -->
+
+   <div data-role="content">
+       <h1>Thank You:</h1>
+       <h2>Thank you very much for the submission of feefback.<br>
+         Improvements of DisApp will be shared with you ...
+       </h2>
+   </div>
+
+  </div>
 
        <!--
        =============================================
@@ -556,7 +580,7 @@
        				<b>Arnav Puri</b> for Backend/App Development, ODKJS API
        			</li>
             <li>
-              <b>Chandana Unitthan</b> for Project Management Support
+              <b>Chandana Unnithan</b> for Project Management Support
             </li>
             <li>
        				<b>Joerg Rapp</b> Spatial Analysis
@@ -587,9 +611,6 @@
 
      	<div data-role="content">
         <h2>Display Database Selector:</h2>
-          <ul id="ul-dbviewer" data-role="listview" style="display:none">
-            <li data-role="list-divider">Database Selector</li>
-          </ul>
 
         <table cellspacing="10px" bgcolor="white" width="100%">
           <tr>
@@ -619,7 +640,7 @@
             </td>
           </tr>
         </table>
-        <button class="ui-btn-plain" onclick="displayCollectedData()">Display DB</button>
+        <button class="ui-btn-plain" onclick="displayCollectedData();return false">Display DB</button>
         <!-- displayCollectedData() is defined in navigate.js -->
      	</div>
 
@@ -639,8 +660,14 @@
 
       <div data-role="content">
         <h3 id="h1SPACER">&nbsp;</h3>
-        <div id="divListDB">
+
+        <div id="divTitleListDB">
+          divTitleListDB
         </div>
+        <p>
+          <ul id="divListDB" data-role="listview">
+          </ul>
+        </p>
       </div>
 
      <!--
@@ -668,27 +695,7 @@
      </div>
 
 
-     <!--
-     =============================================
-              THANk YOU
-     =============================================
-      -->
-     <div data-role="page" id="pThankYou">
 
-      <div data-role="header" data-position="fixed">
-        <a href="#" onclick="gotoPageJQ('Home');return false" data-theme="a">Home</a>
-        <h1>Connect</h1>
-        <a href="#" onclick="quitApp();return false" data-theme="c">Quit</a>
-      </div><!-- /header -->
-
-      <div data-role="content">
-          <h1>Thank You:</h1>
-          <h2>Thank you very much for the submission of feefback.<br>
-            Improvements of DisApp will be shared with you ...
-          </h2>
-      </div>
-
-     </div>
 
       <!--
       =============================================

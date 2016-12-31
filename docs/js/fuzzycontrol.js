@@ -74,7 +74,7 @@ function FuzzyControl () {
   // 0.0 = no impact of risk mitigation/protection (even if all mitigating options selected)
 	// 1.0 = full risk reduction possible is possible (if all mitigating options selected)
 	// This value will be dependent on Geolocation because some activities might not be available
-  this.aMitigationImpact = 1.0;
+  this.aMitigationImpact = 0.8;
   // The Follow Attribute Calculates the total Risk
   this.aFuzzyRiskMitigation = 0.5;
 
@@ -106,6 +106,16 @@ this.init = function (pDocument) {
   //-------------------------------------------------------
 	this.doc = pDocument; // initialized
   this.aFuzzyLayers = [];
+	var vFL = new FuzzyLayer();
+	vFL.init(this,"app");
+	this.aFuzzyLayers.push(vFL);
+	vFL = new FuzzyLayer();
+	vFL.init(this,"response");
+	this.aFuzzyLayers.push(vFL);
+	// vFL = new FuzzyLayer();
+	// vFL.init(this,"output");
+	// this.aFuzzyLayers.push(vFL);
+
   //this.link2dom(this.aRiskOutID);
   //this.link2dom(this.aResponse1OutID);
   //this.link2dom(this.aResponse2OutID);
@@ -148,6 +158,7 @@ this.calcFuzzyRisk = function () {
 	if (this.aFuzzyLayers[0]) {
 		// FuzzyLayer for Questionnaire exists
 		this.aFuzzyLayers[0].exec();
+		this.aFuzzyRisk = this.aFuzzyLayers[0].aFuzVal;
 	};
   var vOut = this.value2FuzzyScore(this.aFuzzyRisk);
   console.log("FuzzyControl Risk:"+vOut);
@@ -176,11 +187,20 @@ this.calcFuzzyRiskMitigation = function () {
   //    var vMyInstance = new FuzzyControl();
   //    vMyInstance.calcFuzzyRiskMitigation();
   //-------------------------------------------------------
-	// this.aMitigationQuality is the potential q
-  var vFuzRiskMit = this.aMitigationQuality * this.aMitigationImpact;
-  this.aFuzzyRiskMitigation = fuzzyAND_mult(this.aFuzzyRisk,(1-vFuzRiskMit));
+	// this.aMitigationQuality is defined by the Questionnaire
+	// Impact is the Maximum
+	if (this.aFuzzyLayers[1]) {
+		// FuzzyLayer for Questionnaire exists
+		this.aFuzzyLayers[1].exec();
+		this.aMitigationQuality = this.aFuzzyLayers[1].aFuzVal;
+	};
+	console.log("Risk Mitigation Quality: "+this.aMitigationQuality);
+	var vFuzRiskMit = this.aMitigationQuality * this.aMitigationImpact;
+	console.log("Risk Mitigation Quality * Impact: "+vFuzRiskMit);
+	//this.aFuzzyRiskMitigation = fuzzyAND_mult(this.aFuzzyRisk,(1-vFuzRiskMit));
+	this.aFuzzyRiskMitigation = this.aFuzzyRisk * (1-vFuzRiskMit);
   var vOut = this.value2FuzzyScore(this.aFuzzyRiskMitigation);
-  console.log("FuzzyControl Response:"+vOut);
+  console.log("FuzzyControl Response: "+vOut);
   return vOut;
 };
 //----End of Method calcFuzzyRiskMitigation Definition
@@ -208,22 +228,24 @@ this.create = function (pStringHash,pType) {
   console.log("FuzzyControl.create() pType='"+pType+"' performed.");
   switch (pType) {
     case "app":
-      if (this.aFuzzyLayers.length > 0) {
-        this.aFuzzyLayers[0] = vFuzzyJSON;
-        console.log("Layer[0] updated");
-      } else {
-        console.log("Layer[0] created");
-        this.aFuzzyLayers.push(vFuzzyJSON);
-      };
+			if (this.aFuzzyLayers[0]) {
+				this.aFuzzyLayers[0].aName = "app";
+				this.aFuzzyLayers[0].aParent = this;
+				this.aFuzzyLayers[0].aDataHash = vFuzzyJSON;
+				console.log("Layer[0] Risk - polulated with Input");
+			} else {
+				console.log("ERROR: Fuzzy Controller - this.aFuzzyLayers[0] does not exist");
+			}
     break;
     case "response":
-    if (this.aFuzzyLayers.length > 1) {
-      this.aFuzzyLayers[1] = vFuzzyJSON;
-      console.log("Layer[0] updated");
-  } else {
-      console.log("Layer[0] created");
-      this.aFuzzyLayers.push(vFuzzyJSON);
-    };
+    	if (this.aFuzzyLayers.length > 1) {
+				this.aFuzzyLayers[1].aName = "response";
+				this.aFuzzyLayers[1].aParent = this;
+				this.aFuzzyLayers[1].aDataHash = vFuzzyJSON;
+				console.log("Layer[1] Response - polulated with Input");
+			} else {
+				console.log("ERROR: Fuzzy Controller - this.aFuzzyLayers[0] does not exist");
+			};
     break;
     default:
       console.log("FuzzyControl.create() pType='"+pType+"' not in FuzzyControl types");

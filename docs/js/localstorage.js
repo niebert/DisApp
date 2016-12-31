@@ -1,35 +1,73 @@
+
+function getArray4DBNames() {
+  var vArrayDB = [];
+  vArrayDB.push(vJSONDB["database"]);
+  vArrayDB.push(vResponseDB["database"]);
+  vArrayDB.push(vFeedbackDB["database"]);
+  console.log("DB Names: ["+vArrayDB.join(",")+"]");
+  return vArrayDB;
+}
+
+function getID4DBName(pDBName) {
+  return pDBName.replace(/[^A-Za-z0-9]/g,"_");
+};
+
+function getDB4DBName(pDBName) {
+  console.log("Call: getDB4DBName('"+pDBName+"')");
+  switch (pDBName) {
+    case "disappresponse.db":
+      return vResponseDB;
+    break;
+    case "disappfeedback.db":
+      return vFeedbackDB;
+    break;
+    default:
+      return vJSONDB
+  };
+}
 //--------------------------------------
 //  LOAD Local Storage JSONDB
 //--------------------------------------
 function loadLocalDB(pDBName) {
-  var vJSONDB = null;
+  var vDBID = getID4DBName(pDBName);
+  var vDB = getDB4DBName(pDBName);
   if (typeof(Storage) != "undefined") {
     // Store
-    if (typeof(localStorage.getItem(pDBName)) != undefined) {
+    if (typeof(localStorage.getItem(vDBID)) !== undefined) {
       console.log("JSON-DB '"+pDBName+"' try loading from Local Storage");
-      var vJSONstring = localStorage.getItem(pDBName);
-      vJSONDB = parseJSONDB(pDBName,vJSONstring);
+      var vJSONstring = localStorage.getItem(vDBID);
+	    if (!vJSONstring) {
+        console.log("JSON-DB '"+pDBName+"' undefined in Local Storage.\nSave default as JSON");
+        localStorage.setItem(vDBID, JSON.stringify(vDB));
+	    } else {
+        console.log("parse DB '"+pDBName+"') from LocalStorage JSONstring='"+vJSONstring.substr(0,120)+"...'");
+        //vDB = parseJSONDB(pDBName,vJSONstring);
+        vDB = JSON.parse(vJSONstring);
+	   }
     } else {
-      console.log("JSON-DB '"+pDBName+"' is undefined in Local Storage");
+      console.log("JSON-DB '"+pDBName+"' is undefined in Local Storage.\nSave default as JSON");
+      localStorage.setItem(vDBID, JSON.stringify(vDB));
     };
   }	 else {
     console.log("WARNING: Sorry, your browser does not support Local Storage of JSON Database. Use Firefox ...");
   };
-  return vJSONDB;
+  return vDB;
 };
 
 //--------------------------------------
 //  PARSE Local Storage JSONDB
 //--------------------------------------
-function parseJSONDB(pDBName,pStringJSON) {
-  var vJSONDB = null;
+function X_parseJSONDB(pDBName,pStringJSON) {
+  var vDBID = getID4DBName(pDBName);
+  var vDB = null;
   if (pStringJSON) {
     var vTest = pStringJSON.replace(/\S\t/g,"");
     if (vTest.length > 0) {
-      console.log("JSONDB is defined in localStorage");
-      vJSONDB = JSON.parse(pStringJSON)
+      console.log("JSONDB '"+vDBName+"' is defined in localStorage ");
+      vDB = JSON.parse(pStringJSON);
     } else {
       console.log("parseJSONDB()-Call: JSONDB ["+pDBName+"] cannot be parsed - empty String in LocalStorage");
+      localstorage.removeItem(vDBID);
     }
   } else {
     console.log("parseJSONDB()-Call: JSONDB ["+pDBName+"] is undefined in LocalStorage.");
@@ -40,13 +78,16 @@ function parseJSONDB(pDBName,pStringJSON) {
 //  SAVE Local Storage JSONDB
 //--------------------------------------
 function saveLocalDB(pDBName,pJSONDB) {
+  pDBName = getID4DBName(pDBName);
   if (typeof(Storage) != "undefined") {
     // Store
     if (typeof(pJSONDB) != undefined) {
       console.log("JSON-DB '"+pDBName+"' is defined, JSONDB in  Local Storage");
       if (pJSONDB) {
-        console.log("pJSONDB '"+pDBName+"' is saved to Local Storage");
-        localStorage.setItem(pDBName,JSON.stringify(pJSONDB));
+        //console.log("pJSONDB '"+pDBName+"' is saved to Local Storage");
+        var vJSONstring = JSON.stringify(pJSONDB)
+        console.log("saveLocalDB('"+pDBName+"') JSONstring='"+vJSONstring.substr(0,120)+"...'");
+        localStorage.setItem(pDBName,vJSONstring);
       } else {
         console.log("pJSONDB DOM-Node is NOT defined");
       }
@@ -63,35 +104,36 @@ function saveLocalDB(pDBName,pJSONDB) {
 //--------------------------------------
 
 function loadAllOfflineJSONDB() {
-  var vArrayDB = [vJSONDB,vResponseDB,vFeedbackDB];
+  var vArrayDB = getArray4DBNames();
 	console.log("loadAllOfflineJSONDB()-Call");
-	var vDBname = "";
+	var vDBName = "";
 	for (var i = 0; i < vArrayDB.length; i++) {
-		vDBname = vArrayDB[i]["database"];
-		vLocalDB[vDBname] = loadLocalDB(vDBname);
-		if (typeof(vLocalDB[vDBname])  !== "undefined" )  {
-			console.log("Offline DB: ["+vDBName+"] exists in loadAllOfflineJSONDB()-Call");
-      console.log("Offline DB: ["+vDBName+"] contains "+vLocalDB[vDBname]["DBlines"].length+" records");
-			if (vLocalDB[vDBname]["DBlines"]) {
-				switch (vDBname) {
+		vDBName = vArrayDB[i];
+    vDBID = getID4DBName(vDBName);
+		vLocalDB[vDBID] = loadLocalDB(vDBID);
+		if (typeof(vLocalDB[vDBID])  !== "undefined" )  {
+			console.log("Offline DB: ["+vDBName+"] exists in loadAllOfflineJSONDB()-Call "+
+                  "and LC['"+vDBID+"'] contains "+vLocalDB[vDBID]["DBlines"].length+" records");
+			if (vLocalDB[vDBID]["DBlines"]) {
+				switch (vDBName) {
 					case vJSONDB["database"]:
-              vJSONDB["DBlines"] =  vLocalDB[vDBname]["DBlines"];
-							vJSONDB["DBsubmitted"] =  vLocalDB[vDBname]["DBsubmitted"];
+              vJSONDB["DBlines"] =  vLocalDB[vDBID]["DBlines"];
+							vJSONDB["DBsubmitted"] =  vLocalDB[vDBID]["DBsubmitted"];
 					break;
 					case vResponseDB["database"]:
-							vResponseDB["DBlines"] =  vLocalDB[vDBname]["DBlines"];
-							vResponseDB["DBsubmitted"] =  vLocalDB[vDBname]["DBsubmitted"];
+							vResponseDB["DBlines"] =  vLocalDB[vDBID]["DBlines"];
+							vResponseDB["DBsubmitted"] =  vLocalDB[vDBID]["DBsubmitted"];
 					break;
 					case vFeedbackDB["database"]:
-							vFeedbackDB["DBlines"] =  vLocalDB[vDBname]["DBlines"];
-							vFeedbackDB["DBsubmitted"] =  vLocalDB[vDBname]["DBsubmitted"];
+							vFeedbackDB["DBlines"] =  vLocalDB[vDBID]["DBlines"];
+							vFeedbackDB["DBsubmitted"] =  vLocalDB[vDBID]["DBsubmitted"];
 					break;
 					default:
-							console.log("Offline DB: ["+vDBname+"] is unknown in loadAllOfflineJSONDB()-Call");
+							console.log("Offline DB: ["+vDBName+"] is unknown in loadAllOfflineJSONDB()-Call");
 				}
 			}
 		} else {
-			console.log("Offline DB: ["+vDBname+"] is undefined in loadAllOfflineJSONDB()-Call");
+			console.log("Offline DB: ["+vDBName+"] is undefined in loadAllOfflineJSONDB()-Call");
 		}; // if vLocalDB[vDBname] unde
 	}; // for
 };
@@ -102,11 +144,12 @@ function loadAllOfflineJSONDB() {
 
 function saveAllOfflineJSONDB() {
 	console.log("saveAllOfflineJSONDB()-Call");
-  var vArrayDB = [vJSONDB,vResponseDB,vFeedbackDB];
-	var vDBname = "";
+  var vArrayDB = getArray4DBNames();
+	var vDBName = "";
 	for (var i = 0; i < vArrayDB.length; i++) {
-		vDBname = vArrayDB[i]["database"];
-    saveLocalDB(vDBName,vArrayDB[i]);
+		vDBName = vArrayDB[i];
+    vDBID = getID4DBName(pDBName);
+    saveLocalDB(vDBID,vArrayDB[i]);
 		console.log("Offline DB: ["+vDBName+"] will be save AllOfflineJSONDB()-Call");
  	};
 };

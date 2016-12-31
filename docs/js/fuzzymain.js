@@ -42,7 +42,8 @@ function calcFuzzyForm(pDBType) {
     case "app":
       //vParam = readRecord2URLparam();
       console.log("Read Questionnaire Form to URL parameter in calcFuzzyForm()");
-      var vQuestHash = readRecord2Hash();
+      //var vQuestHash = readRecord2Hash(pDBType);
+      var vQuestHash = readRecordDOM2Hash(vJSONDB["DBformat"],"app_");
       //readFuzzyJSON(pDBType);
       vFuzzyControl.create(vQuestHash,"app");
       vFuzzyControl.calcFuzzyRisk();
@@ -119,8 +120,14 @@ function fuzzyPARSE_string2real(pStringHash) {
         vNA[iID] = true;
       } else if (!isNaN(vAnswer)) {
         console.log("["+iID+"] float value="+vAnswer);
-        vVal[iID] = parseFloat(vAnswer);
-        vWeight[iID] = 1.0;
+        var vValue = parseFloat(vAnswer);
+        if ((vValue >= 0.0) && (vValue <= 1.0)) {
+          vVal[iID] = parseFloat(vAnswer);
+          vWeight[iID] = 1.0;
+          console.log("Fuzzy Value found for ["+iID+"]="+vValue);
+        } else {
+          console.log("No Fuzzy Value - out of range ["+iID+"]="+vValue);
+        };
       } else {
         console.log("["+iID+"] NaN");
         vMis[iID] = true;

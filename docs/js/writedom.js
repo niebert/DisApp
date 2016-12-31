@@ -43,7 +43,9 @@ function getValueDOM(pID) {
   } else {
     vReturn = vNode.value;
     if (!vReturn) {
-      vReturn = getInnerHTML(pID);
+      //vReturn = getInnerHTML(pID);
+      vReturn = "";
+      console.log("getValueDOM('"+pID+"') Value undefined");
     };
   }
   return vReturn;
@@ -69,7 +71,10 @@ function getInnerHTML(pID) {
 function write2innerHTML(pID,pContent) {
   var vNode =document.getElementById(pID)
   if (vNode){
-    vNode.innerHTML=pContent;
+    //vNode.innerHTML=pContent;
+    //$("#"+pID).empty();
+    $("#"+pID).html(pContent);
+    //$("#"+pID).toggle().toggle(); //refreshing Element
   } else {
     console.log("Write DOM-Node 'innerHTML' with ID=["+pID+"] was undefined")
   }
@@ -78,7 +83,8 @@ function write2innerHTML(pID,pContent) {
 function write2value(pID,pContent) {
   var vNode =document.getElementById(pID)
   if (vNode){
-    vNode.value=pContent;
+    //vNode.value=pContent;
+    $("#"+pID).val(pContent);
   } else {
     console.log("Write DOM-Node 'value' with ID=["+pID+"] was undefined")
   }
@@ -98,7 +104,9 @@ function write4name2value(pID,pContent) {
 function append2innerHTML(pID,pContent) {
   var vNode =document.getElementById(pID)
   if (vNode){
-    vNode.innerHTML+=pContent;
+    //vNode.innerHTML+=pContent;
+    var vPrevContent = $("#"+pID).html();
+    $("#"+pID).html(vPrevContent + pContent);
   } else {
     console.log("Append DOM-Node 'innerHTML' with ID=["+pID+"] was undefined")
   }
@@ -107,7 +115,9 @@ function append2innerHTML(pID,pContent) {
 function append2value(pID,pContent) {
   var vNode =document.getElementById(pID)
   if (vNode){
-    vNode.value+=pContent;
+    //vNode.value+=pContent;
+    var vPrevContent = $("#"+pID).val();
+    $("#"+pID).val(vPrevContent + pContent);
   } else {
     console.log("DOM-Node 'value' with ID=["+pID+"] was undefined")
   }

@@ -20,8 +20,9 @@ function injectListDB2DOM(pType,pUnsubmittedONLY) {
       console.log("DB Type was not found in injectListDB2DOM()-Call");
       vSelDB = vJSONDB;
   };
-  vOut = getListJSONDB(vSelDB,pType,pUnsubmittedONLY);
+  vOut += getListJSONDB(vSelDB,pType,pUnsubmittedONLY);
   write2innerHTML(vID,vOut);
+  write2innerHTML("divTitleListDB",getHeaderDB(vSelDB));
 };
 
 function countUnsubmitted(pDBsubmitted) {
@@ -42,14 +43,15 @@ function countUnsubmitted(pDBsubmitted) {
 function getListJSONDB(pJSONDB,pType,pUnsubmittedONLY) {
 
   var vListPrefixDB = getListPrefixDB(pType);
-  var vOut = getHeaderDB(pJSONDB);
+  var vOut = "";
   var vInfo = "";
   if (pUnsubmittedONLY) {
     vInfo += "OFFLINE";
   } else {
     vInfo += "ALL";
   };
-  vOut += '<ul id="ul-dbviewer'+pType+'" data-role="listview">';
+  //vOut += '<ul id="ul-dbviewer'+pType+'" data-role="listview">';
+   bgcolor="#C0C0C0"
   if (pJSONDB) {
     var vDBformat    = pJSONDB["DBformat"];
     var vDB          = pJSONDB["DBlines"];
@@ -61,7 +63,12 @@ function getListJSONDB(pJSONDB,pType,pUnsubmittedONLY) {
     } else {
       vInfo += vLength+"]";
     };
-    vOut += '<li data-role="list-divider">Database - '+vInfo+'</li>';
+    //vOut += '<li data-role="list-divider">Database - '+vInfo+'</li>'; // #C0C0C0
+    vOut += '<p>';
+    //vOut += '<table id="ul-dbheader'+pType+'" bgcolor="white" cellspacing="10px" width="100%">';
+    //vOut += '<tr"><td colspan="2"><b>Database - '+vInfo+'</b></td></tr>';
+    //vOut += '</table><hr>';
+    vOut += '<table id="ul-dbviewer'+pType+'" bgcolor="white" cellspacing="10px"  width="100%">';
     var vPrefix = getListPrefixDB(pType);
     var vCount = 0;
     var vDBhash = {};
@@ -72,7 +79,9 @@ function getListJSONDB(pJSONDB,pType,pUnsubmittedONLY) {
       //document.write("<li><a href='#displaydbrecord' onclick=\"fillContentRecordDB("+i+");alert('Display Record "+vCount+"')\">"+vCount+" "+vDB[i][0]+"</a></li>");
     };
   };
-  vOut += '</ul>';
+  //vOut += '</ul>';
+  vOut += '</table>';
+  vOut += '</p>';
   return vOut;
 };
 
@@ -736,14 +745,23 @@ function fillContentRecordDB(pIndex,pType,pJSONDB) {
 
 }
 
-function getItem4DisplayDB(pIndex,pDBhash,pType,pPrefix,pStrDB) {
+function getItem4DisplayDB(pIndex,pDBhash,pType,pPrefix,pStrDB,pSubmitted) {
   var vType = pType || "app";
   var vStrDB = pStrDB || "vJSONDB";
   var vPrefix = pPrefix || "Questionnaire";
   var vCount = pIndex + 1;
   //var vLabel = pPrefix+" ["+pType+"] "+pDBhash["recdate"];
   var vLabel = vPrefix+" - "+pDBhash["recdate"];
-  return "<li><a href='#pDisplayRecord' onclick=\"fillContentRecordDB("+pIndex+",'"+vType+"',"+vStrDB+")\">"+vCount+" "+vLabel+"</a></li>";
+  //return "<li><a href='#pDisplayRecord' onclick=\"fillContentRecordDB("+pIndex+",'"+vType+"',"+vStrDB+")\">"+vCount+" "+vLabel+"</a></li>";
+  var vOut = "<tr><td>";
+  vOut += vCount+"</td><td>" ;
+  if (!pSubmitted) {
+    vOut += "<a href='#pDisplayRecord' onclick=\"displayRecord4DB("+pIndex+",'"+vType+"',"+vStrDB+")\">"+vLabel+"</a>";
+  } else {
+    vOut += "<a href='#pDisplayRecord' onclick=\"displayRecord4DB("+pIndex+",'"+vType+"',"+vStrDB+")\">"+vLabel+"</a>";
+  };
+  vOut += "</td></tr>";
+  return vOut;
 };
 
 function createHiddenFormJSON(pDBType,pArrID) {

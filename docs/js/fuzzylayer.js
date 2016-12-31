@@ -55,6 +55,7 @@ function FuzzyLayer () {
 	this.aPreviousLayer = null;;
 	this.aNextLayer = null;
   this.aDataHash = null;
+	this.aFuzVal = 0.0;
 
 
     //---------------------------------------------------------------------
@@ -72,7 +73,7 @@ function FuzzyLayer () {
 //# last modifications    29.12.2016
 //#################################################################
 
-this.init = function (pParent) {
+this.init = function (pParent,pName) {
   //----Debugging------------------------------------------
   // The following alert-Command is useful for debugging
   //alert("fuzzylayer.js:init(pParent)-Call")
@@ -80,9 +81,9 @@ this.init = function (pParent) {
   //    var vMyInstance = new FuzzyLayer();
   //    vMyInstance.init(pParent);
   //-------------------------------------------------------
-
-	//----------- INSERT YOUR CODE HERE ---------------
-
+	var vName = pName || "FL"+Date.now();
+	this.aParent = pParent;
+	this.aName   = vName;
 };
 //----End of Method init Definition
 
@@ -155,9 +156,40 @@ this.exec = function () {
   //    var vMyInstance = new FuzzyLayer();
   //    vMyInstance.exec();
   //-------------------------------------------------------
-
-	//----------- INSERT YOUR CODE HERE ---------------
-
+	// If user answered Question 1 with "YES DEFINITEY" then
+  // the pStringHash contains pStringHash["question1"] = "YES DEFINITEY"
+  // This string hash is stored in the Return JSON in vRetJSON["data"]
+  // "NA" (Boolean Hash) not available - String "NA" or ""
+  // "empty" (Boolean Hash) string empty - Subset of NA with String ""
+  // "values" hash with values contains the usable answers that could be fuzzyfied successful
+  // "data" just stores the StringHash coming directly from the questionnaire
+  //var aDataHash = {"data":pStringHash,"missing":{},"NA":{},"empty":{},"values":{},"weights":{}};
+  if (this.aDataHash) {
+		console.log("FuzzyLayer ["+this.aName+"] exec()-Call");
+		var vVal = this.aDataHash["values"];
+		var vWeight = this.aDataHash["weights"];
+		var v = 0.0;
+		var w = 0.0;
+		var sum_vxw = 0.0;
+		var sum_w = 0.0;
+		for (var iID in vVal) {
+			if (vVal.hasOwnProperty(iID)) {
+				w = vWeight[iID] || 1.0;
+				v = vVal[iID] || 0.0;
+				sum_w += w;
+				sum_vxw += v * w
+			};
+		};
+		if (sum_w > 0) {
+			this.aFuzVal = sum_vxw / sum_w;
+		} else {
+			this.aFuzVal = 0.0;
+			console.log("ERROR: Weighted Sum undefined Layer ["+this.aName+"] - Sum of Weights 0.0");
+		};
+		console.log("Calulate Weighted Sum in Layer ["+this.aName+"]="+this.aFuzVal);
+	} else {
+		console.log("aDateHash undefined in Layer ["+this.aName+"]");
+	};
 };
 //----End of Method exec Definition
 

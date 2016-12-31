@@ -107,12 +107,14 @@ function setSelectOnline(pMode) {
 //---2 JSON Handler Sync Server
 //---------------------------------------------
 
-function submitData2LocalStorage(pSubmitted,pJSONDB,pDBHash) {
+function submitData2LocalStorage(pSubmitted,pType,pDBHash) {
   //alert("Offline Mode - Store Record in Local Storage!\nSync Database when you are ONLINE again (Internet Access)");
-  var vDB = pJSONDB || vJSONDB;
+  var vType = pType || "app";
+  var vDB = getDB4Type(vType);
   var vDBlines     = vDB["DBlines"];
+  console.log("submitData2LocalStorage(pSubmitted,'"+vType+"',pDBhash) length of DBlines: "+vDBlines.length);
 	var vDBsubmitted = vDB["DBsubmitted"]; //Boolean Array showing that data was submitted by App
-	var vDBhash = pDBHash || readRecord2Hash();
+	var vDBhash = pDBHash || readRecord2Hash(vType);
   vDBhash["recdate"] = getDate4DB();
   var vDBarray = convertHash2Array(vDBhash);
   if (pSubmitted) {
@@ -125,8 +127,8 @@ function submitData2LocalStorage(pSubmitted,pJSONDB,pDBHash) {
     vDBsubmitted.push(false);
   };
   vDBlines.push(vDBarray);
-  saveOfflineDB(vDB["database"],vDB);
-  vDB["DBlines"].push(vDBarray);
+  saveLocalDB(vDB["database"],vDB);
+  //vDB["DBlines"].push(vDBarray);
 };
 
 function submitForm2JSON(pDB,pType) {
@@ -139,18 +141,20 @@ function submitForm2JSON(pDB,pType) {
   write2value(vType+"_email",vQueryHash["app_email"]);
   write2value(vType+"_sampledate",Date.now());
   switch (vType) {
-    case "app":
+    case "app": // disapp.db or localsurvey.db
       //vParam = readRecord2URLparam();
       vParam = readType2URLparam(vType);
       console.log("Read Questionnaire Form to URL parameter in submitForm2JSON()");
     break;
     case "response":
-      vDB = vType + vDB;
+      // vDB = vType + vDB;
+      vDB = vType + "disapp.db";
       console.log("submitForm2JSON() for Response");
       vParam = readType2URLparam(vType);
     break;
     case "feedback":
-      vDB = vType + vDB;
+      // vDB = vType + vDB;
+      vDB = vType + "disapp.db";
       console.log("submitForm2JSON() for Feedback");
       vParam = readType2URLparam(vType);
     break;
@@ -161,20 +165,20 @@ function submitForm2JSON(pDB,pType) {
   //alert(vURL);
   console.log("submitForm2JSON() with URL: "+vURL);
   if (vOnlineMode) {
-    submitJSON(vURL);
+    submitJSON(vURL,vDB);
     console.log("vOnlineMode=TRUE will try to submit()");
   } else {
     console.log("vOnlineMode=FALSE will store in LocalStorage()");
   }
 };
 
-function submitJSON(pURL)
-{
+function submitJSON(pURL,pDB) {
+  var vDB = pDB || "disapp.db";
   gotoPageJQ("Wait");
-  submitJSON_exec(pURL);
+  submitJSON_exec(pURL,vDB);
 }
 
-function submitJSON_exec(pURL)
+function submitJSON_exec(pURL,pDB)
 {
     // submitJSON() loads a javascript lib from Server
     // that return a JS Lib with a hash variable vReturnDB
@@ -196,40 +200,42 @@ function submitJSON_exec(pURL)
     document.getElementById("divJSCALL").innerHTML = "";
     document.getElementById("divJSCALL").appendChild(s);
     //document.location.href =pURL;
-    console.log("submitJSON() creates SCRIPT-Tag with name='"+s.name+"'");
-    setTimeout('checkSubmitSuccess()',5000);
+    console.log("submitJSON('"+pDB+"') creates SCRIPT-Tag with name='"+s.name+"'");
+    setTimeout("checkSubmitSuccess('"+pDB+"')",5000);
 };
 
-function checkSubmitSuccess() {
+function checkSubmitSuccess(pDB) {
+  var vDB = pDB || "disapp.db";
   // vReturnDB is a Hash that is defined in the server call of the remote script
   // if vReturnDB is defined then DB submit was successful other not
-  console.log("checkSubmitSuccess()-Call");
+  console.log("checkSubmitSuccess('"+vDB+"')-Call");
   var vMSG = "App is OFFLINE\nNo Internet Connectivity or Server Down";
   var vSubmitted = false;
   if (typeof(vReturnDB) !== 'undefined') {
     if (vReturnDB["database"]) {
       console.log("Submit Success App Online - DB: ["+vReturnDB["database"]+"] ");
-      top.submitSuccess(true,vReturnDB["message"],vReturnDB["error"]);
+      top.submitSuccess(true,vReturnDB["message"],vReturnDB["error"],vDB);
       console.log("Data Submitted - Server is Online");
     } else {
-      top.submitSuccess(true,vReturnDB["message"],vReturnDB["error"]);
+      top.submitSuccess(true,vReturnDB["message"],vReturnDB["error"],vDB);
       console.log("Record seems to be submitted to Server\n but vReturnDB['database'] is missing in Server Response");
     };
   } else {
-    vMSG += "\nWill save collected Data in LocalStorage";
+    vMSG += "\nWARNING: Submit to Server not succesful.\nWill save collected Data in LocalStorage";
     alert(vMSG);
     console.log(vMSG);
-    submitSuccess(false,vMSG+"Save Collected Record in LocalStorage","");
+    top.submitSuccess(false,vMSG+"Save Collected Record in LocalStorage","",vDB);
   };
 };
 
 
-function submitSuccess(pSubmitted,pMessage,pError) {
+function submitSuccess(pSubmitted,pMessage,pError,pDB) {
+  var vDB = pDB || "disapp.db";
   top.setSelectOnline(pSubmitted);
   if ((pError) && (pError != "")) {
-    var vDB = vReturnDB["database"] || "disapp.db";
+    // Catch Error
     pError = replaceString(pError,"|","\n");
-    console.log("Submit Error in submitSuccess()-Call: "+pError);
+    console.log("Submit Error in submitSuccess('"+vDB+"')-Call: "+pError);
     alert("ERROR(S) in SUBMISSION:\n"+pError);
     switch (vDB) {
       case "responsedisapp.db":
@@ -240,12 +246,11 @@ function submitSuccess(pSubmitted,pMessage,pError) {
         //top.submitData2LocalStorage(pSubmitted,vFeedbackDB);
         gotoPageJQ("feedback");
         break;
-      default:
+      default: // disapp.db or localsurvey.db
         gotoPageJQ("app");
         //top.submitData2LocalStorage(pSubmitted);
     };
   } else {
-    var vDB = vReturnDB["database"] || "disapp.db";
     console.log("SERVER["+vDB+"]: Call of submitSuccess(pSubmitted,pMessage,pError) seems to be sucessful");
     switch (vDB) {
       case "responsedisapp.db":
@@ -256,7 +261,7 @@ function submitSuccess(pSubmitted,pMessage,pError) {
         //top.submitData2LocalStorage(pSubmitted,vFeedbackDB);
         gotoPostSubmit("feedback",pSubmitted);
         break;
-      default:
+      default: // disapp.db or localsurvey.db
         gotoPostSubmit("app",pSubmitted);
         //top.submitData2LocalStorage(pSubmitted);
     };
@@ -275,13 +280,19 @@ function readType2URLparam(pType) {
   var vDB = getDB4Type(pType);
   var vDBformat = vDB["DBformat"];
   var vDBHash = readRecordDOM2Hash(vDBformat,pType+"_");
+  setBasicIDs4Hash(vDBHash);
   //vDBHash['sampledate'] = Date.now(); is set at the end of readRecord2Hash()
   var vParam = record2URLparam(vDBHash);
+  // XXXXX
   console.log("readType2URLparam()\nParameter: \n"+vParam);
   return vParam;
 };
 
 function readFeedback2URLparam() {
+  return readType2URLparam("feedback");
+};
+
+function X_readFeedback2URLparam() {
   var vDBformat = vFeedbackDB["DBformat"];
   var vDBHash = readRecordDOM2Hash(vDBformat,"feedback_");
   //vDBHash['sampledate'] = Date.now(); is set at the end of readRecord2Hash()
@@ -299,7 +310,7 @@ function submitResponseJSON() {
   submitForm2JSON(vDatabase,vType);
 };
 
-function getResponseDBFormat() {
+function X_getResponseDBFormat() {
   var vDBformat = [];
   var vCount = top.vResponseDB["home"].length;
   var vShift = 1;
@@ -318,6 +329,10 @@ function getResponseDBFormat() {
   vDBformat.push("recdate");
 
   return vDBformat;
+}
+
+function readResponse2URLparam() {
+  return readType2URLparam("response");
 }
 
 function readResponse2URLparam() {
@@ -375,26 +390,30 @@ function readRecord2URLparam() {
   return vParam;
 };
 
-function readRecord2Hash () {
+
+function readRecord2Hash(pType) {
+  var vType = pType || "app";
+  var vDB = getDB4Type(vType);
 //function readRecord2Hash (pDBformat) {
   //var vDBformat = vJSONDB_Offline["DBformat"] || vJSONDB["DBformat"];
-  var vDBformat = vJSONDB["DBformat"];
-  var vForm = document.send2appdb;
-  //var vDBtitles   = vJSONDB["DBtitles"];
-  //var vDBcolinput = vJSONDB["DBcolinput"];
-  //var vDBvisible  = vJSONDB["DBvisible"];
+  var vDBformat = vDB["DBformat"];
   var vDBHash = {};
   var vID = "";
   var vValue = "";
+  var vNode = null;
   for (var i = 0; i < vDBformat.length; i++) {
     vID = vDBformat[i];
     vValue = "";
-    if (vForm.elements[vID]) {
-      vValue = vForm.elements[vID].value;
+    vNode = document.getElementById(vType+"_"+vID);
+    if (vNode) {
+      vValue = vNode.value;
+    } else {
+      console.log("readRecord2Hash('"+vType+"') - ["+vType+"_"+vID+"] in DOM undefined");
     };
     vDBHash[vID] = vValue;
   };
-  vDBHash['sampledate'] = Date.now();
+  setBasicIDs4Hash(vDBHash);
+  //vDBHash['sampledate'] = Date.now();
   return vDBHash;
 }
 
@@ -462,30 +481,35 @@ function syncDataExists () {
 };
 
 function setBasicIDs4Hash(pDBhash) {
-  var vID = "email";
-  if (pDBhash[vID ] == "") {
-    pDBhash[vID] = vQueryHash["app_"+vID];
-  };
-  vID = "usergroup";
-  if (pDBhash[vID] == "") {
-    pDBhash[vID] = vQueryHash["app_"+vID];
-  };
-  vID = "geolocation";
-  if (pDBhash[vID] == "") {
-    pDBhash[vID] = getValueDOM("app_geolocation");
-  };
-  vID = "moddate";
-  if (pDBhash[vID] == "") {
-    pDBhash[vID] = getDate4DB();
-  };
-  vID = "recdate";
-  if (pDBhash[vID] == "") {
-    pDBhash[vID] = getDate4DB();
+  if (!pDBhash) {
+    console.log("ERROR: setBasicIDs4Hash(pDBhash) - pDBhash undefined" );
+  } else {
+    var vID = "email";
+    if (pDBhash[vID ] == "") {
+      pDBhash[vID] = vQueryHash["app_"+vID];
+    };
+    vID = "usergroup";
+    if (pDBhash[vID] == "") {
+      pDBhash[vID] = vQueryHash["app_"+vID];
+    };
+    vID = "geolocation";
+    if (pDBhash[vID] == "") {
+      pDBhash[vID] = getValueDOM("app_geolocation");
+    };
+    vID = "moddate";
+    if (pDBhash[vID] == "") {
+      pDBhash[vID] = getDate4DB();
+    };
+    vID = "recdate";
+    if (pDBhash[vID] == "") {
+      pDBhash[vID] = getDate4DB();
+    };
   };
 };
 
-function readRecord2Array () {
-  var vDBHash = readRecord2Hash();
+function readRecord2Array (pType) {
+  var vType = pType || "app";
+  var vDBHash = readRecord2Hash(vType);
   return convertHash2Array(vDBHash);
 };
 
