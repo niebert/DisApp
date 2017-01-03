@@ -285,16 +285,23 @@ function compareSyncDB(pJSONDB) {
 	}
 
 }
-function find_Record_in_OnlineDB(pRecord_Offline,pDBlines) {
-	var vFound = -1;
-	for (var k = 0; k < pDBlines.length; k++) {
-		vRecord = pDBlines[i];
-		if (compareRecordsDB(vRecord_Offline,vRecord)) {
-			vFound = i;
-		};
-	};
+function find_Record_in_DB(pID,pSearch,pDB) {
+  var vFound = -1;
+  var vDBlines  = pDB["DBlines"];
+  var vDBformat = pDB["DBformat"];
+  if (vDBformat.hasOwnProperty(vID)) {
+      console.log("find_Record_in_DB('"+pID+"','"+pSearch+"',pDB) pID='"+pID+"' not in DBformat");
+  } else {
+    console.log("find_Record_in_DB('"+pID+"','"+pSearch+"',pDB)");
+    for (var k = 0; k < vDBlines.length; k++) {
+  		vDBhash = convertArray2Hash(vDBlines[i],vDBformat);
+  		if (vDBhash && vDBhash[pID] && vDBhash[pID] == pSearch) {
+  			vFound = i;
+  		};
+  	};
+  }
 	return vFound;
-}
+};
 
 function compareRecordsDB(pRecord_Offline,pRecord) {
 	// compares if offline records can be found remote DB

@@ -106,17 +106,17 @@ function setSelectOnline(pMode) {
 //---------------------------------------------
 //---2 JSON Handler Sync Server
 //---------------------------------------------
+function submitRecord4LocalStorage(pIndex,pType) {
+  console.log("submitRecord4LocalStorage('"+pIndex+"','"+pType+"')");
+  var vDB = getDB4Type(pType);
+  fillContentRecordDB(pIndex,pType,vDB);
+  gotoSubmit4Type(pType);
+};
 
-function submitData2LocalStorage(pSubmitted,pType,pDBHash) {
-  //alert("Offline Mode - Store Record in Local Storage!\nSync Database when you are ONLINE again (Internet Access)");
-  var vType = pType || "app";
-  var vDB = getDB4Type(vType);
+function addData2LocalStorage(pDB,pDBHash,pSubmitted) {
   var vDBlines     = vDB["DBlines"];
-  console.log("submitData2LocalStorage(pSubmitted,'"+vType+"',pDBhash) length of DBlines: "+vDBlines.length);
+  console.log("addData2LocalStorage(pDB,pDBHash,pSubmitted) length of DBlines: "+vDBlines.length);
 	var vDBsubmitted = vDB["DBsubmitted"]; //Boolean Array showing that data was submitted by App
-	var vDBhash = pDBHash || readRecord2Hash(vType);
-  vDBhash["recdate"] = getDate4DB();
-  var vDBarray = convertHash2Array(vDBhash);
   if (pSubmitted) {
     // Record was submitted
     vDBsubmitted.push(true);
@@ -127,6 +127,36 @@ function submitData2LocalStorage(pSubmitted,pType,pDBHash) {
     vDBsubmitted.push(false);
   };
   vDBlines.push(vDBarray);
+}
+
+function updateData2LocalStorage(pDB,pDBHash,pIndex,pSubmitted) {
+  var vDBlines = pDB["DBlines"];
+  if ((pIndex>=0) && (pIndex < vDBlines.length)) {
+    vDBlines["DBsubmitted"][pIndex] = pSubmitted;
+  } else {
+    console.log("Update Index="+pIndex+" out of range in '"+pDB["database"]+"'");
+  }
+}
+
+function submitData2LocalStorage(pSubmitted,pType,pDBHash) {
+  //alert("Offline Mode - Store Record in Local Storage!\nSync Database when you are ONLINE again (Internet Access)");
+  // sampledate is the primary key of the record
+  var vType = pType || "app";
+  var vDB = getDB4Type(vType);
+  var vDBlines     = vDB["DBlines"];
+  console.log("submitData2LocalStorage(pSubmitted,'"+vType+"',pDBhash) length of DBlines: "+vDBlines.length);
+	var vDBsubmitted = vDB["DBsubmitted"]; //Boolean Array showing that data was submitted by App
+	var vDBhash = pDBHash || readRecord2Hash(vType);
+  vDBhash["recdate"] = getDate4DB();
+  var vDBarray = convertHash2Array(vDBhash);
+  var vID = "sampledate";
+  var vUpdateIndex = find_Record_in_DB(vID,vDBhash[vID],vDB);
+  if (vUpdateIndex >= 0) {
+    console.log("Update record with ID=["+vID+"] pSearch='"+vDBhash[vID]+"' in DB["+pType+"]");
+    updateData2LocalStorage(vDB,vDBHash,vUpdateIndex,pSubmitted);
+  } else {
+    addData2LocalStorage(vDB,vDBHash,pSubmitted)
+  };
   saveLocalDB(vDB["database"],vDB);
   //vDB["DBlines"].push(vDBarray);
 };

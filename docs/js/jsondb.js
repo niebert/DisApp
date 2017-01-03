@@ -723,29 +723,33 @@ function fillContentRecordDB(pIndex,pType,pJSONDB) {
   var vDBlines     = vDB["DBlines"];
   var vDBsubmitted = vDB["DBsubmitted"];
   var vID = "";
-  if ((pIndex >=0) && (pIndex < vDBlines.length)) {
-    for (var i=0;i<vDBformat.length;i++) {
-      if (vDBvisible[i]) {
-        vID = vDBformat[i];
-        $("#"+vType+"_"+vID).html(vDBlines[pIndex][i]);
-      };
-    };
-    // if already submitted
-    if (vDB["DBsubmitted"][pIndex]) {
-      console.log("fillContentRecordDB() SUBMITTED (1) hide the submit button and (2) display an update Button");
-    } else {
-      console.log("fillContentRecordDB() NOT SUBMITTED YET (1) show submit button and (2) hide an update Button");
-      //JQuery $('.myclass') Class
-      //JQuery $('#myid') ID of DOM element
-      //JQuery $('tag') all DOM elements with TAG
-    }
+  if (vDBlines.length == 0) {
+    console.log("Database ["+vDB["database"]+"] contains no records");
   } else {
-    console.log("pIndex="+pIndex+" is out of range. vDBlines.length="+vDBlines.length);
+    if ((pIndex >=0) && (pIndex < vDBlines.length)) {
+      for (var i=0;i<vDBformat.length;i++) {
+        if (vDBvisible[i]) {
+          vID = vDBformat[i];
+          $("#"+vType+"_"+vID).val();
+        };
+      };
+      // if already submitted
+      if (vDB["DBsubmitted"][pIndex]) {
+        console.log("fillContentRecordDB() SUBMITTED (1) hide the submit button and (2) display an update Button");
+      } else {
+        console.log("fillContentRecordDB() NOT SUBMITTED YET (1) show submit button and (2) hide an update Button");
+        //JQuery $('.myclass') Class
+        //JQuery $('#myid') ID of DOM element
+        //JQuery $('tag') all DOM elements with TAG
+      }
+    } else {
+      console.log("pIndex="+pIndex+" is out of range. vDBlines.length="+vDBlines.length);
+    }
   }
-
 }
 
 function getItem4DisplayDB(pIndex,pDBhash,pType,pPrefix,pStrDB,pSubmitted) {
+  // displays a row for a table with a single record in the Database
   var vType = pType || "app";
   var vStrDB = pStrDB || "vJSONDB";
   var vPrefix = pPrefix || "Questionnaire";
@@ -754,11 +758,14 @@ function getItem4DisplayDB(pIndex,pDBhash,pType,pPrefix,pStrDB,pSubmitted) {
   var vLabel = vPrefix+" - "+pDBhash["recdate"];
   //return "<li><a href='#pDisplayRecord' onclick=\"fillContentRecordDB("+pIndex+",'"+vType+"',"+vStrDB+")\">"+vCount+" "+vLabel+"</a></li>";
   var vOut = "<tr><td>";
-  vOut += vCount+"</td><td>" ;
+  vOut += vCount+"</td><td>"+vLabel+"</td><td>" ;
   if (!pSubmitted) {
-    vOut += "<a href='#pDisplayRecord' onclick=\"displayRecord4DB("+pIndex+",'"+vType+"',"+vStrDB+")\">"+vLabel+"</a>";
+    // Page
+    //vOut += "<button class='ui-disapp' onclick=\"submitRecord4LocalStorage("+pIndex+",'"+vType+"');return false\">Submit</button>";
+    vOut += "<input type='button' class='ui-disapp' id='bLC"+pType+pIndex+"'onclick=\"submitRecord4LocalStorage("+pIndex+",'"+vType+"');return false\" value='SUBMIT'>";
   } else {
-    vOut += "<a href='#pDisplayRecord' onclick=\"displayRecord4DB("+pIndex+",'"+vType+"',"+vStrDB+")\">"+vLabel+"</a>";
+    //vOut += "<button class='ui-disapp' onclick=\"displayRecord4DB("+pIndex+",'"+vType+"');return false\">VIEW</button>";
+    vOut += "[OK]";
   };
   vOut += "</td></tr>";
   return vOut;

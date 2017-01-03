@@ -148,6 +148,10 @@ function displayCollectedData() {
     setTimeout('gotoPageJQ("DisplayListDB")',200);
 };
 
+function displayRecord4DB(pIndex,pType,pStrDB) { // used in jsondb.js
+  console.log("displayRecord4DB('"+pIndex+"','"+pType+")");
+};
+
 
 function processForm(pType) {
     console.log("CHECK FORM: processForm('"+pType+"')");
@@ -212,6 +216,10 @@ function checkDisclaimer4Submit() {
     //$.mobile.changePage( '#pDisclaimer', { transition: 'slideup', changeHash: false })
   }
 };
+
+function gotoSubmit4Type(pType) {
+  console.log("gotoSubmit4Type('"+pType+"')");
+}
 
 function gotoPostSubmit(pType,pSubmitted) {
   var vType = pType || "app";
