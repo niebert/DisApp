@@ -111,9 +111,9 @@ function loadAllOfflineJSONDB() {
 		vDBName = vArrayDB[i];
     vDBID = getID4DBName(vDBName);
 		vLocalDB[vDBID] = loadLocalDB(vDBID);
-		if (typeof(vLocalDB[vDBID])  !== "undefined" )  {
+		if (typeof(vLocalDB[vDBID])  != "undefined" )  {
 			console.log("Offline DB: ["+vDBName+"] exists in loadAllOfflineJSONDB()-Call ");
-			if (vLocalDB[vDBID]["DBlines"]) {
+			if (typeof(vLocalDB[vDBID]["DBlines"]) != "undefined") {
         console.log("LOAD: LC['"+vDBID+"'] contains "+vLocalDB[vDBID]["DBlines"].length+" records");
 				switch (vDBName) {
 					case vJSONDB["database"]:
