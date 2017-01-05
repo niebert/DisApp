@@ -18,6 +18,7 @@ from disapp_service.service_apis.usercreation import UserCreation
 from disapp_service.service_apis.questionnaires import Questionnaires
 from disapp_service.service_apis.questions import Questions
 from disapp_service.service_apis.answers import Answers
+from disapp_service.service_apis.feedbackquestionnaire import FeedbackQuestionnaire
 
 from flask.ext.cors import CORS
  
@@ -41,6 +42,7 @@ api.add_resource(UserValidation,'/userservice/uservalidation/')
 api.add_resource(Questionnaires,'/questionnaire/qlists/')
 api.add_resource(Questions,'/questionnaire/<string:questionnaire_id>/')
 api.add_resource(Answers,'/questionnaire/answers/')
+api.add_resource(FeedbackQuestionnaire,'/questionnaire/flists/')
 
 app.logger.info("Resource setup done")
 
