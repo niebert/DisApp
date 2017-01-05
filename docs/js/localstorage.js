@@ -294,7 +294,7 @@ function find_Record_in_DB(pID,pSearch,pDB) {
   } else {
     console.log("find_Record_in_DB('"+pID+"','"+pSearch+"',pDB)");
     for (var k = 0; k < vDBlines.length; k++) {
-  		vDBhash = convertArray2Hash(vDBlines[i],vDBformat);
+  		vDBhash = convertArray2Hash(vDBlines[k],vDBformat);
   		if (vDBhash && vDBhash[pID] && vDBhash[pID] == pSearch) {
   			vFound = i;
   		};
@@ -325,48 +325,34 @@ function compareRecordsDB(pRecord_Offline,pRecord) {
 	}
 }
 
-function check_Local_Init() {
-	// check if localstorage database is initialized with DBformat
-	var vJSONDB_Offline = loadLocalDB()
-	if (vJSONDB_Offline) {
-		if (vJSONDB_Offline["DBlines"]) {
-			console.log("OFFLINE_"+vJSONDB["database"]+" is defined");
-			compare_Offline_Online_DB();
-		} else {
-			console.log("OFFLINE_"+vJSONDB["database"]+" initialisation performed");
-			getJSONDB_Local_Default();
-			//vJSONDB_Offline["DBlines"] = [];
-			//vJSONDB_Offline["DBsubmitted"] = [];
-			//vJSONDB_Offline["DBsynced"] = [];
-			//vJSONDB_Offline["DBformat"] = vJSONDB["DBformat"].slice(); // Duplicate Array
-			//vJSONDB_Offline = getJSONDB_Local_Default();
-			//vJSONDB_Offline["LastSyncLine"] = -1;
-		}
-	} else {
-		console.log("vJSONDB_Offline does not exist - check_Local_Init()-Call");
-	}
-}
+function convertFormat4DB(pDB,pFormatDest) {
+  // pDB is a database stored in the LocalStorage
+  var vDBlines  = pDB["DBlines"];
+  var vDBformat = pDB["DBformat"];
+  for (var i = 0; i < vDBlines.length; i++) {
+    vDBlines[i] = convertRecordDBformat(vDBlines[i],vDBformat,pFormatDest)
+  };
+  pDB["DBformat"] = pFormatDest; 
+};
 
-
-function convertDBformat(pFormatSource,pFormatDest,pLine) {
-	// Convert DB-Line to SourceHash in pFormatSource
-	var vSourceHash
-	// init the Destination Hash DestHash with "" in pFormatDest;
-
-	// Fill DestHash with Value from SourceHash with pFormatSource
-	// export DestHash to DB-Line with Destination Hash
-}
+function convertRecordDBformat(pRecArray,pFormatSource,pFormatDest) {
+	// Convert DB-Record to SourceHash in pFormatSource
+	var vSourceHash = convertArray2Hash(pRecArray,pFormatSource);
+  return convertHash2Array(vSourceHash,pFormatDest);
+};
 
 
 
 function compare_Format_DB(pDB1,pDB2) {
+  var vDBformat1 = pDB1["DBformat"];
+  var vDBformat2 = pDB2["DBformat"];
 	// compare Format of DBs
 	var vRet = true;
-	if (pDB1.length != pDB2.length) {
+	if (vDBformat1.length != vDBformat2.length) {
 		vRet = false;
 	} else {
-		for (var i = 0; i < pDB1.length; i++) {
-			if (pDB1[i] != pDB2[i]) {
+		for (var i = 0; i < vDBformat1.length; i++) {
+			if (vDBformat1[i] != vDBformat2[i]) {
 				vRet = false;
 			}
 		}

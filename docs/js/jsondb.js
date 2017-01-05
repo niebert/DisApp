@@ -40,9 +40,8 @@ function countUnsubmitted(pDBsubmitted) {
   return vCount;
 }
 
-function getListJSONDB(pJSONDB,pType,pUnsubmittedONLY) {
+function getListJSONDB(pDB,pType,pUnsubmittedONLY) {
 
-  var vListPrefixDB = getListPrefixDB(pType);
   var vOut = "";
   var vInfo = "";
   if (pUnsubmittedONLY) {
@@ -52,14 +51,14 @@ function getListJSONDB(pJSONDB,pType,pUnsubmittedONLY) {
   };
   //vOut += '<ul id="ul-dbviewer'+pType+'" data-role="listview">';
    bgcolor="#C0C0C0"
-  if (pJSONDB) {
-    var vDBformat    = pJSONDB["DBformat"];
-    var vDB          = pJSONDB["DBlines"];
-    var vDBsubmitted = pJSONDB["DBsubmitted"];
+  if (pDB) {
+    var vDBformat    = pDB["DBformat"];
+    var vDB          = pDB["DBlines"];
+    var vDBsubmitted = pDB["DBsubmitted"];
     vInfo += " - [";
     var vLength = vDB.length;
     if (pUnsubmittedONLY) {
-      vInfo += countUnsubmitted(pDBsubmitted)+"/"+vLength+"]";
+      vInfo += countUnsubmitted(vDBsubmitted)+"/"+vLength+"]";
     } else {
       vInfo += vLength+"]";
     };
@@ -69,13 +68,15 @@ function getListJSONDB(pJSONDB,pType,pUnsubmittedONLY) {
     //vOut += '<tr"><td colspan="2"><b>Database - '+vInfo+'</b></td></tr>';
     //vOut += '</table><hr>';
     vOut += '<table id="ul-dbviewer'+pType+'" bgcolor="white" cellspacing="10px"  width="100%">';
-    var vPrefix = getListPrefixDB(pType);
+    var vListPrefix = getListPrefixDB(pType);
     var vCount = 0;
     var vDBhash = {};
+    var vSubmitted = false;
     for (var i=0;i<vDB.length;i++) {
       vCount = i+1;
       vDBhash = convertArray2Hash(vDB[i]);
-      vOut += getItem4DisplayDB(i,vDBhash);
+      vSubmitted = vDBsubmitted[i] || false;
+      vOut += getItem4DisplayDB(i,vDBhash,pType,vListPrefix,vSubmitted);
       //document.write("<li><a href='#displaydbrecord' onclick=\"fillContentRecordDB("+i+");alert('Display Record "+vCount+"')\">"+vCount+" "+vDB[i][0]+"</a></li>");
     };
   };
@@ -88,10 +89,10 @@ function getListJSONDB(pJSONDB,pType,pUnsubmittedONLY) {
 function getListPrefixDB(pType) {
   switch (pType) {
     case "app":
-      return "Questionnaire";
+      return "Risk";
     break;
     case "repsonse":
-      return "Risk Mitigation";
+      return "Protect";
     break;
     case "feedback":
       return "Feedback";
@@ -748,10 +749,9 @@ function fillContentRecordDB(pIndex,pType,pJSONDB) {
   }
 }
 
-function getItem4DisplayDB(pIndex,pDBhash,pType,pPrefix,pStrDB,pSubmitted) {
+function getItem4DisplayDB(pIndex,pDBhash,pType,pPrefix,pSubmitted) {
   // displays a row for a table with a single record in the Database
   var vType = pType || "app";
-  var vStrDB = pStrDB || "vJSONDB";
   var vPrefix = pPrefix || "Questionnaire";
   var vCount = pIndex + 1;
   //var vLabel = pPrefix+" ["+pType+"] "+pDBhash["recdate"];

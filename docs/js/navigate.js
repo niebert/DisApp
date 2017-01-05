@@ -140,7 +140,7 @@ function displayCollectedData() {
     var vType = getValueDOM("sDisplayTypeDB");
     var vUnsubmittedONLY = getValueDOM("sUnsubmittedONLY");
     var vDisUnsubONLY = true;
-    if (vUnsubmittedONLY = "NO") {
+    if (vUnsubmittedONLY == "NO") {
       vDisUnsubONLY = false;
     };
     console.log("Display DB ["+vType+"] with Unsubmitted ONLY='"+vUnsubmittedONLY+"'");
@@ -219,6 +219,21 @@ function checkDisclaimer4Submit() {
 
 function gotoSubmit4Type(pType) {
   console.log("gotoSubmit4Type('"+pType+"')");
+  //var vDB = getDB4Type(pType);
+  //processForm(pType);
+  switch (pType) {
+    case "app":
+
+    break;
+    case "response":
+
+    break;
+    case "feedback":
+
+    break;
+    default:
+
+  }
 }
 
 function gotoPostSubmit(pType,pSubmitted) {

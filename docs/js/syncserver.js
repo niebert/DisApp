@@ -114,9 +114,9 @@ function submitRecord4LocalStorage(pIndex,pType) {
 };
 
 function addData2LocalStorage(pDB,pDBHash,pSubmitted) {
-  var vDBlines     = vDB["DBlines"];
+  var vDBlines     = pDB["DBlines"];
   console.log("addData2LocalStorage(pDB,pDBHash,pSubmitted) length of DBlines: "+vDBlines.length);
-	var vDBsubmitted = vDB["DBsubmitted"]; //Boolean Array showing that data was submitted by App
+	var vDBsubmitted = pDB["DBsubmitted"]; //Boolean Array showing that data was submitted by App
   if (pSubmitted) {
     // Record was submitted
     vDBsubmitted.push(true);
@@ -126,6 +126,7 @@ function addData2LocalStorage(pDB,pDBHash,pSubmitted) {
     // Record was stored in local storage
     vDBsubmitted.push(false);
   };
+  var vDBarray = convertHash2Array(pDBHash,pDB["DBformat"]);
   vDBlines.push(vDBarray);
 }
 
@@ -146,13 +147,12 @@ function submitData2LocalStorage(pSubmitted,pType,pDBHash) {
   var vDBlines     = vDB["DBlines"];
   console.log("submitData2LocalStorage(pSubmitted,'"+vType+"',pDBhash) length of DBlines: "+vDBlines.length);
 	var vDBsubmitted = vDB["DBsubmitted"]; //Boolean Array showing that data was submitted by App
-	var vDBhash = pDBHash || readRecord2Hash(vType);
-  vDBhash["recdate"] = getDate4DB();
-  var vDBarray = convertHash2Array(vDBhash);
+	var vDBHash = pDBHash || readRecord2Hash(vType);
+  vDBHash["recdate"] = getDate4DB();
   var vID = "sampledate";
-  var vUpdateIndex = find_Record_in_DB(vID,vDBhash[vID],vDB);
+  var vUpdateIndex = find_Record_in_DB(vID,vDBHash[vID],vDB);
   if (vUpdateIndex >= 0) {
-    console.log("Update record with ID=["+vID+"] pSearch='"+vDBhash[vID]+"' in DB["+pType+"]");
+    console.log("Update record with ID=["+vID+"] pSearch='"+vDBHash[vID]+"' in DB["+pType+"]");
     updateData2LocalStorage(vDB,vDBHash,vUpdateIndex,pSubmitted);
   } else {
     addData2LocalStorage(vDB,vDBHash,pSubmitted)
@@ -322,14 +322,6 @@ function readFeedback2URLparam() {
   return readType2URLparam("feedback");
 };
 
-function X_readFeedback2URLparam() {
-  var vDBformat = vFeedbackDB["DBformat"];
-  var vDBHash = readRecordDOM2Hash(vDBformat,"feedback_");
-  //vDBHash['sampledate'] = Date.now(); is set at the end of readRecord2Hash()
-  var vParam = record2URLparam(vDBHash);
-  console.log("readRecordDOM2URLparam()\nFeedback Parameter: \n"+vParam);
-  return vParam;
-};
 //----------------------------------------
 // Read Record from RESPONSE
 //----------------------------------------
@@ -339,27 +331,6 @@ function submitResponseJSON() {
   var vDatabase = vType + vQueryHash["app_database"];
   submitForm2JSON(vDatabase,vType);
 };
-
-function X_getResponseDBFormat() {
-  var vDBformat = [];
-  var vCount = top.vResponseDB["home"].length;
-  var vShift = 1;
-  // create and array vDBformat = ["home1","home2",...]
-  appendArrayID("home",vCount,vShift,vDBformat);
-  console.log("getResponseDBFormat(1) - vResponseDB['home'].length="+vCount);
-  vArray = vResponseDB["yourself"];
-  var vCount = top.vResponseDB["yourself"].length;
-  // create and array vDBformat = ["yourself1","yourself2",...]
-  appendArrayID("yourself",vCount,vShift,vDBformat);
-  console.log("getResponseDBFormat(2) - vResponseDB['yourself'].length="+vCount);
-  vDBformat.push("geolocation");
-  vDBformat.push("usergroup");
-  vDBformat.push("email");
-  vDBformat.push("moddate");
-  vDBformat.push("recdate");
-
-  return vDBformat;
-}
 
 function readResponse2URLparam() {
   return readType2URLparam("response");
@@ -551,7 +522,7 @@ function convertArray2Hash(pDBarray,pDBformat) {
     console.log("ERROR: Length mismatch in convertArray2Hash()-Call");
     if  (pDBarray.length < vDBformat.length) {
       vMax = pDBarray.length;
-    }
+    };
   };
   for (var i = 0; i < vMax; i++) {
     vDBhash[vDBformat[i]] = pDBarray[i];
@@ -559,9 +530,19 @@ function convertArray2Hash(pDBarray,pDBformat) {
   return vDBhash;
 };
 
+function createDBformat4Hash(pDBhash) {
+  var vDBformat = [];
+  for (var iID in pDBhash) {
+    if (pDBhash.hasOwnProperty(iID)) {
+      vDBformat.push(iID);
+    }
+  };
+  return vDBformat;
+}
+
 function convertHash2Array(pDBhash,pDBformat) {
   var vDBarray = [];
-  var vDBformat = pDBformat || vJSONDB["DBformat"];
+  var vDBformat = pDBformat || createDBformat4Hash(pDBhash);
   var vID = "";
   var vValue = "";
   for (var i = 0; i < vDBformat.length; i++) {
