@@ -112,9 +112,9 @@ function loadAllOfflineJSONDB() {
     vDBID = getID4DBName(vDBName);
 		vLocalDB[vDBID] = loadLocalDB(vDBID);
 		if (typeof(vLocalDB[vDBID])  !== "undefined" )  {
-			console.log("Offline DB: ["+vDBName+"] exists in loadAllOfflineJSONDB()-Call "+
-                  "and LC['"+vDBID+"'] contains "+vLocalDB[vDBID]["DBlines"].length+" records");
+			console.log("Offline DB: ["+vDBName+"] exists in loadAllOfflineJSONDB()-Call ");
 			if (vLocalDB[vDBID]["DBlines"]) {
+        console.log("LOAD: LC['"+vDBID+"'] contains "+vLocalDB[vDBID]["DBlines"].length+" records");
 				switch (vDBName) {
 					case vJSONDB["database"]:
               vJSONDB["DBlines"] =  vLocalDB[vDBID]["DBlines"];
