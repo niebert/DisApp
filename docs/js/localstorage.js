@@ -148,7 +148,7 @@ function saveAllOfflineJSONDB() {
 	var vDBName = "";
 	for (var i = 0; i < vArrayDB.length; i++) {
 		vDBName = vArrayDB[i];
-    vDBID = getID4DBName(pDBName);
+    vDBID = getID4DBName(vDBName);
     saveLocalDB(vDBID,vArrayDB[i]);
 		console.log("Offline DB: ["+vDBName+"] will be save AllOfflineJSONDB()-Call");
  	};
@@ -332,7 +332,7 @@ function convertFormat4DB(pDB,pFormatDest) {
   for (var i = 0; i < vDBlines.length; i++) {
     vDBlines[i] = convertRecordDBformat(vDBlines[i],vDBformat,pFormatDest)
   };
-  pDB["DBformat"] = pFormatDest; 
+  pDB["DBformat"] = pFormatDest;
 };
 
 function convertRecordDBformat(pRecArray,pFormatSource,pFormatDest) {
