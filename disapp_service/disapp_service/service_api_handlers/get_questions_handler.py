@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Created on 26th June 2016
 """
@@ -12,6 +13,7 @@ from disapp_service.utils.auth import get_user
 from disapp_db.user_questions.models import (AppUser, Questionnaire,
                                  Questions, QuestionType, QuestionAnswerMapping)
 from django.core.exceptions import ObjectDoesNotExist
+#import pdb
 
 def handle_request(questionnaire_id,language):
     """
@@ -28,12 +30,12 @@ def handle_request(questionnaire_id,language):
                 'errorMessage': 'Not found',
                 'errorCode': 404
             }
-
+        #pdb.set_trace()
         try:
             questions_list = []
             for each in questions:
                 q_dict = {}
-                q_dict['id'] = each.question_id
+                q_dict['id'] = each.id
                 q_dict['name'] = each.question_text
                 q_dict['type'] = each.q_type.q_type
                 questions_list.append(q_dict)
@@ -48,7 +50,7 @@ def handle_request(questionnaire_id,language):
         final_q_list = []
         for q_dict in questions_list:
             try:
-                oam = QuestionAnswerMapping.objects.filter(question__question_id=q_dict['id']) \
+                oam = QuestionAnswerMapping.objects.filter(question__id=q_dict['id']) \
                                                     .order_by('answer_order_number')
 #                app.logger.debug(oam.__dict__)
             except Exception as e:
@@ -78,3 +80,5 @@ def handle_request(questionnaire_id,language):
     finally:
         close_old_connections()
 
+if __name__ == "__main__":
+    handle_request("Q1","en")

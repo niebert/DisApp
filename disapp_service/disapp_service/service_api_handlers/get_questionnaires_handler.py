@@ -19,7 +19,7 @@ def handle_request():
     try:
         q_naire_list = []
         try:
-            q_naire = Questionnaire.objects.filter(is_archived=False)
+            q_naire = Questionnaire.objects.filter(is_archived=False, questionnaire__regex=r'Q[0-9]+')
         except ObjectDoesNotExist:
             app.logger.debug('No active questionnaire found')
             return {
