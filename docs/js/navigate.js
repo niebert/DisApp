@@ -4,7 +4,7 @@ function quitApp() {
   if (r == true) {
       txt = "You pressed OK!";
       saveAllOfflineJSONDB();
-      window.close();
+      //window.close();
   } else {
       txt = "You pressed Cancel!";
   };
